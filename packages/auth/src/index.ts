@@ -57,6 +57,8 @@ import { createPasskeyOptions, passkeyBefore } from "./passkey";
 // Read from process.env directly — this package has no dependency on the
 // app's env schema, and the value must be a pure runtime concern.
 const isStandaloneMode = process.env.LOUEZ_MODE !== "platform";
+/** Test mode: self-registration allowed, new users join the store as members. */
+const isOpenRegistration = isStandaloneMode && process.env.OPEN_REGISTRATION === "true";
 
 const hasGoogleAuth = Boolean(env.AUTH_GOOGLE_ID && env.AUTH_GOOGLE_SECRET);
 
@@ -379,6 +381,10 @@ export const authInstance = betterAuth({
           });
           if (!existingUser) return;
 
+          // Test mode (OPEN_REGISTRATION=true): anyone may register and joins
+          // the single store as a `member` (see `after` below). Off by default.
+          if (isOpenRegistration) return;
+
           const invitation = await db.query.storeInvitations.findFirst({
             columns: { id: true },
             where: and(
@@ -395,6 +401,21 @@ export const authInstance = betterAuth({
           }
         },
         after: async (user, context) => {
+          if (isOpenRegistration) {
+            try {
+              // A standalone instance hosts one store: a self-registered user
+              // joins it as a member instead of ending up with no store.
+              const store = await db.query.stores.findFirst({ columns: { id: true } });
+              if (store) {
+                await db
+                  .insert(schema.storeMembers)
+                  .values({ storeId: store.id, userId: user.id, role: "member" })
+                  .onDuplicateKeyUpdate({ set: { role: "member" } });
+              }
+            } catch (error) {
+              console.error("[auth] open registration: could not add the member to the store", error);
+            }
+          }
           if (_userCreatedHook) {
             await _userCreatedHook({
               userId: user.id,
