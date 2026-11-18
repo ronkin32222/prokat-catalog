@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import {
   CalendarSolidIcon,
   ChartColumnIcon,
-  CreditCardSolidIcon,
   ParticipantsSolidIcon,
   ProductSolidIcon,
 } from "@louez/ui/icons";
@@ -37,8 +36,8 @@ export const SalesAnalyticsContent = ({
           card a ~240px column where its amounts cannot fit. */}
       <div className="grid gap-4 xl:grid-cols-3">
         <DashboardSectionCard
-          title={t("revenueChart")}
-          description={t("revenueChartDescription")}
+          title="Деньги"
+          description="Сумма броней за период и по дням"
           icon={ChartColumnIcon}
           accent="success"
           className="xl:col-span-2"
@@ -50,9 +49,9 @@ export const SalesAnalyticsContent = ({
         </DashboardSectionCard>
 
         <DashboardSectionCard
-          title={t("paymentMethods.title")}
-          description={t("paymentMethods.description")}
-          icon={CreditCardSolidIcon}
+          title="Бронирования"
+          description="Сколько заявок в каком статусе"
+          icon={CalendarSolidIcon}
           accent="primary"
         >
           {paymentMethods}

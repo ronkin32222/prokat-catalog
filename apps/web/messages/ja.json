@@ -7682,6 +7682,8 @@
       "accessoriesAdded": "{count,plural,one{# アクセサリーがカートに追加されました} other{# アクセサリーがカートに追加されました}}"
     },
     "dateSelection": {
+      "changeDates": "日付を変更",
+      "chooseDates": "日付を選択",
       "availabilityChecking": "空き状況を確認中…",
       "availabilityUnavailable": "この期間中は商品をご利用いただけません。別の日付または時刻を選択してください。",
       "availabilityRetry": "空き状況を確認できませんでした。再試行",

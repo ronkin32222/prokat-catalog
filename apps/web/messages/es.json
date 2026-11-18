@@ -7682,6 +7682,8 @@
       "accessoriesAdded": "{count, plural, one {# accesorio añadido al carrito} other {# accesorios añadidos al carrito}}"
     },
     "dateSelection": {
+      "changeDates": "Cambiar fechas",
+      "chooseDates": "Elegir fechas",
       "availabilityChecking": "Comprobando disponibilidad…",
       "availabilityUnavailable": "Producto no disponible en este período. Elige otras fechas u horas.",
       "availabilityRetry": "No se pudo comprobar la disponibilidad. Reintentar",

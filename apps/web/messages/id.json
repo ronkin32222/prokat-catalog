@@ -7682,6 +7682,8 @@
       "accessoriesAdded": "{count,plural,one{# aksesori ditambahkan ke keranjang} other{# aksesori ditambahkan ke keranjang}}"
     },
     "dateSelection": {
+      "changeDates": "Ubah tanggal",
+      "chooseDates": "Pilih tanggal",
       "availabilityChecking": "Memeriksa ketersediaan…",
       "availabilityUnavailable": "Produk tidak tersedia untuk periode ini. Pilih tanggal atau waktu yang berbeda.",
       "availabilityRetry": "Tidak dapat memeriksa ketersediaan. Coba lagi",

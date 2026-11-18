@@ -7682,6 +7682,8 @@
       "accessoriesAdded": "{count, plural, one {# Zubehör zum Warenkorb hinzugefügt} other {# Zubehör zum Warenkorb hinzugefügt}}"
     },
     "dateSelection": {
+      "changeDates": "Daten ändern",
+      "chooseDates": "Daten wählen",
       "availabilityChecking": "Verfügbarkeit wird geprüft…",
       "availabilityUnavailable": "Produkt in diesem Zeitraum nicht verfügbar. Wählen Sie andere Daten oder Uhrzeiten.",
       "availabilityRetry": "Verfügbarkeit konnte nicht geprüft werden. Erneut versuchen",

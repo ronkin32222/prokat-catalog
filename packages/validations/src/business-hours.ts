@@ -90,13 +90,13 @@ export type BusinessHoursInput = z.infer<typeof businessHoursSchema>
 export const defaultBusinessHours: BusinessHoursInput = {
   enabled: true,
   schedule: {
-    0: { isOpen: false, ranges: [{ openTime: '09:00', closeTime: '18:00' }] }, // Sunday - closed
+    0: { isOpen: true, ranges: [{ openTime: '09:00', closeTime: '18:00' }] },  // Sunday
     1: { isOpen: true, ranges: [{ openTime: '09:00', closeTime: '18:00' }] },  // Monday
     2: { isOpen: true, ranges: [{ openTime: '09:00', closeTime: '18:00' }] },  // Tuesday
     3: { isOpen: true, ranges: [{ openTime: '09:00', closeTime: '18:00' }] },  // Wednesday
     4: { isOpen: true, ranges: [{ openTime: '09:00', closeTime: '18:00' }] },  // Thursday
     5: { isOpen: true, ranges: [{ openTime: '09:00', closeTime: '18:00' }] },  // Friday
-    6: { isOpen: true, ranges: [{ openTime: '09:00', closeTime: '12:00' }] },  // Saturday - morning only
+    6: { isOpen: true, ranges: [{ openTime: '09:00', closeTime: '18:00' }] },  // Saturday
   },
   closurePeriods: [],
 }

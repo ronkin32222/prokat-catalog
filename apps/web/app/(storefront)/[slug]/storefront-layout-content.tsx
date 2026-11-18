@@ -6,6 +6,7 @@ import { getMessages } from "next-intl/server";
 
 import { MarketplaceChannelBadge } from "@/components/storefront/shell/marketplace-channel-badge";
 import { ReservationGateOwnerBanner } from "@/components/storefront/shell/reservation-gate-owner-banner";
+import { StorefrontRentalRulesProvider } from "@/components/storefront/shell/rental-rules-context";
 import {
   StorefrontProviders,
   type StorefrontShellVariant,
@@ -13,6 +14,8 @@ import {
 import { StorefrontShell } from "@/components/storefront/shell/storefront-shell";
 import { env } from "@/env";
 import { isAdvisorActiveForStore } from "@/lib/ai/advisor/eligibility";
+import { getMaxRentalMinutes, getMinRentalMinutes } from "@louez/utils";
+
 import { getStoreBySlug } from "@/lib/storefront/get-store-by-slug";
 import { DEFAULT_STORE_THEME, type StoreThemeInput } from "@/lib/theme/util.store-theme";
 import { getStorefrontPathPrefix } from "@/lib/util.storefront-host";
@@ -76,6 +79,15 @@ export const StorefrontLayoutContent = async ({ children, params }: StorefrontLa
   const theme: StoreThemeInput = store.theme ?? DEFAULT_STORE_THEME;
   const customerInitials = customerSession ? getCustomerInitials(customerSession.customer) : null;
 
+  const rentalRules = {
+    storeSlug: store.slug,
+    businessHours: store.settings?.businessHours,
+    advanceNoticeMinutes: store.settings?.advanceNoticeMinutes ?? 0,
+    minRentalMinutes: getMinRentalMinutes(store.settings),
+    maxRentalMinutes: getMaxRentalMinutes(store.settings),
+    timezone: store.settings?.timezone,
+  };
+
   return (
     <div className={`${storefrontHeadFont.variable} ${storefrontBodyFont.variable}`}>
       <StorefrontProviders
@@ -85,6 +97,7 @@ export const StorefrontLayoutContent = async ({ children, params }: StorefrontLa
         messages={messages}
         advisorEnabled={advisorEnabled}
       >
+        <StorefrontRentalRulesProvider value={rentalRules}>
         <StorefrontShell
           store={store}
           theme={theme}
@@ -116,6 +129,7 @@ export const StorefrontLayoutContent = async ({ children, params }: StorefrontLa
         >
           {children}
         </StorefrontShell>
+        </StorefrontRentalRulesProvider>
       </StorefrontProviders>
     </div>
   );

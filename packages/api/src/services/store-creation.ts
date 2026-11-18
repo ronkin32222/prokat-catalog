@@ -219,7 +219,9 @@ function defaultSettings(input: { country: string; currency: string }) {
     reservationMode: "request" as const,
     minRentalMinutes: 60,
     maxRentalMinutes: null,
-    advanceNoticeMinutes: 1440,
+    advanceNoticeMinutes: 0,
+    // A request does not hold the stock until the manager confirms it.
+    pendingBlocksAvailability: false,
     turnoverBufferMinutes: 0,
     businessHours: defaultBusinessHours,
     country: input.country,

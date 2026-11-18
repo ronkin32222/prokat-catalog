@@ -9,6 +9,10 @@ import { RentalActivitySection } from "@/app/(dashboard)/dashboard/analytics/sal
 import { SalesAnalyticsContent } from "@/app/(dashboard)/dashboard/analytics/sales/sales-analytics-content";
 import { SalesStatStripContent } from "@/app/(dashboard)/dashboard/analytics/sales/sales-stat-strip-content";
 import { StatStrip } from "@/app/(dashboard)/dashboard/analytics/sales/stat-strip";
+import {
+  ReservationMoneySection,
+  ReservationStatusesSection,
+} from "@/app/(dashboard)/dashboard/analytics/sales/reservation-money";
 
 import { getRequestFormatLocale } from "@/lib/i18n/format-locale.server";
 import { getCurrentStore } from "@/lib/store-context";
@@ -220,17 +224,13 @@ export default async function SalesAnalyticsPage({ searchParams }: SalesAnalytic
     <SalesAnalyticsContent
       revenueHero={
         <Suspense fallback={<RevenueHeroSkeleton />}>
-          <RevenueHeroSection store={sales} window={window} />
+          <ReservationMoneySection storeId={store.id} window={window} currency={sales.currency} />
         </Suspense>
       }
-      revenueChart={
-        <Suspense fallback={<Skeleton className="h-64 w-full sm:h-72" />}>
-          <RevenueChartSection store={sales} window={window} />
-        </Suspense>
-      }
+      revenueChart={null}
       paymentMethods={
         <Suspense fallback={<Skeleton className="h-50 w-full" />}>
-          <PaymentMethodsSection store={sales} window={window} />
+          <ReservationStatusesSection storeId={store.id} window={window} currency={sales.currency} />
         </Suspense>
       }
       stats={

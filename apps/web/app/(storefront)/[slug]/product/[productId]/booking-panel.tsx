@@ -25,7 +25,7 @@ import { formatDurationFromMinutes, validateMinRentalDurationMinutes } from "@lo
 import type { RentalPeriodRules } from "@/lib/utils/util.rental-period";
 import { deriveAttributeValues } from "@/lib/utils/util.variant-combinations";
 
-import { type CartPeriod, useCartState } from "@/contexts/cart-context";
+import { type CartPeriod, useCartActions, useCartState } from "@/contexts/cart-context";
 
 import { BookingPanelView } from "./booking-panel-view";
 import { useAddToCart } from "./use-add-to-cart";
@@ -51,9 +51,9 @@ const toPeriodValue = (period: CartPeriod | null): RentalPeriodValue | null =>
 export const BookingPanel = ({ product, booking, accessories, information }: BookingPanelProps) => {
   const t = useTranslations();
   const { period: cartPeriod, items: cartItems } = useCartState();
+  const { setPeriod, setPricingMode } = useCartActions();
   const periodFieldRef = useRef<HTMLDivElement>(null);
 
-  const [periodOverride, setPeriodOverride] = useState<RentalPeriodValue | null>(null);
   const [isPeriodOpen, setIsPeriodOpen] = useState(false);
   const [requestedQuantity, setRequestedQuantity] = useState(1);
   const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
@@ -61,11 +61,13 @@ export const BookingPanel = ({ product, booking, accessories, information }: Boo
   const requiredAccessories = useMemo(() => selectRequiredAccessories(accessories), [accessories]);
   const extraIds = useMemo<ReadonlySet<string>>(() => new Set(), []);
 
-  // The cart's period is the default until the visitor edits the dates here.
-  const period = useMemo(
-    () => periodOverride ?? toPeriodValue(cartPeriod),
-    [cartPeriod, periodOverride],
-  );
+  // The cart holds the one period for every line, so the dates shown here are the cart's
+  // and a change made here is written back to it (other lines are re-checked by the cart).
+  const period = useMemo(() => toPeriodValue(cartPeriod), [cartPeriod]);
+  const handlePeriodChange = (next: RentalPeriodValue) => {
+    setPricingMode(product.pricingMode);
+    setPeriod(next.start.toISOString(), next.end.toISOString());
+  };
   const periodRules: RentalPeriodRules = {
     pricingMode: product.pricingMode,
     businessHours: booking.businessHours,
@@ -196,7 +198,7 @@ export const BookingPanel = ({ product, booking, accessories, information }: Boo
       periodFieldRef={periodFieldRef}
       isPeriodOpen={isPeriodOpen}
       setIsPeriodOpen={setIsPeriodOpen}
-      setPeriodOverride={setPeriodOverride}
+      setPeriodOverride={handlePeriodChange}
       quantity={quantity}
       maxQuantity={capacity.maxQuantity}
       isSelectionUnavailable={capacity.isSelectionUnavailable}

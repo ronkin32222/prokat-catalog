@@ -7682,6 +7682,8 @@
       "accessoriesAdded": "{count,plural,one{# 配件已添加到购物车} other{# 配件已添加到购物车}}"
     },
     "dateSelection": {
+      "changeDates": "修改日期",
+      "chooseDates": "选择日期",
       "availabilityChecking": "正在检查可用性...",
       "availabilityUnavailable": "该产品在此期间不可用。选择不同的日期或时间。",
       "availabilityRetry": "无法检查可用性。重试",

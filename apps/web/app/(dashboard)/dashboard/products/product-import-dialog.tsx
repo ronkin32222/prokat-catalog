@@ -179,7 +179,7 @@ export const ProductImportDialog = ({
   }
 
   const downloadTemplate = () => {
-    const csv = '\uFEFFназвание;цена_за_сутки;залог;количество;категория;описание\nПерфоратор Makita;1500;5000;1;Инструменты;'
+    const csv = '\uFEFFназвание;цена_за_сутки;залог;количество;категория;описание\nПерфоратор Makita HR2470;750;3000;3;Электроинструмент;SDS-Plus, 800 Вт\nВиброплита 90 кг;2400;5000;1;Строительная техника;Бензиновая, 6,5 л.с.\nЛеса строительные 10 м;1800;4000;2;Леса и опалубка;Комплект на 10 метров'
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }))
     const link = document.createElement('a')
     link.href = url
@@ -232,6 +232,38 @@ export const ProductImportDialog = ({
                 />
                 <p className="mt-2 text-sm text-muted-foreground">
                   CSV или XLSX до 2 МБ. Для Excel импортируется первый лист.
+                </p>
+                <div className="mt-4 overflow-x-auto rounded-lg border">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-muted/40 text-xs text-muted-foreground">
+                      <tr>
+                        <th className="px-3 py-2 font-medium">Колонка</th>
+                        <th className="px-3 py-2 font-medium">Что писать</th>
+                        <th className="px-3 py-2 font-medium">Пример</th>
+                        <th className="px-3 py-2 font-medium">Обязательно</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y">
+                      {[
+                        ["название", "Название позиции", "Перфоратор Makita HR2470", "да"],
+                        ["цена_за_сутки", "Число в рублях, без знака ₽", "750", "да"],
+                        ["залог", "Число в рублях; можно оставить пустым", "3000", "нет"],
+                        ["количество", "Сколько штук есть; по умолчанию 1", "3", "нет"],
+                        ["категория", "Если такой категории нет, она создастся сама", "Электроинструмент", "нет"],
+                        ["описание", "Короткий текст для карточки", "SDS-Plus, 800 Вт", "нет"],
+                      ].map(([column, what, example, required]) => (
+                        <tr key={column}>
+                          <td className="px-3 py-2 font-mono text-xs">{column}</td>
+                          <td className="px-3 py-2">{what}</td>
+                          <td className="px-3 py-2 text-muted-foreground">{example}</td>
+                          <td className="px-3 py-2">{required}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Первая строка файла это заголовки колонок. Разделитель «;» или «,». Нажмите «Скачать шаблон»: в нём уже есть три примера, замените их своими позициями.
                 </p>
               </div>
               <Button variant="outline" onClick={downloadTemplate}>
