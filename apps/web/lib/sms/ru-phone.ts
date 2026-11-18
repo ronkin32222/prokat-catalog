@@ -30,11 +30,11 @@ export const isValidRussianPhone = (phone: string): boolean =>
  * digits), never when it is the first digit of the national number.
  */
 const toNationalDigits = (value: string): string => {
-  const raw = value.trim();
-  let digits = raw.replace(/\D/g, "");
-  if ((raw.startsWith("+") || digits.length > 10) && (digits[0] === "7" || digits[0] === "8")) {
-    digits = digits.slice(1);
-  }
+  let digits = value.replace(/\D/g, "");
+  // Typed key by key, `+7…` / `8…` arrive as a lone 7 / 8 (the mask wipes the `+`), and no
+  // Russian mobile or city number starts with 7 or 8, so a leading 7 / 8 is the prefix.
+  // shortcut: a toll-free 8-800 number typed without a prefix loses its 8; use +7 800….
+  if (digits[0] === "7" || digits[0] === "8") digits = digits.slice(1);
   return digits.slice(0, 10);
 };
 

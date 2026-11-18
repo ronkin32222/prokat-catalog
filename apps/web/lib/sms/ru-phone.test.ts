@@ -37,10 +37,12 @@ test("typing one digit at a time never garbles the mask", () => {
   assert.equal(shown, "+7 (900) 111-22-33");
 });
 
-test("typing a national number that starts with 8 keeps the 8", () => {
-  let shown = "";
-  for (const ch of "8001112233") shown = formatRussianPhone(shown + ch);
-  assert.equal(shown, "+7 (800) 111-22-33");
+test("typing +7… or 8… key by key gives the same national number", () => {
+  for (const typed of ["+79261234567", "89261234567", "79261234567", "9261234567"]) {
+    let shown = "";
+    for (const ch of typed) shown = formatRussianPhone(shown + ch);
+    assert.equal(shown, "+7 (926) 123-45-67", typed);
+  }
 });
 
 test("Backspace erases the mask down to empty", () => {
