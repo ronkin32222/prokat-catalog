@@ -65,8 +65,18 @@ export async function checkTelegramBotToken(
 ): Promise<{ ok: true; botUsername: string } | { ok: false; error: string }> {
   try {
     const res = await fetchWithTimeout(`https://api.telegram.org/bot${botToken}/getMe`);
-    if (!res.ok) return { ok: false, error: `Telegram API вернул ${res.status}` };
-    const data: unknown = await res.json();
+    const data: unknown = await res.json().catch(() => null);
+    if (!res.ok) {
+      const description =
+        data && typeof data === "object" ? (data as { description?: unknown }).description : null;
+      return {
+        ok: false,
+        error:
+          typeof description === "string"
+            ? `Telegram: ${description}`
+            : `Telegram API вернул ${res.status}`,
+      };
+    }
     if (
       data &&
       typeof data === "object" &&
@@ -113,10 +123,20 @@ export async function sendTelegramMessage(
     const res = await fetchWithTimeout(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text, parse_mode: "HTML" }),
+      body: JSON.stringify({ chat_id: chatId.trim(), text, parse_mode: "HTML" }),
     });
-    if (!res.ok) return { ok: false, error: `Telegram API вернул ${res.status}` };
-    const data: unknown = await res.json();
+    const data: unknown = await res.json().catch(() => null);
+    if (!res.ok) {
+      const description =
+        data && typeof data === "object" ? (data as { description?: unknown }).description : null;
+      return {
+        ok: false,
+        error:
+          typeof description === "string"
+            ? `Telegram: ${description}`
+            : `Telegram API вернул ${res.status}`,
+      };
+    }
     if (data && typeof data === "object" && "ok" in data) {
       if ((data as { ok: unknown }).ok === true) return { ok: true };
       const description = (data as { description?: unknown }).description;
