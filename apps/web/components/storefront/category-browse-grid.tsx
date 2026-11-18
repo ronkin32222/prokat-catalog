@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 import { useTranslations } from "next-intl";
 
-import { LayersIcon, ProductIcon, TagIcon } from "@louez/ui/icons";
+import { ArrowUpRightIcon, LayersIcon, ProductIcon, TagIcon } from "@louez/ui/icons";
 import { cn } from "@louez/utils";
 
 import { StorefrontLink } from "@/components/storefront/ui/storefront-link";
@@ -57,7 +57,7 @@ const VARIANT_ICON = {
 
 /** Same surface as a product card: inset image, hairline that darkens, image zoom. */
 const tileClassName =
-  "group flex h-full w-full flex-col gap-2 rounded-2xl bg-card text-left shadow-card outline-none transition-shadow duration-150 hover:ring-1 hover:ring-foreground/12 focus-visible:ring-2 focus-visible:ring-ring";
+  "dark group flex h-full w-full flex-col gap-2 overflow-hidden rounded-lg border bg-card text-left text-card-foreground outline-none transition-transform duration-200 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none";
 
 interface CategoryTileProps {
   entry: CategoryBrowseEntry;
@@ -102,7 +102,7 @@ export const CategoryBrowseGrid = ({
       ) : null}
 
       <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-        {entries.map((entry) => {
+        {entries.map((entry, index) => {
           const Icon = VARIANT_ICON[entry.variant];
           const isAll = entry.variant === "all";
           const countLabel = showTotals
@@ -114,39 +114,43 @@ export const CategoryBrowseGrid = ({
               <CategoryTile entry={entry} onSelect={onSelect}>
                 {/* Inset image, as on the product card: the frame's radius is
                     concentric with the tile's (outer = inner + padding). */}
-                <div className="p-1 pb-0">
-                  <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-muted shadow-[0_0_1px_0.75px_var(--color-border)]">
-                    {entry.imageUrl ? (
-                      <SharedImage
-                        src={entry.imageUrl}
-                        alt=""
-                        fill
-                        sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
-                        fallbackIcon={Icon}
-                        containerClassName="absolute inset-0 rounded-none"
-                        // `scale` is its own property in Tailwind v4, not part of `transform`.
-                        className="object-cover motion-safe:transition-[opacity,scale] motion-safe:duration-[400ms] motion-safe:ease-out motion-safe:group-hover:scale-[1.04]"
-                      />
-                    ) : (
-                      <div
-                        aria-hidden="true"
-                        className="absolute inset-0 flex items-center justify-center text-muted-foreground"
-                      >
-                        <Icon className="size-8" />
-                      </div>
-                    )}
-                  </div>
+                <div className="relative aspect-4/3 overflow-hidden bg-muted">
+                  {entry.imageUrl ? (
+                    <SharedImage
+                      src={entry.imageUrl}
+                      alt=""
+                      fill
+                      sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
+                      fallbackIcon={Icon}
+                      containerClassName="absolute inset-0 rounded-none"
+                      // `scale` is its own property in Tailwind v4, not part of `transform`.
+                      className="object-cover motion-safe:transition-[opacity,scale] motion-safe:duration-[400ms] motion-safe:ease-out motion-safe:group-hover:scale-[1.04]"
+                    />
+                  ) : (
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 flex items-center justify-center text-muted-foreground"
+                    >
+                      <Icon className="size-8" />
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex flex-col gap-1 px-2 pb-2">
-                  <h3
-                    className={cn(
-                      "line-clamp-1 text-sm font-medium sm:text-base",
-                      isAll && "font-semibold",
-                    )}
-                  >
-                    {entry.name}
-                  </h3>
+                <div className="flex flex-1 flex-col gap-2 p-4">
+                  <span className="font-display text-3xl font-light text-muted-foreground">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div className="flex items-start justify-between gap-3">
+                    <h3
+                      className={cn(
+                        "line-clamp-2 font-display text-sm font-extrabold uppercase sm:text-base",
+                        isAll && "font-semibold",
+                      )}
+                    >
+                      {entry.name}
+                    </h3>
+                    <ArrowUpRightIcon aria-hidden className="size-5 shrink-0 text-primary" />
+                  </div>
                   {entry.description ? (
                     <p className="line-clamp-1 text-xs text-muted-foreground">
                       {entry.description}

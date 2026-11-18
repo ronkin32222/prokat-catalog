@@ -149,7 +149,7 @@ export const CatalogBrowser = ({
   const visibleProducts = pages.products;
 
   const title = getCatalogTitle(filters.category, categories, {
-    catalog: t("catalog.title"),
+    catalog: period ? "Доступно на выбранные даты" : "В наличии",
     others: t("availability.categoryBrowse.others"),
   });
   const count = pages.totalCount;
@@ -254,6 +254,20 @@ export const CatalogBrowser = ({
           ) : null}
         </div>
       </CatalogLayout>
+
+      <section className="dark border-y bg-background py-10 text-foreground sm:py-12">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="font-display text-xs tracking-[0.4em] text-primary uppercase">
+            Ближайшие возвраты
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-black uppercase sm:text-4xl">
+            Скоро освобождаются
+          </h2>
+          <div className="mt-6 rounded-lg border border-dashed p-6 text-sm text-muted-foreground">
+            Нет позиций с опубликованной датой освобождения.
+          </div>
+        </div>
+      </section>
     </>
   );
 };

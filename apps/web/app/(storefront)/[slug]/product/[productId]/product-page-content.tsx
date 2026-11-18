@@ -30,7 +30,11 @@ export const ProductPageContent = ({
 }) => {
   const t = useTranslations("storefront.product");
   return (
-    <StorefrontSection spacing="tight" contentClassName="flex flex-col gap-6 sm:gap-8">
+    <StorefrontSection
+      spacing="tight"
+      className="light min-h-dvh bg-background py-8 text-foreground sm:py-12"
+      contentClassName="flex flex-col gap-6 sm:gap-8"
+    >
       <div className="flex min-w-0 items-center gap-2">
         <Button
           variant="tertiary"

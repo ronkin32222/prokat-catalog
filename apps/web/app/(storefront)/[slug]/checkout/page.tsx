@@ -188,7 +188,10 @@ const CheckoutPage = async ({ params }: CheckoutPageProps) => {
     <>
       <StorefrontPageRefresh renderedAt={Date.now()} />
       <PageTracker page="checkout" />
-      <StorefrontSection spacing="tight">
+      <StorefrontSection
+        spacing="tight"
+        className="light min-h-dvh bg-background py-8 text-foreground sm:py-12"
+      >
         <CheckoutForm
           storeSlug={slug}
           storeId={store.id}

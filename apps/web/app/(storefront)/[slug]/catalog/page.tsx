@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound, permanentRedirect } from "next/navigation";
 
 import { getTranslations } from "next-intl/server";
@@ -221,18 +222,42 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
             : []),
         ]}
       />
-      <CatalogBrowser
-        rules={rules}
-        categories={summary.categories}
-        uncategorizedCount={summary.uncategorizedCount}
-        uncategorizedProductIds={summary.uncategorizedProductIds}
-        totalCount={summary.totalCount}
-        attributeAxes={attributeAxes}
-        priceBounds={priceIndex.bounds}
-        filters={filters}
-        initialPage={page}
-        initialDataUpdatedAt={Date.now()}
-      />
+      <div className="light min-h-dvh bg-background text-foreground">
+        <section className="dark relative isolate min-h-72 overflow-hidden border-b text-foreground sm:min-h-80">
+          <Image
+            src={store.theme?.heroImages?.[0] ?? "/demo/hero-placeholder.svg"}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="-z-20 object-cover"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(20,21,20,.96),rgba(20,21,20,.68),rgba(20,21,20,.24))]"
+          />
+          <div className="mx-auto flex min-h-72 w-full max-w-7xl flex-col justify-end px-4 py-10 sm:min-h-80 sm:px-6 lg:px-8">
+            <p className="font-display text-xs tracking-[0.4em] text-primary uppercase">
+              Каталог проката
+            </p>
+            <h1 className="mt-3 max-w-4xl font-display text-4xl leading-[.95] font-black tracking-[-0.04em] uppercase sm:text-6xl">
+              {store.name}
+            </h1>
+          </div>
+        </section>
+        <CatalogBrowser
+          rules={rules}
+          categories={summary.categories}
+          uncategorizedCount={summary.uncategorizedCount}
+          uncategorizedProductIds={summary.uncategorizedProductIds}
+          totalCount={summary.totalCount}
+          attributeAxes={attributeAxes}
+          priceBounds={priceIndex.bounds}
+          filters={filters}
+          initialPage={page}
+          initialDataUpdatedAt={Date.now()}
+        />
+      </div>
     </>
   );
 }

@@ -1,39 +1,30 @@
-import { BadgeCheckIcon, Clock3Icon, ShieldCheckIcon, TruckIcon } from "lucide-react";
+import { CalendarCheckIcon, HeadphonesIcon, RefreshCcwIcon, ShieldCheckIcon } from "lucide-react";
 
 const BENEFITS = [
-  { icon: ShieldCheckIcon, title: "Без залога или с малым залогом" },
-  { icon: Clock3Icon, title: "Выдача за 10 минут" },
-  { icon: TruckIcon, title: "Доставка по городу" },
-  { icon: BadgeCheckIcon, title: "Чистый и проверенный инструмент" },
+  { icon: ShieldCheckIcon, title: "Понятные условия" },
+  { icon: RefreshCcwIcon, title: "Актуальное наличие" },
+  { icon: HeadphonesIcon, title: "Помощь с выбором" },
+  { icon: CalendarCheckIcon, title: "Удобное бронирование" },
 ] as const;
 
-/** Four concrete rental advantages; decorative hexagons echo workshop hardware. */
+/** Product capabilities only: no unsupported promises or fictional numbers. */
 export const StoreBenefits = () => (
   <section
-    className="relative overflow-hidden border-y bg-secondary py-14 sm:py-20"
+    className="light border-b bg-background py-12 text-foreground sm:py-16"
     aria-labelledby="benefits-title"
   >
-    <div aria-hidden className="absolute -right-10 top-4 grid grid-cols-3 gap-3 opacity-[.06]">
-      {Array.from({ length: 9 }, (_, index) => (
-        <span
-          key={index}
-          className="size-16 bg-primary [clip-path:polygon(25%_7%,75%_7%,100%_50%,75%_93%,25%_93%,0_50%)]"
-        />
-      ))}
-    </div>
-    <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 id="benefits-title" className="sr-only">
-        Преимущества проката
+    <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[.8fr_2.2fr] lg:px-8">
+      <h2
+        id="benefits-title"
+        className="font-display text-3xl leading-[.95] font-black tracking-[-0.03em] uppercase sm:text-4xl"
+      >
+        Почему выбирают нас
       </h2>
-      <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {BENEFITS.map(({ icon: Icon, title }) => (
-          <li key={title} className="flex items-center gap-4">
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-full border border-primary text-primary">
-              <Icon aria-hidden className="size-6" strokeWidth={1.5} />
-            </span>
-            <p className="font-display text-base leading-tight font-extrabold tracking-[-0.01em] uppercase">
-              {title}
-            </p>
+          <li key={title} className="border-l border-border pl-5">
+            <Icon aria-hidden className="size-7 text-primary" strokeWidth={1.5} />
+            <p className="mt-4 text-sm font-medium leading-5">{title}</p>
           </li>
         ))}
       </ul>

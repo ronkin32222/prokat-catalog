@@ -87,31 +87,6 @@ const StorefrontPage = async ({ params }: StorefrontPageProps) => {
   } = data;
   const ratingHref = place.showReviews ? "#reviews" : (place.details?.mapsUrl ?? null);
   const hero = resolveStoreHeroPresentation({ theme, imageCount: heroImages.length });
-  const heroCategories =
-    inventory.kind === "categories"
-      ? inventory.entries.flatMap((entry) =>
-          entry.href && entry.variant === "category"
-            ? [{ name: entry.name, href: entry.href }]
-            : [],
-        )
-      : Array.from(
-          new Map(
-            inventory.products.flatMap((product) =>
-              product.category
-                ? [
-                    [
-                      product.category.id,
-                      {
-                        name: product.category.name,
-                        href: `/catalog?category=${product.category.id}`,
-                      },
-                    ] as const,
-                  ]
-                : [],
-            ),
-          ).values(),
-        );
-
   return (
     <>
       <PageTracker page="home" />
@@ -133,7 +108,6 @@ const StorefrontPage = async ({ params }: StorefrontPageProps) => {
         shape={hero.shape}
         align={hero.align}
         verticalAlign={hero.verticalAlign}
-        categories={heroCategories}
         badges={
           <>
             <StoreStatusBadge
@@ -168,9 +142,9 @@ const StorefrontPage = async ({ params }: StorefrontPageProps) => {
         />
       </StoreHero>
 
-      <StoreBenefits />
       <HomeInventory inventory={inventory} />
       <StoreAbout />
+      <StoreBenefits />
       <StoreConsultation />
       <StoreTestimonials />
 

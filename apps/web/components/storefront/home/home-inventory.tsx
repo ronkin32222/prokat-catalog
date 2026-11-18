@@ -20,30 +20,36 @@ interface HomeInventoryProps {
  */
 export const HomeInventory = async ({ inventory }: HomeInventoryProps) => {
   const t = await getTranslations("storefront");
+  const categories = inventory.entries.filter((entry) => entry.variant === "category").slice(0, 4);
 
   return (
-    <HomeInventoryView kind={inventory.kind}>
-      {inventory.kind === "categories" ? (
-        <CategoryBrowseGrid
-          entries={inventory.entries}
-          isAvailabilityLoading={false}
-          showTotalsOnly
-          showTitle={false}
-        />
-      ) : inventory.products.length > 0 ? (
-        <HomeProductGrid products={inventory.products} />
-      ) : (
-        <EmptyState
-          icon={<PackageIcon />}
-          title={t("home.noProducts")}
-          action={
-            <Button variant="outline" render={<StorefrontLink href="/catalog" />}>
-              {t("hero.cta")}
-            </Button>
-          }
-          tone="card"
-        />
-      )}
-    </HomeInventoryView>
+    <div className="light bg-background text-foreground">
+      {categories.length > 0 ? (
+        <HomeInventoryView kind="categories">
+          <CategoryBrowseGrid
+            entries={categories}
+            isAvailabilityLoading={false}
+            showTotalsOnly
+            showTitle={false}
+          />
+        </HomeInventoryView>
+      ) : null}
+      <HomeInventoryView kind="products">
+        {inventory.products.length > 0 ? (
+          <HomeProductGrid products={inventory.products.slice(0, 4)} />
+        ) : (
+          <EmptyState
+            icon={<PackageIcon />}
+            title={t("home.noProducts")}
+            action={
+              <Button variant="outline" render={<StorefrontLink href="/catalog" />}>
+                {t("hero.cta")}
+              </Button>
+            }
+            tone="card"
+          />
+        )}
+      </HomeInventoryView>
+    </div>
   );
 };

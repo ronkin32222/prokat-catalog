@@ -233,32 +233,32 @@
    but `dark:` utilities still match — style such subtrees with tokens only. */
 :root,
 .light {
-  --radius: 0.375rem;
+  --radius: 0.5rem;
   --shadow-border: 0 0 0 1px rgb(80 68 45 / 12%);
   --shadow-card: 0 2px 8px rgb(22 22 26 / 5%), 0 0 0 1px rgb(80 68 45 / 8%);
   --shadow-raised: 0 8px 24px -8px rgb(22 22 26 / 14%), 0 0 0 1px rgb(80 68 45 / 8%);
   --shadow-overlay: 0 18px 48px -16px rgb(22 22 26 / 24%), 0 0 0 1px rgb(80 68 45 / 10%);
-  --background: #faf8f4;
-  --foreground: #16161a;
-  --card: #ffffff;
-  --card-foreground: #16161a;
-  --popover: #ffffff;
-  --popover-foreground: #16161a;
-  --primary: #c9a24b;
-  --primary-foreground: #16161a;
-  --secondary: #f2eee6;
-  --secondary-foreground: #16161a;
-  --muted: #f2eee6;
-  --muted-foreground: #6f6a61;
-  --accent: #c9a24b;
-  --accent-foreground: #16161a;
+  --background: #efebe4;
+  --foreground: #141514;
+  --card: #faf8f4;
+  --card-foreground: #141514;
+  --popover: #faf8f4;
+  --popover-foreground: #141514;
+  --primary: #e8be91;
+  --primary-foreground: #141514;
+  --secondary: #e5dfd6;
+  --secondary-foreground: #141514;
+  --muted: #e5dfd6;
+  --muted-foreground: #686a66;
+  --accent: #e8be91;
+  --accent-foreground: #141514;
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
   --info: oklch(0.546 0.228 264);
   --info-foreground: oklch(0.985 0 0);
-  --success: oklch(0.596 0.145 163.225);
+  --success: #59b98a;
   --success-foreground: oklch(0.985 0 0);
-  --warning: oklch(0.795 0.184 86.047);
+  --warning: #d88b54;
   --warning-foreground: oklch(0.205 0 0);
   --louez-blue: oklch(0.649 0.193 251.78);
   --louez-green: oklch(0.595 0.123 157.68);
@@ -320,10 +320,10 @@
   --reservation-declined-soft: oklch(0.96 0.024 346.003);
   --reservation-declined-border: oklch(0.797 0.101 346.003);
   --reservation-declined-text: oklch(0.462 0.168 346.003);
-  --border: #ddd7cc;
-  --input: #ddd7cc;
+  --border: #d4cec5;
+  --input: #d4cec5;
   /* Focus ring follows the platform primary; a store overrides both together. */
-  --ring: #c9a24b;
+  --ring: #e8be91;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -336,8 +336,8 @@
   --season-2: oklch(0.66 0.15 305);
   --season-3: oklch(0.72 0.115 195);
   --season-4: oklch(0.68 0.16 12);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar: #191b19;
+  --sidebar-foreground: #f5f1e9;
   --sidebar-primary: oklch(0.489 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
@@ -382,27 +382,27 @@
   --shadow-card: 0 1px 2px oklch(0 0 0 / 24%), 0 0 0 1px oklch(1 0 0 / 8%);
   --shadow-raised: 0 4px 12px -2px oklch(0 0 0 / 40%), 0 0 0 1px oklch(1 0 0 / 10%);
   --shadow-overlay: 0 8px 32px -8px oklch(0 0 0 / 60%), 0 0 0 1px oklch(1 0 0 / 10%);
-  --background: #16161a;
-  --foreground: #faf8f4;
-  --card: #1e1e23;
-  --card-foreground: #faf8f4;
-  --popover: #1e1e23;
-  --popover-foreground: #faf8f4;
-  --primary: #c9a24b;
-  --primary-foreground: #16161a;
-  --secondary: #29292f;
-  --secondary-foreground: #faf8f4;
-  --muted: #29292f;
-  --muted-foreground: #aaa49a;
-  --accent: #c9a24b;
-  --accent-foreground: #16161a;
+  --background: #141514;
+  --foreground: #f5f1e9;
+  --card: #222421;
+  --card-foreground: #f5f1e9;
+  --popover: #222421;
+  --popover-foreground: #f5f1e9;
+  --primary: #e8be91;
+  --primary-foreground: #141514;
+  --secondary: #191b19;
+  --secondary-foreground: #f5f1e9;
+  --muted: #222421;
+  --muted-foreground: #a2a39e;
+  --accent: #e8be91;
+  --accent-foreground: #141514;
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
   --info: oklch(0.65 0.22 258);
   --info-foreground: oklch(0.985 0 0);
-  --success: oklch(0.696 0.17 162.48);
+  --success: #59b98a;
   --success-foreground: oklch(0.985 0 0);
-  --warning: oklch(0.828 0.189 84.429);
+  --warning: #d88b54;
   --warning-foreground: oklch(0.205 0 0);
   --reservation-pending: var(--louez-yellow);
   --reservation-pending-hover: oklch(0.902 0.145 85.568);
@@ -452,9 +452,9 @@
   --reservation-declined-soft: oklch(0.32 0.1 346.003 / 65%);
   --reservation-declined-border: oklch(0.533 0.139 346.003);
   --reservation-declined-text: oklch(0.787 0.145 346.003);
-  --border: #37373e;
-  --input: #45454d;
-  --ring: #c9a24b;
+  --border: #393b37;
+  --input: #393b37;
+  --ring: #e8be91;
   --chart-1: oklch(0.546 0.228 264);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -464,8 +464,8 @@
   --season-2: oklch(0.74 0.14 305);
   --season-3: oklch(0.78 0.105 195);
   --season-4: oklch(0.75 0.145 12);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar: #191b19;
+  --sidebar-foreground: #f5f1e9;
   --sidebar-primary: oklch(68.9% 0.000000000000000238 0deg);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
@@ -525,30 +525,29 @@
 
 /* Public rental storefront only: dashboard keeps the platform palette and Inter. */
 .storefront-theme {
-  --radius: 0.25rem;
-  --background: #0b0b0c;
-  --foreground: #f5f5f0;
-  --card: #1a1a1d;
-  --card-foreground: #f5f5f0;
-  --popover: #1a1a1d;
-  --popover-foreground: #f5f5f0;
-  --primary: #ffc400;
-  --primary-foreground: #111111;
-  --secondary: #121214;
-  --secondary-foreground: #f5f5f0;
-  --muted: #161618;
-  --muted-foreground: #a1a1a8;
+  --radius: 0.5rem;
+  --background: #141514;
+  --foreground: #f5f1e9;
+  --card: #222421;
+  --card-foreground: #f5f1e9;
+  --popover: #222421;
+  --popover-foreground: #f5f1e9;
+  --primary: #e8be91;
+  --primary-foreground: #141514;
+  --secondary: #191b19;
+  --secondary-foreground: #f5f1e9;
+  --muted: #222421;
+  --muted-foreground: #a2a39e;
   --accent: var(--primary);
   --accent-foreground: var(--primary-foreground);
-  --border: #2a2a2e;
-  --input: #2a2a2e;
+  --success: #59b98a;
+  --warning: #d88b54;
+  --border: #393b37;
+  --input: #393b37;
   --ring: var(--primary);
   font-family: var(--font-body), sans-serif;
   background-color: var(--background);
-  background-image:
-    radial-gradient(circle at 18% 12%, rgb(255 255 255 / 3%), transparent 34%),
-    radial-gradient(circle at 82% 70%, rgb(255 255 255 / 2%), transparent 28%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
 }
 
 .storefront-theme :is(h1, h2, h3, .font-display) {
@@ -556,11 +555,8 @@
 }
 
 .storefront-concrete {
-  background-color: #121214;
-  background-image:
-    radial-gradient(circle at 12% 20%, rgb(255 255 255 / 5%), transparent 32%),
-    radial-gradient(circle at 88% 74%, rgb(0 0 0 / 28%), transparent 35%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+  background-color: #191b19;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
 }
 
 /* Calendar cell size per density (`Calendar density` in @louez/ui). Kept in

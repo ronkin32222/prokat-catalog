@@ -39,8 +39,6 @@ interface ProductCardBaseProps {
   availability?: ProductCardAvailability | null;
   /** Above the fold: the first four cards of a grid. */
   priority?: boolean;
-  /** Stable demo slot when the product has no uploaded image. */
-  fallbackIndex?: number;
   className?: string;
 }
 
@@ -70,7 +68,6 @@ export const ProductCard = ({
   availability,
   onQuickAdd,
   priority = false,
-  fallbackIndex = 0,
   className,
 }: ProductCardProps) => {
   const t = useTranslations("storefront.product");
@@ -89,7 +86,7 @@ export const ProductCard = ({
   const deposit = parseStorefrontDecimal(product.deposit);
 
   const shellClassName = cn(
-    "relative flex h-full flex-col gap-3 rounded-sm border bg-card text-left outline-none",
+    "relative flex h-full flex-col gap-3 rounded-lg border bg-card text-left outline-none",
     // Browsing: the hairline of the resting card darkens under the pointer.
     // No elevation — the image zoom below is what answers the hover. The ring
     // follows the title link, the only thing here a keyboard can focus.
@@ -107,9 +104,9 @@ export const ProductCard = ({
       {/* Inset image: a frame of card around it, its radius concentric with
           the card's own (outer radius = inner radius + padding). */}
       <div className="p-1 pb-0">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-md border bg-muted sm:aspect-4/3">
+        <div className="relative aspect-square overflow-hidden rounded-md border bg-muted">
           <ProductImage
-            src={product.images?.[0] || `/demo/tool-${(fallbackIndex % 8) + 1}.webp`}
+            src={product.images?.[0] || "/demo/tool-placeholder.svg"}
             alt={product.name}
             sizes={PRODUCT_CARD_IMAGE_SIZES}
             priority={priority}
@@ -149,6 +146,11 @@ export const ProductCard = ({
       </div>
 
       <div className="flex flex-1 flex-col gap-2 px-4 pb-1">
+        {product.category ? (
+          <p className="text-xs tracking-wide text-muted-foreground uppercase">
+            {product.category.name}
+          </p>
+        ) : null}
         <h3 className="font-display line-clamp-2 text-base leading-tight font-extrabold tracking-[-0.01em] uppercase sm:text-lg">
           {href === undefined ? (
             product.name
@@ -181,7 +183,7 @@ export const ProductCard = ({
 
       {onQuickAdd ? (
         <div className="px-4 pb-4">
-          <QuickAddButton label="Заказать" onClick={onQuickAdd} />
+          <QuickAddButton label="Арендовать" onClick={onQuickAdd} />
         </div>
       ) : null}
 

@@ -1,57 +1,38 @@
-import Image from "next/image";
+import { CalendarDaysIcon, CheckIcon, PackageCheckIcon, RotateCcwIcon } from "lucide-react";
 
-/** Compact proof block with replaceable image slots. */
+const STEPS = [
+  { icon: CheckIcon, title: "Выберите", text: "Найдите подходящую позицию в каталоге." },
+  { icon: CalendarDaysIcon, title: "Укажите срок", text: "Выберите даты получения и возврата." },
+  { icon: PackageCheckIcon, title: "Получите", text: "Заберите заказ или оформите доставку." },
+  { icon: RotateCcwIcon, title: "Верните", text: "Верните заказ в согласованное время." },
+] as const;
+
+/** Four plain booking steps, without invented metrics or testimonials. */
 export const StoreAbout = () => (
-  <section id="about" className="py-16 sm:py-24" aria-labelledby="about-title">
-    <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[.85fr_1.15fr] lg:px-8">
-      <div className="flex flex-col justify-center">
-        <p className="font-display text-sm font-light tracking-[0.04em] text-primary uppercase">
-          О прокате
-        </p>
+  <section className="storefront-concrete border-y py-16 sm:py-20" aria-labelledby="how-title">
+    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p className="font-display text-xs font-light tracking-[0.4em] text-primary uppercase">
+        Просто и удобно
+      </p>
+      <div className="mt-3 grid gap-10 lg:grid-cols-[.8fr_2.2fr] lg:items-start">
         <h2
-          id="about-title"
-          className="mt-3 font-display text-4xl leading-[1.05] font-black tracking-[-0.01em] uppercase sm:text-5xl"
+          id="how-title"
+          className="font-display text-4xl leading-[.95] font-black tracking-[-0.03em] uppercase sm:text-5xl"
         >
-          Инструмент, на который можно положиться
+          Как это работает
         </h2>
-        <p className="mt-5 max-w-xl text-muted-foreground">
-          Помогаем подобрать технику под задачу, быстро оформляем аренду и выдаём оборудование
-          чистым и проверенным.
-        </p>
-        <dl className="mt-8 grid grid-cols-2 gap-6 border-t pt-6">
-          <div>
-            <dt className="text-sm text-muted-foreground">Довольных клиентов</dt>
-            <dd className="font-display mt-1 text-4xl font-extrabold tabular-nums text-primary sm:text-5xl">
-              95%
-            </dd>
-          </div>
-          <div>
-            <dt className="text-sm text-muted-foreground">Поддержка</dt>
-            <dd className="font-display mt-1 text-4xl font-extrabold tabular-nums text-primary sm:text-5xl">
-              24/7
-            </dd>
-          </div>
-        </dl>
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        {["/demo/about-1.webp", "/demo/about-2.webp"].map((src, index) => (
-          <div
-            key={src}
-            className={
-              index === 1
-                ? "relative aspect-[4/3] overflow-hidden rounded-sm border sm:mt-12"
-                : "relative aspect-[4/3] overflow-hidden rounded-sm border"
-            }
-          >
-            <Image
-              src={src}
-              alt="Инструмент в прокате"
-              fill
-              sizes="(max-width: 639px) 100vw, 33vw"
-              className="object-cover"
-            />
-          </div>
-        ))}
+        <ol className="grid border-t sm:grid-cols-2 lg:grid-cols-4 lg:border-t-0">
+          {STEPS.map(({ icon: Icon, title, text }, index) => (
+            <li key={title} className="border-b py-6 sm:px-6 lg:border-b-0 lg:border-l lg:py-2">
+              <span className="font-display text-3xl font-light text-foreground/75">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <Icon aria-hidden className="mt-8 size-6 text-primary" strokeWidth={1.5} />
+              <h3 className="mt-4 font-display text-lg font-extrabold uppercase">{title}</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   </section>

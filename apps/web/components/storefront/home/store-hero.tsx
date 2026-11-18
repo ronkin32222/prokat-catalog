@@ -1,15 +1,5 @@
 import type { ReactNode } from "react";
 
-import {
-  CheckCircle2Icon,
-  DrillIcon,
-  HammerIcon,
-  HardHatIcon,
-  PaintbrushIcon,
-  RulerIcon,
-  WrenchIcon,
-} from "lucide-react";
-
 import { Button } from "@louez/ui";
 
 import { HeroImageSlider } from "@/components/storefront/home/hero-image-slider";
@@ -21,11 +11,6 @@ import type {
   StoreHeroVerticalAlign,
 } from "@/lib/utils/util.store-hero";
 
-interface StoreHeroCategory {
-  name: string;
-  href: string;
-}
-
 interface StoreHeroProps {
   name: string;
   tagline?: string | null;
@@ -34,125 +19,77 @@ interface StoreHeroProps {
   shape: StoreHeroShape;
   align: StoreHeroAlign;
   verticalAlign: StoreHeroVerticalAlign;
-  categories?: StoreHeroCategory[];
   badges?: ReactNode;
   children?: ReactNode;
   footer?: ReactNode;
 }
 
-const CATEGORY_ICONS = [DrillIcon, HammerIcon, RulerIcon, WrenchIcon, PaintbrushIcon, HardHatIcon];
-const DEFAULT_CATEGORIES: StoreHeroCategory[] = [
-  { name: "Шуруповёрты", href: "/catalog" },
-  { name: "Перфораторы", href: "/catalog" },
-  { name: "Пилы", href: "/catalog" },
-  { name: "Шлифмашины", href: "/catalog" },
-  { name: "Лобзики", href: "/catalog" },
-  { name: "Оснастка", href: "/catalog" },
-];
-
-/** Tool-rental hero based on the reference layout; tenant data remains in the live slots. */
+/** Industrial editorial hero; its identity and photography come from store data. */
 export const StoreHero = ({
   name,
   tagline,
   description,
   backgroundImages = [],
-  categories = [],
   badges,
   children,
   footer,
 }: StoreHeroProps) => {
-  const images = backgroundImages.length > 0 ? backgroundImages : ["/demo/hero-drill.webp"];
-  const shownCategories = categories.length > 0 ? categories : DEFAULT_CATEGORIES;
+  const images = backgroundImages.length > 0 ? backgroundImages : ["/demo/hero-placeholder.svg"];
 
   return (
-    <section
-      className="relative overflow-hidden border-b bg-background"
-      aria-labelledby="store-hero-title"
-    >
-      <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[15rem_minmax(0,1fr)] lg:px-8 lg:py-10">
-        <nav aria-label="Категории инструмента" className="min-w-0">
-          <ul className="flex snap-x gap-2 overflow-x-auto pb-2 lg:flex-col lg:gap-0 lg:overflow-visible lg:rounded-sm lg:border lg:bg-card lg:pb-0">
-            {shownCategories.slice(0, 6).map((category, index) => {
-              const Icon = CATEGORY_ICONS[index % CATEGORY_ICONS.length];
-              return (
-                <li
-                  key={`${category.href}-${category.name}`}
-                  className="shrink-0 lg:border-b lg:last:border-b-0"
-                >
-                  <StorefrontLink
-                    href={category.href}
-                    className="flex min-h-12 items-center gap-3 border bg-card px-4 text-xs font-medium uppercase transition-colors hover:border-primary hover:text-primary lg:border-0"
-                  >
-                    <Icon aria-hidden className="size-5 shrink-0 text-primary" strokeWidth={1.5} />
-                    {category.name}
-                  </StorefrontLink>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+    <section className="relative overflow-hidden border-b" aria-labelledby="store-hero-title">
+      <div className="absolute inset-0">
+        <HeroImageSlider images={images} className="[&_img]:object-cover" />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,21,20,.98)_0%,rgba(20,21,20,.82)_46%,rgba(20,21,20,.18)_100%)]"
+        />
+      </div>
 
-        <div className="storefront-concrete relative grid min-h-[36rem] overflow-hidden rounded-sm border lg:grid-cols-[minmax(0,1.05fr)_minmax(18rem,.95fr)]">
-          <div className="relative z-20 flex max-w-2xl flex-col justify-center gap-5 px-6 py-12 sm:px-10 lg:px-12">
-            <div className="flex flex-wrap items-center gap-2">{badges}</div>
-            <p className="font-display text-sm font-light tracking-[0.04em] text-primary uppercase sm:text-base">
-              Аренда и прокат
-            </p>
-            <h1
-              id="store-hero-title"
-              className="font-display text-balance text-4xl leading-[1.05] font-black tracking-[-0.01em] uppercase sm:text-5xl xl:text-6xl"
-            >
-              Строительных инструментов
-            </h1>
-            <RichTextHtml
-              safeHtml={tagline || description || name}
-              size="lg"
-              className="max-w-xl prose-p:text-foreground/75 prose-strong:text-foreground"
-            />
-            <ul className="space-y-2 text-sm text-foreground/85">
-              <li className="flex items-center gap-2">
-                <CheckCircle2Icon
-                  aria-hidden
-                  className="size-5 shrink-0 fill-primary text-primary-foreground"
-                />
-                Проверенный инструмент, готовый к работе
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2Icon
-                  aria-hidden
-                  className="size-5 shrink-0 fill-primary text-primary-foreground"
-                />
-                Быстрая выдача и понятные условия аренды
-              </li>
-            </ul>
+      <div className="relative z-10 mx-auto flex min-h-[38rem] w-full max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:min-h-[42rem] lg:px-8">
+        <div className="max-w-3xl">
+          <div className="mb-8 flex flex-wrap items-center gap-2">{badges}</div>
+          <p className="font-display text-xs font-light tracking-[0.42em] text-primary uppercase sm:text-sm">
+            Аренда и прокат
+          </p>
+          <h1
+            id="store-hero-title"
+            className="mt-4 font-display text-4xl leading-[.94] tracking-[-0.04em] uppercase sm:text-6xl lg:text-7xl"
+          >
+            <span className="block font-black">Аренда</span>
+            <span className="block font-light">{name}</span>
+          </h1>
+          <RichTextHtml
+            safeHtml={tagline || description || name}
+            size="lg"
+            className="mt-6 max-w-2xl prose-p:text-foreground/75 prose-strong:text-foreground"
+          />
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button
               render={<StorefrontLink href="/catalog" />}
               size="lg"
-              className="w-fit rounded-sm px-7 font-semibold uppercase"
+              className="min-h-12 rounded-lg px-7 font-semibold"
             >
-              Смотреть каталог
+              Подобрать оборудование
             </Button>
-            {footer}
+            <Button
+              render={<StorefrontLink href="/terms" />}
+              size="lg"
+              variant="outline"
+              className="min-h-12 rounded-lg border-foreground/45 bg-transparent px-7 text-foreground hover:bg-foreground hover:text-background"
+            >
+              Условия аренды
+            </Button>
           </div>
-
-          <div className="relative min-h-72 overflow-hidden sm:min-h-96 lg:min-h-full">
-            <div
-              aria-hidden
-              className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.35)_60%,rgba(0,0,0,.1))] lg:-left-24"
-            />
-            <div
-              aria-hidden
-              className="absolute inset-x-[12%] bottom-[7%] z-10 h-16 rounded-[50%] bg-primary/25 blur-2xl"
-            />
-            <HeroImageSlider
-              images={images}
-              className="transition-transform duration-500 motion-safe:[transform:perspective(900px)_rotateY(-6deg)] motion-safe:hover:[transform:perspective(900px)_rotateY(0deg)] [&_img]:object-contain [&_img]:drop-shadow-[0_24px_32px_rgba(0,0,0,.6)]"
-            />
-          </div>
+          {footer ? <div className="mt-10 border-t border-border pt-6">{footer}</div> : null}
         </div>
-
-        {children ? <div className="lg:col-start-2">{children}</div> : null}
       </div>
+
+      {children ? (
+        <div className="relative z-20 mx-auto w-full max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
+          {children}
+        </div>
+      ) : null}
     </section>
   );
 };

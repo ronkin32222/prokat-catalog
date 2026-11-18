@@ -20,14 +20,12 @@ export const HomeInventoryView = ({ kind, children, linkPrefetch }: HomeInventor
     <StorefrontSection aria-labelledby="home-inventory-title" className="py-16 sm:py-24">
       <SectionHeader
         id="home-inventory-title"
-        title={
-          kind === "categories" ? t("availability.categoryBrowse.title") : t("home.ourProducts")
-        }
+        title={kind === "categories" ? "Весь спектр оборудования" : "Актуальные позиции"}
         action={
           <StorefrontLink
             href="/catalog"
             prefetch={linkPrefetch}
-            className="inline-flex min-h-11 items-center rounded-sm bg-primary px-5 text-xs font-semibold text-primary-foreground uppercase transition-transform hover:-translate-y-0.5"
+            className="inline-flex min-h-11 items-center border-b border-foreground text-xs font-semibold uppercase transition-colors hover:text-primary"
           >
             {t("home.viewAll")}
           </StorefrontLink>

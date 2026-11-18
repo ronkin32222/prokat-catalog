@@ -46,11 +46,12 @@ const DEFAULT_STORE_SETTINGS: StoreSettings = {
   turnoverBufferMinutes: 0,
 };
 
-const DEFAULT_STORE_THEME: StoreTheme = { mode: "light", primaryColor: "#C9A24B" };
+const DEFAULT_STORE_THEME: StoreTheme = { mode: "dark", primaryColor: "#E8BE91" };
 
-export type HomeInventory =
-  | { kind: "categories"; entries: CategoryBrowseEntry[] }
-  | { kind: "products"; products: StorefrontCatalogProduct[] };
+export interface HomeInventory {
+  entries: CategoryBrowseEntry[];
+  products: StorefrontCatalogProduct[];
+}
 
 export interface HomePlaceSummary {
   /** Google place details when reviews are configured; drives the reviews section. */
@@ -251,15 +252,14 @@ export const getStorePlaceSummary = cache(
 
 const loadInventory = async (
   storeId: string,
-  theme: StoreTheme,
   labels: CategoryBrowseLabels,
 ): Promise<HomeInventory> => {
-  if (theme.catalogBrowseMode === "categories") {
-    const entries = await getCategoryBrowseEntries(storeId, labels);
-    if (entries.length > 0) return { kind: "categories", entries };
-  }
+  const [entries, products] = await Promise.all([
+    getCategoryBrowseEntries(storeId, labels),
+    getFeaturedProducts(storeId),
+  ]);
 
-  return { kind: "products", products: await getFeaturedProducts(storeId) };
+  return { entries, products };
 };
 
 /**
@@ -278,7 +278,7 @@ export const loadHomePage = async (
   const theme = store.theme ?? DEFAULT_STORE_THEME;
 
   const [inventory, place] = await Promise.all([
-    loadInventory(store.id, theme, labels),
+    loadInventory(store.id, labels),
     getStorePlaceSummary(store.reviewBoosterSettings ?? null),
   ]);
 

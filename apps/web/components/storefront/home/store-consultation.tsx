@@ -11,7 +11,7 @@ export const StoreConsultation = () => (
             Консультация
           </h2>
           <p className="mt-3 max-w-md text-sm text-muted-foreground">
-            Оставьте контакты — поможем выбрать инструмент и рассчитать срок аренды.
+            Оставьте контакты — поможем выбрать подходящую позицию и рассчитать срок аренды.
           </p>
         </div>
         <form action="contact" method="get" className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
@@ -24,7 +24,7 @@ export const StoreConsultation = () => (
             type="tel"
             autoComplete="tel"
             placeholder="Телефон"
-            className="h-12 min-w-0 rounded-sm border border-white bg-white px-4 text-[#111] placeholder:text-[#666] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            className="h-12 min-w-0 rounded-lg border bg-card px-4 text-card-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           />
           <label className="sr-only" htmlFor="consultation-name">
             Имя
@@ -34,13 +34,13 @@ export const StoreConsultation = () => (
             name="name"
             autoComplete="name"
             placeholder="Имя"
-            className="h-12 min-w-0 rounded-sm border border-white bg-white px-4 text-[#111] placeholder:text-[#666] focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            className="h-12 min-w-0 rounded-lg border bg-card px-4 text-card-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           />
           <button
             type="submit"
-            className="h-12 rounded-sm bg-primary px-6 text-sm font-semibold whitespace-nowrap text-primary-foreground uppercase transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
+            className="h-12 rounded-lg bg-primary px-6 text-sm font-semibold whitespace-nowrap text-primary-foreground transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none motion-reduce:transition-none"
           >
-            Отправить заявку
+            Получить консультацию
           </button>
         </form>
       </div>
