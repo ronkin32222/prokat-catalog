@@ -121,7 +121,7 @@ export const ProductCard = ({
             sizes={PRODUCT_CARD_IMAGE_SIZES}
             priority={priority}
             inset={false}
-            containerClassName="absolute inset-0 rounded-none"
+            containerClassName="absolute inset-0 aspect-auto h-full w-full rounded-none"
             className={cn(
               // The 4/3 frame crops the zoom, so the card itself never moves.
               // `scale` is its own property in Tailwind v4, not part of `transform`.
@@ -185,7 +185,7 @@ export const ProductCard = ({
           per={pricing.per}
           label={pricing.label}
           size="xl"
-          tone="primary"
+          tone="default"
         />
         {deposit != null && deposit > 0 ? (
           <span className="text-xs text-muted-foreground">
