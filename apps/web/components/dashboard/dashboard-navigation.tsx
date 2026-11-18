@@ -5,7 +5,6 @@ import { createContext, useContext, type ComponentProps } from "react";
 import {
   BarChart3,
   CalendarDays,
-  CreditCard,
   LayoutDashboard,
   Package,
   Settings,
@@ -96,12 +95,6 @@ const dashboardNavigation = (catalogHref: string): NavigationItem[] => [
     href: "/dashboard/customers",
     icon: Users,
     isActive: (pathname) => pathname.startsWith("/dashboard/customers"),
-  },
-  {
-    label: "Платежи",
-    href: "/dashboard/settings/payments",
-    icon: CreditCard,
-    isActive: (pathname) => pathname.startsWith("/dashboard/settings/payments"),
   },
   {
     label: "Аналитика",

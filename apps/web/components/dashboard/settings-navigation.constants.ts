@@ -177,7 +177,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.payments.description",
     searchPaths: ["dashboard.settings.payments"],
     group: "rental",
-    navigation: true,
+    navigation: false,
   },
   {
     id: "taxes",
@@ -218,7 +218,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.inspection.description",
     searchPaths: ["dashboard.settings.inspection"],
     group: "rental",
-    navigation: true,
+    navigation: false,
   },
   {
     id: "customer-fields",
@@ -228,7 +228,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.customerFields.description",
     searchPaths: ["dashboard.settings.customerFields"],
     group: "rental",
-    navigation: true,
+    navigation: false,
   },
   {
     id: "promo-codes",
@@ -238,7 +238,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.promoCodes.description",
     searchPaths: ["dashboard.settings.promoCodes"],
     group: "rental",
-    navigation: true,
+    navigation: false,
   },
   {
     id: "notifications",
@@ -268,7 +268,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.integrationsPage.description",
     searchPaths: ["dashboard.settings.integrationsPage", "dashboard.settings.integrationsHub"],
     group: "communication",
-    navigation: true,
+    navigation: false,
   },
   {
     id: "referrals",
@@ -359,7 +359,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.subscription.description",
     searchPaths: ["dashboard.settings.subscription", "dashboard.settings.subscriptionSettings"],
     group: "accountData",
-    navigation: true,
+    navigation: false,
     requiresBilling: true,
   },
   // "Facturation": the offer, the card, the billing details and the statements, from
@@ -372,7 +372,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.billing.description",
     searchPaths: ["dashboard.settings.billing"],
     group: "accountData",
-    navigation: true,
+    navigation: false,
     requiresBillingPages: true,
   },
   {
@@ -393,7 +393,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.admin.description",
     searchPaths: ["dashboard.settings.admin"],
     group: "accountData",
-    navigation: true,
+    navigation: false,
     requiresBilling: true,
     platformAdminOnly: true,
   },

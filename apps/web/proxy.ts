@@ -421,7 +421,7 @@ async function routeRequest(request: NextRequest): Promise<NextResponse> {
   // Налоги, электронные счета, доставка, бустеры отзывов и рефералы скрыты из продукта.
   // shortcut: вернуть доступ — убрать эти пути из регулярки.
   if (
-    /^\/(dashboard\/(ai-assistant|ai-credits)|api\/voice|dashboard\/settings\/(taxes|invoicing|delivery|review-booster|referrals))(\/|$)/.test(
+    /^\/(dashboard\/(ai-assistant|ai-credits)|api\/voice|dashboard\/settings\/(taxes|invoicing|delivery|review-booster|referrals|payments|inspections|customer-fields|promo-codes|integrations|subscription|billing|admin))(\/|$)/.test(
       pathname,
     )
   ) {
