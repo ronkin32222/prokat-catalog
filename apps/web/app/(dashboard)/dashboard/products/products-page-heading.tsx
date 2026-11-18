@@ -26,8 +26,10 @@ export const ProductsPageHeading = ({
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0 flex-1">
-        <h1 className="text-xl sm:text-2xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="text-sm sm:text-base text-muted-foreground">{t("description")}</p>
+        <h1 className="dashboard-heading text-4xl font-semibold uppercase tracking-tight sm:text-5xl">
+          Оборудование
+        </h1>
+        <p className="text-sm text-muted-foreground">Позиции, фотографии, цены и остатки.</p>
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <Button

@@ -1,11 +1,9 @@
 "use client";
 
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 import {
   CalendarSolidIcon,
-  ClockSolidIcon,
   CreditCardSolidIcon,
   ParticipantsSolidIcon,
   ProductSolidIcon,
@@ -31,7 +29,6 @@ const TODAY_RETURNS_HREF =
   "/dashboard/reservations?restorePreferredView=true&date=today&period=today&operation=return&status=ongoing&statuses=ongoing";
 
 export const AdaptiveStats = ({ metrics, storeState }: AdaptiveStatsProps) => {
-  const t = useTranslations("dashboard.home");
   const currency = useStoreCurrency();
 
   // Catalog-focused stats while the store is still being set up.
@@ -39,19 +36,19 @@ export const AdaptiveStats = ({ metrics, storeState }: AdaptiveStatsProps) => {
     return (
       <div className="grid grid-cols-2 gap-3 sm:gap-4">
         <DashboardStatCard
-          title={t("stats.products")}
+          title="Оборудование"
           value={metrics.activeProductCount}
           icon={ProductSolidIcon}
           accent="submitted"
           href="/dashboard/products"
           subtitle={
             metrics.draftProductCount > 0
-              ? t("stats.drafts", { count: metrics.draftProductCount })
+              ? `${metrics.draftProductCount} в черновиках`
               : undefined
           }
         />
         <DashboardStatCard
-          title={t("stats.customers")}
+          title="Клиенты"
           value={metrics.customerCount}
           icon={ParticipantsSolidIcon}
           accent="progress"
@@ -61,89 +58,46 @@ export const AdaptiveStats = ({ metrics, storeState }: AdaptiveStatsProps) => {
     );
   }
 
-  if (storeState === "starting") {
-    return (
-      <div className={GRID_CLASS_NAME}>
-        <ReservationCalendarPrefetchBoundary href={TODAY_DEPARTURES_HREF}>
-          <DashboardStatCard
-            title={t("stats.todaysDepartures")}
-            value={metrics.todaysDepartures}
-            icon={ArrowUpRight}
-            accent="success"
-            href={TODAY_DEPARTURES_HREF}
-            subtitle={t("stats.toDeliver")}
-          />
-        </ReservationCalendarPrefetchBoundary>
-        <ReservationCalendarPrefetchBoundary href={TODAY_RETURNS_HREF}>
-          <DashboardStatCard
-            title={t("stats.todaysReturns")}
-            value={metrics.todaysReturns}
-            icon={ArrowDownRight}
-            accent="progress"
-            href={TODAY_RETURNS_HREF}
-            subtitle={t("stats.toRecover")}
-          />
-        </ReservationCalendarPrefetchBoundary>
-        <DashboardStatCard
-          title={t("stats.pendingRequests")}
-          value={metrics.pendingReservations}
-          icon={ClockSolidIcon}
-          accent="pending"
-          href="/dashboard/reservations?status=pending"
-          badge={metrics.pendingReservations > 0 ? t("stats.toProcess") : undefined}
-        />
-        <DashboardStatCard
-          title={t("stats.totalReservations")}
-          value={metrics.totalReservations}
-          icon={CalendarSolidIcon}
-          accent="neutral"
-          href="/dashboard/reservations"
-          subtitle={t("stats.completed", { count: metrics.completedReservations })}
-        />
-      </div>
-    );
-  }
-
   const revenueGrowth = calculateGrowth(metrics.monthlyRevenue, metrics.lastMonthRevenue);
 
   return (
     <div className={GRID_CLASS_NAME}>
+      <DashboardStatCard
+        title="Активные аренды"
+        value={metrics.ongoingReservations}
+        icon={CalendarSolidIcon}
+        accent="success"
+        href="/dashboard/reservations?status=ongoing"
+        subtitle="Сейчас у клиентов"
+      />
       <ReservationCalendarPrefetchBoundary href={TODAY_DEPARTURES_HREF}>
         <DashboardStatCard
-          title={t("stats.todaysDepartures")}
+          title="Выдача сегодня"
           value={metrics.todaysDepartures}
           icon={ArrowUpRight}
-          accent="success"
+          accent="pending"
           href={TODAY_DEPARTURES_HREF}
-          subtitle={t("stats.toDeliver")}
+          subtitle="Нужно выдать"
         />
       </ReservationCalendarPrefetchBoundary>
       <ReservationCalendarPrefetchBoundary href={TODAY_RETURNS_HREF}>
         <DashboardStatCard
-          title={t("stats.todaysReturns")}
+          title="Возврат сегодня"
           value={metrics.todaysReturns}
           icon={ArrowDownRight}
-          accent="progress"
+          accent="review"
           href={TODAY_RETURNS_HREF}
-          subtitle={t("stats.toRecover")}
+          subtitle="Нужно принять"
         />
       </ReservationCalendarPrefetchBoundary>
       <DashboardStatCard
-        title={t("stats.pendingRequests")}
-        value={metrics.pendingReservations}
-        icon={ClockSolidIcon}
-        accent="pending"
-        href="/dashboard/reservations?status=pending"
-        badge={metrics.pendingReservations > 0 ? t("stats.toProcess") : undefined}
-      />
-      <DashboardStatCard
-        title={t("stats.monthlyRevenue")}
+        title="Выручка за месяц"
         value={formatCurrency(metrics.monthlyRevenue, currency)}
         icon={CreditCardSolidIcon}
         accent="submitted"
         href="/dashboard/analytics/sales"
         trend={revenueGrowth}
-        subtitle={t("stats.vsLastMonth")}
+        subtitle="К прошлому месяцу"
       />
     </div>
   );

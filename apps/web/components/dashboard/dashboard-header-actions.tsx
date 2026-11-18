@@ -56,7 +56,7 @@ export const DashboardHeaderActions = ({
     <Button
       aria-label={t("sidebar.newReservation")}
       size={isMobile ? "icon" : "default"}
-      variant="outline"
+      variant="default"
       onClick={handleCreateReservation}
     >
       <Lock className="h-4 w-4" />
@@ -67,7 +67,7 @@ export const DashboardHeaderActions = ({
       aria-label={t("sidebar.newReservation")}
       size={isMobile ? "icon" : "default"}
       render={<Link href="/dashboard/reservations/new?source=dashboard_header" />}
-      variant="outline"
+      variant="default"
     >
       <Plus className="h-4 w-4" />
       <span className="max-md:hidden">{t("sidebar.newReservation")}</span>
@@ -76,7 +76,7 @@ export const DashboardHeaderActions = ({
 
   return (
     <>
-      <div className="ml-auto flex shrink-0 items-center gap-2">
+      <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-2">
         <DashboardCommandPalette
           isPlatformAdmin={isPlatformAdmin}
           legacyBillingEnabled={legacyBillingEnabled}

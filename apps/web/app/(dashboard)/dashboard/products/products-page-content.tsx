@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
-import { ArrowUpDown, SearchX } from 'lucide-react'
+import { ArrowUpDown, LayoutGrid, List, SearchX } from 'lucide-react'
 
 import { Button } from '@louez/ui'
 import { CategoryManagerDrawer } from '@/components/categories/category-manager-drawer'
@@ -14,6 +14,7 @@ import { invalidateProductsList } from '@/lib/orpc/invalidation'
 import { categoriesQueries } from '@/lib/queries/categories.queries'
 import { productsQueries } from '@/lib/queries/products.queries'
 import { ProductsTable } from './products-table'
+import { ProductsGrid } from './products-grid'
 import { ProductsFilters, useProductsFilters } from './products-filters'
 import { ProductsOrderDialog } from './products-order-dialog'
 import { ProductImportDialog } from './product-import-dialog'
@@ -58,6 +59,7 @@ export function ProductsPageContent({
   const [showOrderDialog, setShowOrderDialog] = useState(false)
   const [showImportDialog, setShowImportDialog] = useState(false)
   const [categoryManagerOpen, setCategoryManagerOpen] = useState(false)
+  const [displayMode, setDisplayMode] = useState<'table' | 'grid'>('table')
   const { status, categoryIds, search, setCategoryIds, setSearch } = useProductsFilters()
   // Fetch once typing pauses, but drop the search right away when it is cleared
   const debouncedSearch = useDebounce(search.trim(), 300)
@@ -150,6 +152,25 @@ export function ProductsPageContent({
             isLoadingCategories={categoriesQuery.isPending}
           />
         </div>
+        <div className="flex shrink-0 items-center gap-2">
+          <div className="flex items-center rounded-lg border border-border bg-card p-1">
+            <Button
+              variant={displayMode === 'table' ? 'default' : 'ghost'}
+              size="icon-sm"
+              aria-label="Таблица"
+              onClick={() => setDisplayMode('table')}
+            >
+              <List className="size-4" />
+            </Button>
+            <Button
+              variant={displayMode === 'grid' ? 'default' : 'ghost'}
+              size="icon-sm"
+              aria-label="Сетка"
+              onClick={() => setDisplayMode('grid')}
+            >
+              <LayoutGrid className="size-4" />
+            </Button>
+          </div>
         {products.length > 1 && (
           <>
             <Button
@@ -171,6 +192,7 @@ export function ProductsPageContent({
             </Button>
           </>
         )}
+        </div>
       </div>
 
       {/* Products Table - Visible */}
@@ -193,7 +215,16 @@ export function ProductsPageContent({
             </Button>
           </div>
         ) : (
-          <ProductsTable products={visibleProducts} currency={currency} canDelete={canDelete} />
+          displayMode === 'grid' ? (
+            <ProductsGrid products={visibleProducts} currency={currency} />
+          ) : (
+            <ProductsTable
+              products={visibleProducts}
+              currency={currency}
+              canDelete={canDelete}
+              onImport={() => setShowImportDialog(true)}
+            />
+          )
         )}
       </div>
 
@@ -202,7 +233,11 @@ export function ProductsPageContent({
         <div className="relative">
           {/* Blurred table */}
           <div className="blur-sm pointer-events-none select-none opacity-60">
-            <ProductsTable products={blurredProducts} currency={currency} canDelete={canDelete} />
+            {displayMode === 'grid' ? (
+              <ProductsGrid products={blurredProducts} currency={currency} />
+            ) : (
+              <ProductsTable products={blurredProducts} currency={currency} canDelete={canDelete} />
+            )}
           </div>
 
           {/* Overlay */}

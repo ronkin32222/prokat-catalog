@@ -3,6 +3,7 @@ import { PasskeyEnrollment } from "@/components/auth/passkey-enrollment";
 import { Suspense } from "react";
 
 import { eq } from "drizzle-orm";
+import { Oswald, Rubik } from "next/font/google";
 import { redirect } from "next/navigation";
 
 import { getMarketplaceChannelState } from "@louez/api/services";
@@ -42,12 +43,25 @@ import { getCurrentStore, getUserStores } from "@/lib/store-context";
 import { getCurrentPlanSlug } from "@/lib/stripe/subscriptions";
 import { REEENT_SIGNUP_ORIGIN } from "@/lib/utils/signup-origin";
 import { parseWhatsNewProgress } from "@/lib/whats-new.progress";
+import { buildStoreThemeStyle, DEFAULT_STORE_THEME } from "@/lib/theme/util.store-theme";
 
 import { StoreProvider } from "@/contexts/store-context";
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
 export const instant = false;
+
+const dashboardBodyFont = Rubik({
+  subsets: ["cyrillic", "latin"],
+  variable: "--font-dashboard-body",
+  display: "swap",
+});
+
+const dashboardHeadingFont = Oswald({
+  subsets: ["cyrillic", "latin"],
+  variable: "--font-dashboard-heading",
+  display: "swap",
+});
 
 /** Total balance under which the sidebar shows its low-credit marker. */
 const LOW_AI_CREDITS_THRESHOLD = 5;
@@ -148,6 +162,10 @@ export default async function DashboardMainLayout({ children }: { children: Reac
     legacyBillingApplies(store.id, new Date()),
   ]);
   const billingAccess = await getBillingAccess(store, isPlatformAdmin);
+  const dashboardTheme = buildStoreThemeStyle({
+    mode: "dark",
+    primaryColor: store.theme?.primaryColor ?? DEFAULT_STORE_THEME.primaryColor,
+  });
 
   return (
     <KeyboardShortcutsProvider
@@ -165,7 +183,10 @@ export default async function DashboardMainLayout({ children }: { children: Reac
           timezone={settings.timezone}
         >
           <ReservationPollingProvider interval={30000}>
-            <div className="dashboard relative h-svh overflow-hidden">
+            <div
+              className={`dashboard dark relative h-svh overflow-hidden ${dashboardBodyFont.variable} ${dashboardHeadingFont.variable}`}
+            >
+              {dashboardTheme && <style>{dashboardTheme}</style>}
               <SidebarProvider className="h-full min-h-0 overflow-hidden">
                 <DashboardBreadcrumbsProvider>
                   <DashboardSidebar
@@ -174,6 +195,7 @@ export default async function DashboardMainLayout({ children }: { children: Reac
                     currentStoreId={store.id}
                     storeSlug={store.slug}
                     userId={session.user.id}
+                    userName={session.user.name}
                     userEmail={session.user.email || ""}
                     userImage={session.user.image}
                     isPlatformAdmin={isPlatformAdmin}

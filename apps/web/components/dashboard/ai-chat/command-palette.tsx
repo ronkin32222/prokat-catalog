@@ -29,14 +29,11 @@ import {
 } from "@louez/ui";
 import {
   AnalyticsIcon,
-  BotIcon,
   CalendarDaysIcon,
   CalendarIcon,
-  ChatIcon,
   ExternalLinkIcon,
   HomeIcon,
   PackageIcon,
-  PhoneCallIcon,
   SettingsIcon,
   SparklesIcon,
   UsersIcon,
@@ -434,31 +431,6 @@ export const DashboardCommandPalette = ({
           href: "/dashboard/analytics/traffic",
         },
         {
-          value: "ai-conversations",
-          label: t("navigation.aiConversations"),
-          keywords:
-            "conversations discussions echanges clients conseiller appels transcriptions chats customer calls transcripts",
-          icon: ChatIcon,
-          kind: "navigate",
-          href: "/dashboard/ai-assistant/conversations",
-        },
-        {
-          value: "ai-advisor",
-          label: t("navigation.aiAdvisor"),
-          keywords: "conseiller advisor ia ai vitrine widget chatbot configuration",
-          icon: BotIcon,
-          kind: "navigate",
-          href: "/dashboard/ai-assistant/advisor",
-        },
-        {
-          value: "ai-voice",
-          label: t("navigation.aiVoice"),
-          keywords: "agent vocal voix telephone appels numero voice phone calls number",
-          icon: PhoneCallIcon,
-          kind: "navigate",
-          href: "/dashboard/ai-assistant/voice",
-        },
-        {
           value: "settings",
           label: t("navigation.settings"),
           keywords: "parametres reglages configuration settings preferences",
@@ -539,7 +511,7 @@ export const DashboardCommandPalette = ({
             <Button
               type="button"
               variant="outline"
-              className="bg-background/70 text-muted-foreground hidden h-9 min-w-48 justify-start gap-2 hover:bg-background hover:text-foreground lg:flex"
+              className="bg-card text-muted-foreground hidden h-10 w-full max-w-2xl min-w-64 justify-start gap-2 border-border hover:bg-card/80 hover:text-foreground lg:flex"
             />
           }
         >

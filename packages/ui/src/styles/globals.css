@@ -338,8 +338,8 @@
   --season-4: oklch(0.68 0.16 12);
   --sidebar: #191b19;
   --sidebar-foreground: #f5f1e9;
-  --sidebar-primary: oklch(0.489 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: #e8be91;
+  --sidebar-primary-foreground: #141514;
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
@@ -466,8 +466,8 @@
   --season-4: oklch(0.75 0.145 12);
   --sidebar: #191b19;
   --sidebar-foreground: #f5f1e9;
-  --sidebar-primary: oklch(68.9% 0.000000000000000238 0deg);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: #e8be91;
+  --sidebar-primary-foreground: #141514;
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
@@ -523,7 +523,7 @@
   }
 }
 
-/* Public rental storefront only: dashboard keeps the platform palette and Inter. */
+/* Public rental storefront only. */
 .storefront-theme {
   --radius: 0.5rem;
   --background: #141514;
@@ -548,6 +548,14 @@
   font-family: var(--font-body), sans-serif;
   background-color: var(--background);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+}
+
+.dashboard {
+  font-family: var(--font-dashboard-body), var(--font-sans);
+}
+
+.dashboard :is(h1, h2, .dashboard-heading) {
+  font-family: var(--font-dashboard-heading), var(--font-dashboard-body), var(--font-sans);
 }
 
 .storefront-theme :is(h1, h2, h3, .font-display) {

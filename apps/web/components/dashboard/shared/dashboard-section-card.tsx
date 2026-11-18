@@ -32,12 +32,14 @@ export const DashboardSectionCard = ({
   className,
   contentClassName,
 }: DashboardSectionCardProps) => (
-  <Card className={cn("flex min-w-0 flex-col", className)}>
+  <Card className={cn("flex min-w-0 flex-col rounded-xl border-border bg-card", className)}>
     <CardHeader className="flex flex-row items-center gap-3 p-4 pb-3 sm:p-5 sm:pb-3">
       {icon && <DashboardIconTile icon={icon} accent={accent} />}
       <div className="min-w-0 flex-1">
         {/* Wraps rather than truncates: section titles get long once translated. */}
-        <CardTitle className="line-clamp-2 text-base leading-snug">{title}</CardTitle>
+        <CardTitle className="dashboard-heading line-clamp-2 text-lg leading-snug font-semibold uppercase tracking-wide">
+          {title}
+        </CardTitle>
         {description && (
           <CardDescription className="mt-0.5 line-clamp-1">{description}</CardDescription>
         )}

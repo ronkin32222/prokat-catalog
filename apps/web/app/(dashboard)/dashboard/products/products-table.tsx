@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { MoreHorizontal, Pencil, Copy, Archive, Trash2, Eye, EyeOff, Package } from 'lucide-react'
+import { MoreHorizontal, Pencil, Copy, Archive, Trash2, Eye, EyeOff, Package, Upload } from 'lucide-react'
 
 import { Button } from '@louez/ui'
 import type { StockKind } from '@louez/types'
@@ -55,6 +55,7 @@ interface ProductsTableProps {
   canDelete?: boolean
   onOpenProduct?: (id: string) => void
   getProductHref?: (id: string) => string
+  onImport?: () => void
 }
 
 const STATUS_VARIANTS = {
@@ -63,7 +64,7 @@ const STATUS_VARIANTS = {
   archived: 'expired',
 } as const
 
-export const ProductsTable = ({ products, currency = 'EUR', readOnly = false, canDelete = true, onOpenProduct, getProductHref }: ProductsTableProps) => {
+export const ProductsTable = ({ products, currency = 'EUR', readOnly = false, canDelete = true, onOpenProduct, getProductHref, onImport }: ProductsTableProps) => {
   const t = useTranslations('dashboard.products')
   const tForm = useTranslations('dashboard.products.form')
   const tCommon = useTranslations('common')
@@ -122,9 +123,17 @@ export const ProductsTable = ({ products, currency = 'EUR', readOnly = false, ca
         <Package className="h-12 w-12 text-muted-foreground" />
         <h3 className="mt-4 text-lg font-semibold">{t('noProducts')}</h3>
         <p className="mt-2 text-sm text-muted-foreground">{t('noProductsDescription')}</p>
-        <Button disabled={readOnly} render={readOnly ? undefined : <Link href="/dashboard/products/new" />} className="mt-4">
-          {t('addProduct')}
-        </Button>
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
+          <Button disabled={readOnly} render={readOnly ? undefined : <Link href="/dashboard/products/new" />}>
+            {t('addProduct')}
+          </Button>
+          {onImport && (
+            <Button disabled={readOnly} variant="outline" onClick={onImport}>
+              <Upload className="size-4" />
+              Импорт списком
+            </Button>
+          )}
+        </div>
       </div>
     )
   }

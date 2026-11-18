@@ -36,8 +36,8 @@ export const DashboardStatCard = ({
   const card = (
     <Card
       className={cn(
-        "h-full transition-colors",
-        href && "group-hover:border-primary/20 group-hover:bg-muted/50",
+        "h-full rounded-xl border-border bg-card transition-colors duration-200 motion-reduce:transition-none",
+        href && "group-hover:border-primary/40 group-hover:bg-card/80",
       )}
     >
       <CardPanel className="flex h-full flex-col gap-3 p-4">
@@ -66,7 +66,7 @@ export const DashboardStatCard = ({
   return (
     <Link
       href={href}
-      className="group focus-visible:ring-ring block h-full rounded-2xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+      className="group focus-visible:ring-ring block h-full rounded-xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       {card}
     </Link>
