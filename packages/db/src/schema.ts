@@ -1371,6 +1371,11 @@ export const products = mysqlTable(
     // Status
     status: productStatus.default("active"),
 
+    // Manually taken out of rental (repair, maintenance). Other availability
+    // statuses are computed from reservations, see product-availability-status.ts.
+    isUnavailable: boolean("is_unavailable").notNull().default(false),
+    unavailableNote: varchar("unavailable_note", { length: 255 }),
+
     // Metadata
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),

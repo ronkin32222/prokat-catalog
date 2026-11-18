@@ -9,6 +9,7 @@ import {
   Package,
   Settings,
   Store,
+  UserPlus,
   Users,
 } from "lucide-react";
 
@@ -95,6 +96,12 @@ const dashboardNavigation = (catalogHref: string): NavigationItem[] => [
     href: "/dashboard/customers",
     icon: Users,
     isActive: (pathname) => pathname.startsWith("/dashboard/customers"),
+  },
+  {
+    label: "Команда",
+    href: "/dashboard/team",
+    icon: UserPlus,
+    isActive: (pathname) => pathname.startsWith("/dashboard/team"),
   },
   {
     label: "Аналитика",

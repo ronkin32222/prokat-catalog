@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { MessageSquare, Power, Search, Send } from "lucide-react";
 import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input, toastManager } from "@louez/ui";
 import type { NotificationSettings } from "@louez/types";
+import type { TelegramChatInfo } from "@/lib/notifications/messengers";
 import {
   connectMessenger,
   disconnectMessenger,
@@ -61,6 +62,8 @@ const MessengerCard = ({ kind, config }: { kind: MessengerKind; config?: Messeng
   const [token, setToken] = useState("");
   const [chatId, setChatId] = useState(config?.chatId ?? "");
   const [busy, setBusy] = useState<Busy>(null);
+  // The chat found by «Найти чат», waiting for the owner to confirm it is theirs.
+  const [foundChat, setFoundChat] = useState<TelegramChatInfo | null>(null);
 
   const withBusy = async <T extends object>(name: Exclude<Busy, null>, fn: () => Promise<T>) => {
     setBusy(name);
@@ -79,12 +82,19 @@ const MessengerCard = ({ kind, config }: { kind: MessengerKind; config?: Messeng
     router.refresh();
   };
 
+  // getUpdates returns the last chat that wrote to the bot, which may be someone else's:
+  // the ID goes into the field only after the owner confirms the name shown below.
   const handleFindChat = async () => {
     const result = await withBusy("find", () => findTelegramChatId(token));
-    const foundChatId = result?.chatId;
-    if (!foundChatId) return;
-    setChatId(foundChatId);
-    toastManager.add({ title: "Чат найден, проверьте ID и подключите бота", type: "success" });
+    if (!result?.chat) return;
+    setFoundChat(result.chat);
+  };
+
+  const handleConfirmFoundChat = () => {
+    if (!foundChat) return;
+    setChatId(foundChat.chatId);
+    setFoundChat(null);
+    toastManager.add({ title: "ID чата подставлен, подключите бота", type: "success" });
   };
 
   const handleTest = async () => {
@@ -158,6 +168,24 @@ const MessengerCard = ({ kind, config }: { kind: MessengerKind; config?: Messeng
               )}
             </div>
           </div>
+
+          {foundChat && (
+            <div className="rounded-md border p-2 text-xs">
+              <p>
+                Найден чат: {foundChat.firstName ?? "без имени"}
+                {foundChat.username ? ` (@${foundChat.username})` : ""} ({foundChat.chatId})
+              </p>
+              <p className="mt-1 text-muted-foreground">Проверьте, что это ваш чат с ботом.</p>
+              <div className="mt-2 flex gap-2">
+                <Button size="sm" onClick={handleConfirmFoundChat}>
+                  Это мой чат
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => setFoundChat(null)}>
+                  Отмена
+                </Button>
+              </div>
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-2">
             <Button

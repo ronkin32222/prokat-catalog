@@ -12,6 +12,8 @@ import { serverApi } from "@/lib/api/server-api";
 import { getCurrentStore } from "@/lib/store-context";
 
 import { ProductActivityFeed } from "./components/product-activity-feed";
+import { ProductAvailabilityCard } from "../components/product-availability-card";
+import { loadProductAvailabilityStatuses } from "@/lib/products/product-availability.queries";
 import { ProductCustomerFieldsCard } from "./components/product-customer-fields-card";
 import { ProductHeader } from "./components/product-header";
 import { productPermissions } from "../util.product-permissions";
@@ -138,6 +140,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           totalUnits: product.trackUnits ? activeUnitCount : product.quantity,
         });
 
+  const availability = (
+    await loadProductAvailabilityStatuses(store.id, new Date(), [product.id])
+  ).get(product.id) ?? { status: "free" as const, releasingSoon: false };
+
   return (
     <div className="space-y-4 sm:space-y-6">
       <DashboardBreadcrumbLabel label={product.name} />
@@ -152,6 +158,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
         }}
         storeSlug={store.slug}
         canDelete={productPermissions(store.role).canDelete}
+      />
+
+      <ProductAvailabilityCard
+        productId={product.id}
+        status={availability.status}
+        releasingSoon={availability.releasingSoon}
+        isUnavailable={product.isUnavailable}
+        unavailableNote={product.unavailableNote}
       />
 
       {/* `min-w-0` on both columns: the timeline and the unit table are wider

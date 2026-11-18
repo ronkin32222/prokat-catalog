@@ -47,6 +47,7 @@ import {
 } from "@/lib/email/send";
 import type { DigestEntry } from "@/lib/email/templates";
 import { sendAdminEventEmail } from "@/lib/notifications/admin-email";
+import { formatCustomerName } from "@/lib/notifications/customer-name";
 import {
   paymentCurrencyOf,
   reservationCurrencyOf,
@@ -730,7 +731,7 @@ function buildAdminSmsMessage(
   const vars: AdminSmsTemplateVars = {
     storeName: ctx.store.name,
     number: ctx.reservation?.number || "",
-    customerName: ctx.customer ? `${ctx.customer.firstName} ${ctx.customer.lastName}` : "",
+    customerName: ctx.customer ? formatCustomerName(ctx.customer.firstName, ctx.customer.lastName) : "",
     amount: ctx.payment
       ? formatCurrencyForSms(ctx.payment.amount, paymentCurrencyOf(ctx))
       : ctx.reservation
@@ -915,7 +916,7 @@ function buildMessengerEventText(
     eventLabel: MESSENGER_EVENT_LABELS[eventType] ?? eventType,
     storeName: ctx.store.name,
     reservationNumber: ctx.reservation?.number,
-    customerName: ctx.customer ? `${ctx.customer.firstName} ${ctx.customer.lastName}` : undefined,
+    customerName: ctx.customer ? formatCustomerName(ctx.customer.firstName, ctx.customer.lastName) : undefined,
     periodLabel: ctx.reservation
       ? `${formatMessengerDate(ctx.reservation.startDate)} — ${formatMessengerDate(ctx.reservation.endDate)}`
       : undefined,
@@ -1009,7 +1010,7 @@ function buildReservationMessengerText(
   return formatReservationMessage(
     {
       title: `${MESSENGER_EVENT_LABELS[eventType] ?? eventType} №${reservation.number}`,
-      customerName: ctx.customer ? `${ctx.customer.firstName} ${ctx.customer.lastName}` : undefined,
+      customerName: ctx.customer ? formatCustomerName(ctx.customer.firstName, ctx.customer.lastName) : undefined,
       customerPhone: ctx.customer?.phone ?? undefined,
       periodLabel: formatMessengerPeriod(
         reservation.startDate,

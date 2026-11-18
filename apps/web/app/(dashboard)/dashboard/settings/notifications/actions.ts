@@ -275,7 +275,7 @@ export async function findTelegramChatId(botToken?: string) {
 
   const result = await findTelegramChat(token);
   if (!result.ok) return { error: result.error };
-  return { success: true, chatId: result.chat.chatId };
+  return { success: true, chatId: result.chat.chatId, chat: result.chat };
 }
 
 /** Тестовое сообщение в подключённый мессенджер. */
