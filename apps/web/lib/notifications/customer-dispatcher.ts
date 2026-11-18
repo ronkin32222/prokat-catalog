@@ -204,6 +204,9 @@ function mergeTemplateWithLegacy(
 /**
  * Dispatch a customer notification based on event type and store preferences
  */
+// shortcut: клиентские письма и SMS выключены для России на время упрощения, вернуть — true.
+export const CUSTOMER_NOTIFICATIONS_ENABLED = false;
+
 export async function dispatchCustomerNotification(
   eventType: CustomerNotificationEventType,
   ctx: CustomerNotificationContext,
@@ -212,6 +215,11 @@ export async function dispatchCustomerNotification(
     email: { sent: false },
     sms: { sent: false },
   };
+  if (!CUSTOMER_NOTIFICATIONS_ENABLED) {
+    result.email.skipped = true;
+    result.sms.skipped = true;
+    return result;
+  }
 
   // Preferences, with the default of an event the saved settings predate
   const settings = withCustomerNotificationDefaults(ctx.store.customerNotificationSettings);
@@ -308,6 +316,7 @@ export async function sendCustomerNotificationChannel(
    */
   deliveryKey?: string,
 ): Promise<{ skipped: string } | undefined> {
+  if (!CUSTOMER_NOTIFICATIONS_ENABLED) return { skipped: "customer notifications are off" };
   const settings = withCustomerNotificationDefaults(ctx.store.customerNotificationSettings);
   const locale = resolveReservationEmailLocale(
     ctx.reservation.locale ?? null,

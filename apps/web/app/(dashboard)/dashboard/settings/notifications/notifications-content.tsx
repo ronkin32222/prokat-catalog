@@ -1,12 +1,12 @@
 "use client";
 
-import type { ComponentProps } from "react";
+import type { NotificationSettings } from "@louez/types";
 import { useTranslations } from "next-intl";
 import { SettingsPageShell } from "@/components/dashboard/settings-page-shell";
-import { NotificationsForm } from "@/app/(dashboard)/dashboard/settings/notifications/notifications-form";
 import { MessengerCards } from "@/app/(dashboard)/dashboard/settings/notifications/messengers-cards";
+import { MessengerEventsCard } from "@/app/(dashboard)/dashboard/settings/notifications/messenger-events-card";
 
-export const NotificationsContent = ({ ...props }: ComponentProps<typeof NotificationsForm>) => {
+export const NotificationsContent = ({ settings }: { settings: NotificationSettings }) => {
   const t = useTranslations("dashboard.settings");
 
   return (
@@ -14,8 +14,10 @@ export const NotificationsContent = ({ ...props }: ComponentProps<typeof Notific
       title={t("notifications.title")}
       description={t("notifications.description")}
     >
-      <MessengerCards messengers={props.settings.messengers} />
-      <NotificationsForm {...props} />
+      <div className="space-y-6">
+        <MessengerCards messengers={settings.messengers} />
+        <MessengerEventsCard settings={settings} />
+      </div>
     </SettingsPageShell>
   );
 };

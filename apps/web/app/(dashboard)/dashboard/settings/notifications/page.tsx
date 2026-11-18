@@ -14,27 +14,5 @@ export default async function NotificationsPage() {
   const data = await getNotificationSettings();
   if ("error" in data) redirect("/onboarding");
 
-  // Prepare store info for email preview
-  const storeInfo = {
-    name: store.name,
-    logoUrl: store.logoUrl,
-    darkLogoUrl: store.darkLogoUrl,
-    email: store.email,
-    phone: store.phone,
-    address: store.address,
-    theme: store.theme,
-  };
-
-  return (
-    <NotificationsContent
-      settings={data.settings}
-      discordWebhookUrl={data.discordWebhookUrl}
-      ownerPhone={data.ownerPhone}
-      smsQuota={data.smsQuota}
-      customerSettings={data.customerSettings}
-      storeLocale={data.storeLocale}
-      storeLanguageName={data.storeLanguageName}
-      storeInfo={storeInfo}
-    />
-  );
+  return <NotificationsContent settings={data.settings} />;
 }

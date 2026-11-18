@@ -7,9 +7,12 @@ import { LegalPageShell } from "@/components/storefront/shell/legal-page-shell";
 import { LegalSection } from "@/components/storefront/shell/legal-section";
 import { RichText } from "@/components/storefront/ui/rich-text";
 import { getHostedBy } from "@/lib/hosting";
+import { getStorefrontUrl } from "@/lib/storefront-url";
 import { generateStoreMetadata } from "@/lib/seo";
 import { getStoreBySlug } from "@/lib/storefront/get-store-by-slug";
 import { hasRichTextContent } from "@louez/utils";
+import { renderLegalDocument } from "@/lib/legal-templates";
+import { buildOwnerDocumentValues } from "@/lib/owner-profile/owner-document-values";
 
 interface LegalNoticePageProps {
   params: Promise<{ slug: string }>;
@@ -75,6 +78,17 @@ const LegalNoticePage = async ({ params }: LegalNoticePageProps) => {
       <LegalSection title={t("legalNotice.editorInfo")}>
         {hasRichTextContent(store.legalNotice) ? (
           <RichText html={store.legalNotice} />
+        ) : store.settings?.ownerProfile ? (
+          <RichText
+            html={renderLegalDocument(
+              "privacyPolicy",
+              buildOwnerDocumentValues(
+                store.settings.ownerProfile,
+                { name: store.name, email: store.email, phone: store.phone, address: store.address },
+                getStorefrontUrl(store.slug, "/"),
+              ),
+            )}
+          />
         ) : (
           <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
             <dt className="font-medium text-foreground">{t("legalNotice.companyName")}</dt>

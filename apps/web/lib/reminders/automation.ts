@@ -86,6 +86,8 @@ interface ReminderPass {
  * Process pending reminders for all stores.
  * This is called by the cron job (every minute).
  */
+const REMINDERS_ENABLED = false;
+
 export async function processReminders(): Promise<ProcessResult> {
   const result: ProcessResult = {
     processed: 0,
@@ -96,6 +98,8 @@ export async function processReminders(): Promise<ProcessResult> {
     adminDigestsSent: 0,
     errors: [],
   }
+  // shortcut: автонапоминания выключены в упрощённых настройках, вернуть — убрать этот выход.
+  if (!REMINDERS_ENABLED) return result
 
   try {
     // Fetch every store once with all the columns any reminder channel needs.

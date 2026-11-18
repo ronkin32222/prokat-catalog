@@ -3,12 +3,13 @@
 import { Clock3Icon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import type { StoreSocialLinks } from "@louez/types";
+import type { OwnerProfile, StoreSocialLinks } from "@louez/types";
 
 import { SOCIAL_NETWORK_LABELS, SocialNetworkIcon } from "@/components/shared/social-network-icon";
 import { useChromeVariant } from "@/components/storefront/shell/use-chrome-variant";
 import { StorefrontLink } from "@/components/storefront/ui/storefront-link";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { buildOwnerDocumentValues } from "@/lib/owner-profile/owner-document-values";
 import { resolveStoreSocialLinks } from "@/lib/utils/util.store-social-links";
 
 interface StoreFooterProps {
@@ -18,6 +19,8 @@ interface StoreFooterProps {
   address?: string | null;
   social?: StoreSocialLinks | null;
   footerNote?: string | null;
+  /** The owner's answers: the operator line of the footer (name, ИНН, ОГРН). */
+  ownerProfile?: OwnerProfile | null;
   showAccount?: boolean;
   linkPrefetch?: boolean;
   showLanguageSwitcher?: boolean;
@@ -35,6 +38,7 @@ export const StoreFooter = ({
   address,
   social,
   footerNote,
+  ownerProfile,
   showAccount = true,
   linkPrefetch,
   showLanguageSwitcher = true,
@@ -43,6 +47,12 @@ export const StoreFooter = ({
   const variant = useChromeVariant();
   const socialLinks = resolveStoreSocialLinks(social);
   const compact = variant === "compact";
+  const operator = ownerProfile
+    ? buildOwnerDocumentValues(ownerProfile, { name: storeName, email, phone, address }, "")
+    : null;
+  const operatorLine = operator
+    ? `Оператор персональных данных и арендодатель: ${operator.operatorStatus} ${operator.operatorName}, ИНН ${operator.inn || "—"}${operator.ogrnPart}`
+    : null;
 
   return (
     <footer data-slot="store-footer" className="border-t bg-secondary py-10 sm:py-14">
@@ -141,10 +151,14 @@ export const StoreFooter = ({
               {t("cgv")}
             </StorefrontLink>
             <StorefrontLink prefetch={linkPrefetch} href="/legal" className={LINK_CLASS_NAME}>
-              {t("legalNotice")}
+              Политика обработки ПД
             </StorefrontLink>
           </nav>
         )}
+
+        {operatorLine ? (
+          <p className="mt-8 text-xs text-muted-foreground">{operatorLine}</p>
+        ) : null}
 
         <div className="mt-8 flex flex-col gap-3 border-t pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <nav aria-label={t("legalInfo")} className="flex gap-5">
@@ -152,7 +166,7 @@ export const StoreFooter = ({
               {t("cgv")}
             </StorefrontLink>
             <StorefrontLink prefetch={linkPrefetch} href="/legal" className="hover:text-foreground">
-              {t("legalNotice")}
+              Политика обработки ПД
             </StorefrontLink>
           </nav>
           <div className="flex items-center gap-3">

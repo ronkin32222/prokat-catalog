@@ -3,12 +3,16 @@
 import { Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { Alert, Button, Separator } from "@louez/ui";
+import { useStore } from "@tanstack/react-form";
+
+import { Alert, Button, Checkbox, Separator } from "@louez/ui";
 import { cn } from "@louez/utils";
 
 import { CustomerFieldFormInput } from "@/components/storefront/customer-fields/customer-field-form-input";
+import { StorefrontLink } from "@/components/storefront/ui/storefront-link";
 import { RentalUnitCard } from "@/components/storefront/customer-fields/rental-unit-card";
 import { RentalUnitParticipantInput } from "@/components/storefront/customer-fields/rental-unit-participant-input";
+import { getFieldError } from "@/hooks/form/form-context";
 import { withForm } from "@/hooks/form/form";
 import { formatRussianPhone, PHONE_MASK_LENGTH } from "@/lib/sms/ru-phone";
 
@@ -38,6 +42,8 @@ export const CheckoutRequestForm = withForm({
   render: ({ form, lines, promo, hasActivePromoCodes, isSubmitting, isBlocked }) => {
     const t = useTranslations("storefront.checkout");
     const askingLines = lines.filter((line) => line.itemFields.length > 0);
+    // Not ticked by default: the request cannot be sent until the customer ticks it.
+    const privacyConsent = useStore(form.store, (state) => state.values.privacyConsent);
 
     return (
       <div className="flex flex-col gap-5">
@@ -156,6 +162,44 @@ export const CheckoutRequestForm = withForm({
           />
         )}
 
+        <form.AppField name="privacyConsent">
+          {(field) => (
+            <div className="flex flex-col gap-1">
+              <label className="flex cursor-pointer items-start gap-3 text-sm leading-snug">
+                <Checkbox
+                  className="mt-0.5"
+                  checked={field.state.value}
+                  onCheckedChange={(checked) => field.handleChange(checked === true)}
+                />
+                <span>
+                  Я даю согласие на обработку персональных данных и принимаю{" "}
+                  <StorefrontLink
+                    prefetch={false}
+                    href="/legal"
+                    target="_blank"
+                    className="font-medium underline underline-offset-4"
+                  >
+                    Политику обработки ПД
+                  </StorefrontLink>{" "}
+                  и{" "}
+                  <StorefrontLink
+                    prefetch={false}
+                    href="/terms"
+                    target="_blank"
+                    className="font-medium underline underline-offset-4"
+                  >
+                    условия аренды
+                  </StorefrontLink>
+                  .
+                </span>
+              </label>
+              {field.state.meta.errors.length > 0 ? (
+                <p className="text-destructive text-sm">{getFieldError(field.state.meta.errors[0])}</p>
+              ) : null}
+            </div>
+          )}
+        </form.AppField>
+
         <Alert>
           <p>{t("managerCallback")}</p>
         </Alert>
@@ -164,7 +208,7 @@ export const CheckoutRequestForm = withForm({
           type="submit"
           size="lg"
           className="h-12 w-full sm:w-auto sm:min-w-64"
-          disabled={isSubmitting || isBlocked}
+          disabled={isSubmitting || isBlocked || !privacyConsent}
         >
           <Send data-slot="icon" />
           {isSubmitting ? t("processing") : t("submitRequest")}

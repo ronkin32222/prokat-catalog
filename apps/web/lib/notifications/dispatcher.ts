@@ -152,18 +152,22 @@ export interface NotificationResult {
 // Default Settings
 // ============================================================================
 
+// Владелец получает только события бронирования в Telegram и MAX (остальные каналы выключены).
+const MESSENGER_EVENT_DEFAULTS = { email: false, sms: false, discord: false, push: false, telegram: true, max: true };
+const OFF = { email: false, sms: false, discord: false, push: false, telegram: false, max: false };
+
 const DEFAULT_SETTINGS: NotificationSettings = {
-  reservation_new: { email: true, sms: false, discord: false, push: true, telegram: false, max: false },
-  reservation_confirmed: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
-  reservation_rejected: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
-  reservation_cancelled: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
-  reservation_picked_up: { email: false, sms: false, discord: false, push: false, telegram: false, max: false },
-  reservation_completed: { email: false, sms: false, discord: false, push: false, telegram: false, max: false },
-  reservation_reminder_pickup: { email: false, sms: false, discord: false, push: false, telegram: false, max: false },
-  reservation_reminder_return: { email: false, sms: false, discord: false, push: false, telegram: false, max: false },
-  payment_received: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
-  payment_failed: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
-  payment_disputed: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
+  reservation_new: MESSENGER_EVENT_DEFAULTS,
+  reservation_confirmed: MESSENGER_EVENT_DEFAULTS,
+  reservation_rejected: MESSENGER_EVENT_DEFAULTS,
+  reservation_cancelled: MESSENGER_EVENT_DEFAULTS,
+  reservation_picked_up: MESSENGER_EVENT_DEFAULTS,
+  reservation_completed: MESSENGER_EVENT_DEFAULTS,
+  reservation_reminder_pickup: OFF,
+  reservation_reminder_return: OFF,
+  payment_received: OFF,
+  payment_failed: OFF,
+  payment_disputed: OFF,
 };
 
 // ============================================================================

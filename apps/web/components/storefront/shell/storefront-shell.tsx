@@ -103,6 +103,7 @@ export const StorefrontShell = ({
         address={store.address}
         social={store.settings?.social}
         footerNote={store.settings?.footerNote}
+        ownerProfile={store.settings?.ownerProfile}
         showAccount={!isMarketplace}
       />
       <CartDrawer />

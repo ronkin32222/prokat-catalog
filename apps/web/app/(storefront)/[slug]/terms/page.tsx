@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { FileTextIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
-import { Button } from "@louez/ui";
 
 import { LegalPageShell } from "@/components/storefront/shell/legal-page-shell";
 import { LegalSection } from "@/components/storefront/shell/legal-section";
-import { EmptyState } from "@/components/storefront/ui/empty-state";
 import { RichText } from "@/components/storefront/ui/rich-text";
 import { generateStoreMetadata } from "@/lib/seo";
 import { getStoreBySlug } from "@/lib/storefront/get-store-by-slug";
 import { hasRichTextContent } from "@louez/utils";
+import { renderLegalDocument } from "@/lib/legal-templates";
+import { buildOwnerDocumentValues } from "@/lib/owner-profile/owner-document-values";
+import { getStorefrontUrl } from "@/lib/storefront-url";
 
 interface TermsPageProps {
   params: Promise<{ slug: string }>;
@@ -69,18 +69,16 @@ const TermsPage = async ({ params }: TermsPageProps) => {
       {hasRichTextContent(store.cgv) ? (
         <RichText html={store.cgv} />
       ) : (
-        <EmptyState
-          tone="card"
-          icon={<FileTextIcon />}
-          title={t("cgv.noCgv")}
-          description={t("cgv.contactSeller")}
-          action={
-            store.email ? (
-              <Button variant="outline" render={<a href={`mailto:${store.email}`} />}>
-                {t("contact")}
-              </Button>
-            ) : undefined
-          }
+        // No text of the owner's own: the Russian offer, filled from the owner's answers.
+        <RichText
+          html={renderLegalDocument(
+            "rentalOffer",
+            buildOwnerDocumentValues(
+              store.settings?.ownerProfile,
+              { name: store.name, email: store.email, phone: store.phone, address: store.address },
+              getStorefrontUrl(store.slug, "/"),
+            ),
+          )}
         />
       )}
 

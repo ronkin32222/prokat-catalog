@@ -59,6 +59,8 @@ export interface CheckoutFormValues {
   notes: string;
   /** Optional: the request works without one, an empty value becomes a phone placeholder. */
   email: string;
+  /** Consent to personal data and the rental terms: never pre-ticked, required to send. */
+  privacyConsent: boolean;
   /** Item-scope fields: one entry per rented unit, keyed by `toUnitKey(lineId, unitIndex)`. */
   itemDetails: Record<string, RentalUnitFormValues>;
 }

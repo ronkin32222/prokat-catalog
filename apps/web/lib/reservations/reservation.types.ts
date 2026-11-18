@@ -57,6 +57,11 @@ export type CreateReservationRequest = CreateReservationInput & {
    * rental terms, which signs the contract; the IP is recorded with it.
    */
   termsAcceptedFromIp?: string;
+  /**
+   * Server-only: the version of the personal data consent the web checkout showed.
+   * Recorded in the reservation creation activity (metadata), with the time and IP.
+   */
+  privacyConsentVersion?: string;
 };
 
 /** A quote prices the same cart without a customer, amounts or notes. */
@@ -72,6 +77,7 @@ export type QuoteReservationRequest = Omit<
   | "marketplaceSecret"
   | "customerSignedIn"
   | "termsAcceptedFromIp"
+  | "privacyConsentVersion"
   | "customerFields"
   | "itemDetails"
   | "profileFields"

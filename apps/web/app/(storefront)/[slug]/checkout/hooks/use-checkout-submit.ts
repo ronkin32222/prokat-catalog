@@ -130,7 +130,8 @@ export const useCheckoutSubmit = ({
         checkoutFields,
       });
 
-      const result = await createReservation(payload);
+      // The consent is checked and recorded by the server action, not sent as a reservation field.
+      const result = await createReservation({ ...payload, privacyConsent: values.privacyConsent });
       if (!result.success) {
         throw new SubmitError(
           result.error,

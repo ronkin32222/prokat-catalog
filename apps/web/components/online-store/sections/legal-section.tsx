@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 import { Button, Tabs, TabsList, TabsPanel, TabsTab, toastManager } from "@louez/ui";
 import { AccentSparklesIcon, ExternalLinkIcon } from "@louez/ui/icons";
@@ -10,7 +10,8 @@ import { AccentSparklesIcon, ExternalLinkIcon } from "@louez/ui/icons";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { withForm } from "@/hooks/form/form";
 import { useStorefrontUrl } from "@/hooks/use-storefront-url";
-import { getCgvTemplate, getLegalNoticeTemplate } from "@/lib/legal-templates";
+import { renderLegalDocument } from "@/lib/legal-templates";
+import { buildOwnerDocumentValues } from "@/lib/owner-profile/owner-document-values";
 
 import { PanelGroup } from "../panel/panel-group";
 import { PanelSwitchRow } from "../panel/panel-switch-row";
@@ -37,17 +38,22 @@ export const LegalSection = withForm({
   ...onlineStoreFormOptions,
   props: onlineStoreSectionProps<OnlineStoreSectionProps>(),
   render: ({ form, store }) => {
-    const locale = useLocale();
     const t = useTranslations("dashboard.settings.legalSettings");
     const tOnline = useTranslations("dashboard.onlineStore.legal");
     const { getAbsoluteUrl } = useStorefrontUrl(store.slug);
     const [activeTab, setActiveTab] = useState<LegalTab>("cgv");
 
+    const documentValues = buildOwnerDocumentValues(
+      store.settings?.ownerProfile,
+      { name: store.name, email: store.email, phone: store.phone, address: store.address },
+      getAbsoluteUrl("/"),
+    );
+
     const applyTemplate = () => {
       if (activeTab === "cgv") {
-        form.setFieldValue("legal.cgv", getCgvTemplate(locale));
+        form.setFieldValue("legal.cgv", renderLegalDocument("rentalOffer", documentValues));
       } else {
-        form.setFieldValue("legal.legalNotice", getLegalNoticeTemplate(locale));
+        form.setFieldValue("legal.legalNotice", renderLegalDocument("privacyPolicy", documentValues));
       }
       toastManager.add({
         title: t("templateApplied"),

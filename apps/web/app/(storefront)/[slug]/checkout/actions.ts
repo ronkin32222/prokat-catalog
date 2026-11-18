@@ -14,6 +14,7 @@ import {
 } from "@louez/validations";
 
 import { log } from "@/lib/evlog";
+import { PRIVACY_CONSENT_VERSION } from "@/lib/legal-templates";
 import { getClientIp } from "@/lib/request";
 import { getTulipCoverageSummary } from "@/lib/integrations/tulip/contracts";
 import {
@@ -230,7 +231,12 @@ export type CreateReservationActionResult =
  * `details` on failure, `success` plus ids and URLs otherwise.
  */
 export async function createReservation(input: unknown): Promise<CreateReservationActionResult> {
-  const parsed = createReservationInputSchema.safeParse(input);
+  if (!input || typeof input !== "object") return { error: "errors.invalidData" };
+  // The consent is not part of the reservation schema: it is taken out here, checked, and recorded.
+  const { privacyConsent, ...body } = input as Record<string, unknown>;
+  if (privacyConsent !== true) return { error: "errors.invalidData" };
+
+  const parsed = createReservationInputSchema.safeParse(body);
   if (!parsed.success) {
     return { error: "errors.invalidData" };
   }
@@ -240,6 +246,7 @@ export async function createReservation(input: unknown): Promise<CreateReservati
     source: "online",
     customerSignedIn: false,
     termsAcceptedFromIp: getClientIp(await headers()),
+    privacyConsentVersion: PRIVACY_CONSENT_VERSION,
   });
 
   if (!result.ok) {

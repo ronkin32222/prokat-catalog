@@ -120,6 +120,16 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     navigation: true,
   },
   {
+    id: "documents",
+    href: "/dashboard/settings/documents",
+    icon: FileTextIcon,
+    labelPath: "dashboard.settings.documents.title",
+    descriptionPath: "dashboard.settings.documents.description",
+    searchPaths: ["dashboard.settings.documents"],
+    group: "store",
+    navigation: true,
+  },
+  {
     id: "contact",
     href: "/online-store/contact",
     icon: MailIcon,
@@ -177,7 +187,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.taxes.description",
     searchPaths: ["dashboard.settings.taxes"],
     group: "rental",
-    navigation: true,
+    navigation: false,
   },
   {
     id: "invoicing",
@@ -188,7 +198,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     searchPaths: ["dashboard.settings.invoicing"],
     requiresElectronicInvoicing: true,
     group: "rental",
-    navigation: true,
+    navigation: false,
   },
   {
     id: "delivery",
@@ -198,7 +208,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.delivery.description",
     searchPaths: ["dashboard.settings.delivery"],
     group: "rental",
-    navigation: true,
+    navigation: false,
   },
   {
     id: "inspections",
@@ -248,7 +258,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.settings.reviewBooster.description",
     searchPaths: ["dashboard.settings.reviewBooster"],
     group: "communication",
-    navigation: true,
+    navigation: false,
   },
   {
     id: "integrations",
@@ -268,7 +278,7 @@ export const SETTINGS_NAVIGATION_ITEMS: SettingsNavigationItem[] = [
     descriptionPath: "dashboard.referrals.description",
     searchPaths: ["dashboard.referrals"],
     group: "communication",
-    navigation: true,
+    navigation: false,
     // The rewards are credits on Louez's own billing (maybeGrantReferrerReward).
     requiresLegacyBilling: true,
   },

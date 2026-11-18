@@ -22,6 +22,7 @@ export const CHECKOUT_DEFAULT_VALUES: CheckoutFormValues = {
   phone: "",
   notes: "",
   email: "",
+  privacyConsent: false,
   itemDetails: {},
 };
 
@@ -48,6 +49,9 @@ export const createCheckoutValidator = (
       notes: z.string().max(2000),
       // Optional: an empty value becomes a phone-based placeholder server-side.
       email: z.union([z.literal(""), z.email(t("errors.invalidEmail"))]),
+      privacyConsent: z
+        .boolean()
+        .refine((value) => value, "Без согласия на обработку персональных данных заявку не отправить"),
       // Lenient on purpose: a unit only holds the keys the customer touched.
       itemDetails: z.record(
         z.string(),

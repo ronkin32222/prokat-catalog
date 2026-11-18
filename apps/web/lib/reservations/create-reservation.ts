@@ -1107,6 +1107,13 @@ const writeReservation = async (
           advisorConversationId: prepared.advisorConversation.id,
         }),
         ...(resumed && { supersedes: resumed.id }),
+        ...(request.privacyConsentVersion && {
+          privacyConsent: {
+            policyVersion: request.privacyConsentVersion,
+            acceptedAt: new Date().toISOString(),
+            ip: request.termsAcceptedFromIp ?? null,
+          },
+        }),
       },
       // Whole seconds, as a status change stores its row: a failed payment
       // session can cancel this checkout in the same second.

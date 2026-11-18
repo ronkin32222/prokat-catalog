@@ -350,6 +350,39 @@ export interface StoreSettings {
   customerProfile?: CustomerProfileSettings;
   /** Order and width of the Louez fields in the customer form layout. */
   customerFormLayout?: CustomerFormLayout;
+  /** Who runs the store, for the documents (policy, offer, consent). Russian store owners. */
+  ownerProfile?: OwnerProfile;
+}
+
+/** «Кто вы» for the Russian documents: the owner's legal identity, stored in `settings`. */
+export type OwnerKind = "self_employed" | "ip" | "ooo" | "individual";
+
+export interface OwnerBankDetails {
+  bankName?: string | null;
+  bik?: string | null;
+  account?: string | null;
+  corrAccount?: string | null;
+}
+
+export interface OwnerProfile {
+  kind: OwnerKind;
+  /** ФИО for a sole trader, self-employed or private person. */
+  fullName?: string | null;
+  /** Полное наименование, ООО only. */
+  organizationName?: string | null;
+  /** ФИО руководителя, ООО only. */
+  directorName?: string | null;
+  inn?: string | null;
+  /** ОГРН (ООО, 13 digits) or ОГРНИП (ИП, 15 digits). */
+  ogrn?: string | null;
+  address?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  siteUrl?: string | null;
+  bank?: OwnerBankDetails | null;
+  /** Who answers for personal data and receives requests; empty = the owner, store e-mail. */
+  dataController?: { name?: string | null; email?: string | null } | null;
+  updatedAt?: string | null;
 }
 
 // ============================================================================

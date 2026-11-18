@@ -23,6 +23,7 @@ import {
   sendMaxMessage,
   maskToken,
 } from "@/lib/notifications/messengers";
+import { MESSENGER_EVENT_ITEMS, type MessengerEventKey } from "./messenger-events";
 
 // Language name mapping for display
 const LANGUAGE_NAMES = localeNames;
@@ -295,6 +296,38 @@ export async function sendTestMessengerMessage(kind: MessengerKind) {
       ? await sendTelegramMessage(messenger.botToken, messenger.chatId, text)
       : await sendMaxMessage(messenger.botToken, messenger.chatId, text);
   if (!result.ok) return { error: result.error || "Сообщение не отправлено" };
+  return { success: true };
+}
+
+/** Переключатель события: одновременно для Telegram и MAX. */
+export async function setMessengerEventEnabled(event: MessengerEventKey, enabled: boolean) {
+  const store = await getCurrentStore();
+  if (!store) return { error: "errors.unauthorized" };
+
+  if (!hasPermission(store.role, "manage_settings")) {
+    return { error: "errors.permissionDenied" };
+  }
+  if (!MESSENGER_EVENT_ITEMS.some((item) => item.key === event)) {
+    return { error: "errors.invalid" };
+  }
+
+  const current: NotificationSettings = {
+    ...DEFAULT_NOTIFICATION_SETTINGS,
+    ...store.notificationSettings,
+  };
+  const events: NotificationSettings = { ...current };
+  events[event] = { ...current[event], telegram: enabled, max: enabled };
+
+  await db
+    .update(stores)
+    .set({ notificationSettings: events, updatedAt: new Date() })
+    .where(eq(stores.id, store.id));
+
+  notifyNotificationSettingsUpdated({ id: store.id, name: store.name, slug: store.slug }).catch(
+    () => {},
+  );
+
+  revalidatePath("/dashboard/settings/notifications");
   return { success: true };
 }
 
