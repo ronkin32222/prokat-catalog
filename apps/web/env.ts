@@ -95,7 +95,7 @@ export const env = createEnv({
 
     // ===== SMS (Required for SMS notifications) =====
     SMS_PROVIDER: z.enum(["smspartner", "twilio", "vonage"]).default("smspartner"),
-    SMS_DEFAULT_SENDER: z.string().default("Louez"),
+    SMS_DEFAULT_SENDER: z.string().default("Prokat"),
     SMS_PARTNER_API_KEY: z.string().optional(),
 
     // ===== Google Places (Required for address search) =====

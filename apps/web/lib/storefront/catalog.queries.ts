@@ -2,7 +2,21 @@ import "server-only";
 
 import { cache } from "react";
 
-import { and, asc, eq, exists, gte, inArray, like, ne, notExists, or, sql } from "drizzle-orm";
+import {
+  and,
+  asc,
+  eq,
+  exists,
+  gt,
+  gte,
+  inArray,
+  like,
+  lte,
+  ne,
+  notExists,
+  or,
+  sql,
+} from "drizzle-orm";
 import { z } from "zod";
 
 import { getStorefrontAvailability } from "@louez/api/services";
@@ -10,7 +24,11 @@ import { getStorefrontAvailability } from "@louez/api/services";
 import {
   categories,
   db,
+  BLOCKING_RESERVATION_STATUSES,
   effectiveProductQuantitySql,
+  reservationAvailabilityEndSql,
+  reservationItems,
+  reservations,
   productAccessories,
   productCategories,
   productPricingTiers,
@@ -945,3 +963,81 @@ export const loadCatalogProducts = async ({
     totalCount,
   };
 };
+
+export interface CatalogRelease {
+  id: string;
+  name: string;
+  slug: string | null;
+  images: string[] | null;
+  price: string;
+  description: string | null;
+  /** When the first booked unit comes back, ISO. */
+  releaseAt: string;
+}
+
+/**
+ * Products that are fully rented out right now, with the moment their first
+ * booked unit comes back. Reads booked dates only, never customers.
+ */
+export const loadCatalogReleases = cache(
+  async (storeId: string, now: Date = new Date()): Promise<CatalogRelease[]> => {
+    const booked = await db
+      .select({
+        productId: reservationItems.productId,
+        quantity: sql<number>`SUM(${reservationItems.quantity})`.mapWith(Number),
+        releaseAt: sql<Date>`MIN(${reservationAvailabilityEndSql()})`.mapWith(reservations.endDate),
+      })
+      .from(reservationItems)
+      .innerJoin(reservations, eq(reservations.id, reservationItems.reservationId))
+      .where(
+        and(
+          eq(reservations.storeId, storeId),
+          inArray(reservations.status, [...BLOCKING_RESERVATION_STATUSES]),
+          lte(reservations.startDate, now),
+          gt(reservationAvailabilityEndSql(), now),
+          eq(reservationItems.isCustomItem, false),
+        ),
+      )
+      .groupBy(reservationItems.productId);
+
+    const bookedById = new Map(
+      booked.flatMap((row) => (row.productId ? [[row.productId, row] as const] : [])),
+    );
+    if (bookedById.size === 0) return [];
+
+    const rows = await db
+      .select({
+        id: products.id,
+        name: products.name,
+        slug: products.slug,
+        images: products.images,
+        price: products.price,
+        description: products.description,
+        stockKind: products.stockKind,
+        stock: effectiveProductQuantitySql(),
+      })
+      .from(products)
+      .where(and(activeProductsOf(storeId), inArray(products.id, [...bookedById.keys()])));
+
+    return rows
+      .flatMap((row): CatalogRelease[] => {
+        const entry = bookedById.get(row.id);
+        if (!entry || row.stockKind === "untracked" || row.stock == null) return [];
+        // Fully out only: every bookable unit is held until the release moment.
+        if (entry.quantity < row.stock) return [];
+        return [
+          {
+            id: row.id,
+            name: row.name,
+            slug: row.slug,
+            images: row.images,
+            price: row.price,
+            description: row.description,
+            releaseAt: entry.releaseAt.toISOString(),
+          },
+        ];
+      })
+      .sort((a, b) => a.releaseAt.localeCompare(b.releaseAt))
+      .slice(0, 8);
+  },
+);

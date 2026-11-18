@@ -1,5 +1,5 @@
 // The name each assistant gives the connector, the same in every language.
-export const CONNECTOR_NAME = "Louez";
+export const CONNECTOR_NAME = "Каталог проката";
 
 /** Claude.ai's "Add custom connector" form, filled with Louez's name and address. */
 export const claudeConnectorLink = (mcpUrl: string) => {

@@ -46,6 +46,8 @@ interface CategoryBrowseGridProps {
   showTitle?: boolean;
   /** Client-side selection, for entries without an `href`. */
   onSelect?: (categoryId: string) => void;
+  /** `showcase`: dark photo tiles in four columns, number and name only (the home page). */
+  variant?: "default" | "showcase";
   className?: string;
 }
 
@@ -59,19 +61,23 @@ const VARIANT_ICON = {
 const tileClassName =
   "dark group flex h-full w-full flex-col gap-2 overflow-hidden rounded-lg border bg-card text-left text-card-foreground outline-none transition-transform duration-200 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none";
 
+const showcaseTileClassName =
+  "dark group relative flex aspect-4/5 w-full overflow-hidden rounded-lg border bg-card text-card-foreground outline-none transition-transform duration-200 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none";
+
 interface CategoryTileProps {
   entry: CategoryBrowseEntry;
   onSelect?: (categoryId: string) => void;
+  className?: string;
   children: ReactNode;
 }
 
-const CategoryTile = ({ entry, onSelect, children }: CategoryTileProps) =>
+const CategoryTile = ({ entry, onSelect, className = tileClassName, children }: CategoryTileProps) =>
   entry.href ? (
-    <StorefrontLink href={entry.href} className={tileClassName}>
+    <StorefrontLink href={entry.href} className={className}>
       {children}
     </StorefrontLink>
   ) : (
-    <button type="button" onClick={() => onSelect?.(entry.id)} className={tileClassName}>
+    <button type="button" onClick={() => onSelect?.(entry.id)} className={className}>
       {children}
     </button>
   );
@@ -87,11 +93,60 @@ export const CategoryBrowseGrid = ({
   showTotalsOnly = false,
   showTitle = true,
   onSelect,
+  variant = "default",
   className,
 }: CategoryBrowseGridProps) => {
   const t = useTranslations("storefront.availability");
 
   if (entries.length === 0) return null;
+
+  if (variant === "showcase") {
+    return (
+      <ul
+        className={cn("grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4", className)}
+        data-slot="category-browse-grid"
+      >
+        {entries.map((entry, index) => {
+          const Icon = VARIANT_ICON[entry.variant];
+          return (
+            <li key={entry.id} className="flex">
+              <CategoryTile entry={entry} onSelect={onSelect} className={showcaseTileClassName}>
+                {entry.imageUrl ? (
+                  <>
+                    <SharedImage
+                      src={entry.imageUrl}
+                      alt=""
+                      fill
+                      sizes="(max-width: 1023px) 50vw, 25vw"
+                      fallbackIcon={Icon}
+                      containerClassName="absolute inset-0 rounded-none"
+                      className="object-cover motion-safe:transition-[scale] motion-safe:duration-[400ms] motion-safe:ease-out motion-safe:group-hover:scale-[1.04]"
+                    />
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 bg-gradient-to-t from-background via-background/35 to-transparent"
+                    />
+                  </>
+                ) : null}
+                <span
+                  aria-hidden
+                  className="absolute top-4 left-4 font-display text-3xl font-light text-foreground/85"
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
+                  <h3 className="line-clamp-2 font-display text-sm font-extrabold uppercase sm:text-base">
+                    {entry.name}
+                  </h3>
+                  <ArrowUpRightIcon aria-hidden className="size-5 shrink-0 text-primary" />
+                </div>
+              </CategoryTile>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
 
   const showTotals = showTotalsOnly || isAvailabilityLoading;
 

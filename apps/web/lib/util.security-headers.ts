@@ -72,6 +72,7 @@ const buildContentSecurityPolicy = ({
       "https://maps.googleapis.com",
       "https://maps.gstatic.com",
       "https://tiles.openfreemap.org",
+      "https://*.tile.openstreetmap.org",
       "https://gleapjs.com",
       "https://api.gleap.io",
       "https://staticfiles.gleap.io",

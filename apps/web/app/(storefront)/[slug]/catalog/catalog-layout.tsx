@@ -34,7 +34,7 @@ export const CatalogLayout = ({
     <div className="flex flex-col gap-6 lg:flex-row lg:gap-10">
       {showSidebar ? (
         <aside className="hidden w-60 shrink-0 lg:sticky lg:top-20 lg:block lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:overflow-y-auto">
-          <div className="rounded-lg border bg-card p-5">{sidebar}</div>
+          <div className="rounded-xl border bg-card p-5 shadow-sm">{sidebar}</div>
         </aside>
       ) : null}
       <div className="flex min-w-0 flex-1 flex-col gap-4 sm:gap-6">

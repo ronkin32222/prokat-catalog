@@ -1,54 +1,56 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 
-const TESTIMONIALS = [
-  {
-    initials: "АК",
-    name: "Алексей К.",
-    text: "Инструмент выдали быстро, всё чистое и полностью готово к работе.",
-  },
-  {
-    initials: "МС",
-    name: "Мария С.",
-    text: "Помогли подобрать нужную модель и спокойно объяснили условия аренды.",
-  },
-  {
-    initials: "ДВ",
-    name: "Дмитрий В.",
-    text: "Удобно забронировал даты заранее и забрал заказ без очереди.",
-  },
-] as const;
+export interface StoreTestimonial {
+  authorName: string;
+  rating: number;
+  text: string;
+}
 
-/** Static local testimonials; arrows are visual until a real review feed is connected. */
-export const StoreTestimonials = () => (
-  <section id="reviews" className="py-16 sm:py-24" aria-labelledby="testimonials-title">
-    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="mb-10 flex items-center justify-between gap-4">
+interface StoreTestimonialsProps {
+  /** Real reviews of the store, already filtered by the page. Nothing renders when empty. */
+  reviews: StoreTestimonial[];
+}
+
+/** Light band of real reviews; the page passes them from the store's place data. */
+export const StoreTestimonials = ({ reviews }: StoreTestimonialsProps) => {
+  if (reviews.length === 0) return null;
+
+  return (
+    <section
+      id="reviews"
+      className="light border-t bg-background py-16 text-foreground sm:py-20"
+      aria-labelledby="testimonials-title"
+    >
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2
           id="testimonials-title"
-          className="font-display text-3xl font-black tracking-[-0.01em] uppercase sm:text-4xl"
+          className="font-display text-4xl leading-[.95] font-black tracking-[-0.03em] uppercase sm:text-5xl"
         >
           Отзывы клиентов
         </h2>
-        <div aria-hidden className="flex gap-2 text-primary-foreground">
-          <span className="flex size-10 items-center justify-center rounded-full bg-primary">
-            <ChevronLeftIcon className="size-4" />
-          </span>
-          <span className="flex size-10 items-center justify-center rounded-full bg-primary">
-            <ChevronRightIcon className="size-4" />
-          </span>
-        </div>
+        <ul className="mt-10 grid gap-4 md:grid-cols-3">
+          {reviews.map((review, index) => (
+            <li key={index} className="flex flex-col gap-4 rounded-lg border bg-card p-6">
+              <span
+                role="img"
+                aria-label={`Оценка ${review.rating} из 5`}
+                className="flex gap-0.5 text-primary"
+              >
+                {Array.from({ length: 5 }, (_, star) => (
+                  <StarIcon
+                    key={star}
+                    aria-hidden
+                    className="size-4"
+                    fill={star < review.rating ? "currentColor" : "none"}
+                  />
+                ))}
+              </span>
+              <p className="text-sm leading-6 text-card-foreground">{review.text}</p>
+              <p className="mt-auto text-sm font-semibold">{review.authorName}</p>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul className="grid gap-8 md:grid-cols-3">
-        {TESTIMONIALS.map(({ initials, name, text }) => (
-          <li key={name} className="relative border bg-card px-6 pt-12 pb-7 text-center">
-            <span className="font-display absolute -top-7 left-1/2 flex size-14 -translate-x-1/2 items-center justify-center rounded-full bg-primary font-extrabold text-primary-foreground">
-              {initials}
-            </span>
-            <h3 className="font-display font-extrabold uppercase">{name}</h3>
-            <p className="mt-3 text-sm leading-6 text-muted-foreground">{text}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-);
+    </section>
+  );
+};

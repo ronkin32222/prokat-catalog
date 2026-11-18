@@ -60,7 +60,7 @@ export function EmailPreview({
           <div className="flex gap-2">
             <span className="text-muted-foreground w-12">De:</span>
             <span className="font-medium">
-              {storeName} &lt;{storeEmail || "noreply@louez.io"}&gt;
+              {storeName} &lt;{storeEmail || "noreply@example.ru"}&gt;
             </span>
           </div>
           <div className="flex gap-2">
@@ -120,9 +120,6 @@ export function EmailPreview({
             <p className="text-xs font-medium text-gray-700">{storeName}</p>
             {storeAddress && <p className="text-xs text-gray-500">{storeAddress}</p>}
             {storeEmail && <p className="text-xs text-gray-500">{storeEmail}</p>}
-            <p className="text-[10px] text-gray-400 mt-3">
-              Propulsé par <span className="text-primary font-medium">Louez.io</span>
-            </p>
           </div>
         </div>
       </div>
@@ -421,7 +418,7 @@ export function EmailPreviewCompact({
 
           {/* Footer */}
           <div className="bg-gray-50 px-4 py-2 border-t text-center">
-            <p className="text-[10px] text-gray-400">{storeName} • Propulsé par Louez.io</p>
+            <p className="text-[10px] text-gray-400">{storeName}</p>
           </div>
         </div>
       </div>

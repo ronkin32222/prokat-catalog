@@ -25,6 +25,7 @@ interface ProductGridProps {
   /** Server availability per product id, for the period. */
   availabilityByProductId?: ReadonlyMap<string, ProductCardAvailability>;
   className?: string;
+  variant?: "default" | "catalog";
 }
 
 /**
@@ -37,6 +38,7 @@ export const ProductGrid = ({
   period,
   availabilityByProductId,
   className,
+  variant,
 }: ProductGridProps) => {
   const quickAdd = useQuickAdd();
   const queryClient = useQueryClient();
@@ -81,6 +83,7 @@ export const ProductGrid = ({
       period={period}
       availabilityByProductId={availabilityByProductId}
       className={className}
+      variant={variant}
       onQuickAdd={(product, limit, selectedPeriod) =>
         quickAdd.start(product, limit, selectedPeriod)
       }

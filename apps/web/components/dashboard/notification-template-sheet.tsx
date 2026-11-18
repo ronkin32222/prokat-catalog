@@ -860,7 +860,7 @@ export function NotificationTemplateSheet({
                       <div className="flex gap-2">
                         <span className="text-muted-foreground w-10">De:</span>
                         <span className="font-medium truncate">
-                          {store.name} &lt;{store.email || "noreply@louez.io"}&gt;
+                          {store.name} &lt;{store.email || "noreply@example.ru"}&gt;
                         </span>
                       </div>
                       <div className="flex gap-2">
@@ -927,7 +927,7 @@ export function NotificationTemplateSheet({
                       {/* Footer */}
                       <div className="bg-gray-50 dark:bg-muted/50 px-4 py-3 border-t text-center">
                         <p className="text-[10px] text-gray-500 dark:text-muted-foreground">
-                          {store.name} • Propulsé par Louez.io
+                          {store.name}
                         </p>
                       </div>
                     </div>

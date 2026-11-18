@@ -24,7 +24,7 @@ export const AdvisorScene = ({ visible }: { visible: boolean }) => {
         modal={false}
         isOpen={open && visible}
         onClose={() => setOpen(false)}
-        displayName="Louez IA"
+        displayName="Помощник"
         intent={null}
         onIntentConsumed={() => {}}
         messages={messages}

@@ -18,7 +18,7 @@ import { cn } from "@louez/utils";
 
 const PRESET_COLORS = [
   "#C9A24B",
-  "#10B981",
+  "#E8BE91",
   "#F59E0B",
   "#EF4444",
   "#8B5CF6",

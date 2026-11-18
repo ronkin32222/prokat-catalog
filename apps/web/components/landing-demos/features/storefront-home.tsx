@@ -16,7 +16,6 @@ import { HomeInventoryView } from "@/components/storefront/home/home-inventory-v
 import { HomePeriodSearchView } from "@/components/storefront/home/home-period-search-view";
 import { StoreHero } from "@/components/storefront/home/store-hero";
 import { StoreLocationView } from "@/components/storefront/home/store-location-view";
-import { StoreReassurance } from "@/components/storefront/home/store-reassurance";
 import { ProductGridView } from "@/components/storefront/product/product-grid-view";
 import { AnnouncementBar } from "@/components/storefront/shell/announcement-bar";
 import { HeaderSearchCapsuleView } from "@/components/storefront/shell/header-search-capsule-view";
@@ -103,13 +102,7 @@ export const StorefrontHomeScene = ({ period: initialPeriod }: FeatureSceneProps
         />
         <main className="pb-[env(safe-area-inset-bottom,0px)]">
           <StoreHero
-            name={shop.name}
-            tagline={shop.tagline}
-            description={null}
-            backgroundImages={shop.heroImages}
-            shape="cover"
-            align="center"
-            verticalAlign="center"
+            photo={shop.heroImages[0] ?? null}
             badges={
               <>
                 <StoreStatusBadge
@@ -124,13 +117,6 @@ export const StorefrontHomeScene = ({ period: initialPeriod }: FeatureSceneProps
                 />
                 <GoogleRatingPill rating={shop.rating} reviewCount={shop.reviewCount} href={null} />
               </>
-            }
-            footer={
-              <StoreReassurance
-                items={shop.reassurance}
-                tone="onPhoto"
-                className="justify-center"
-              />
             }
           >
             <HomePeriodSearchView

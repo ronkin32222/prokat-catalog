@@ -120,7 +120,7 @@ export function TulipProductMappingSection({
   const tulipItems = useMemo(
     () =>
       tulipProducts.map((tp) => ({
-        label: tp.louezManaged ? `${tp.title} (Louez)` : tp.title,
+        label: tp.louezManaged ? `${tp.title}` : tp.title,
         value: tp.id,
         brand: tp.brand,
         model: tp.model,

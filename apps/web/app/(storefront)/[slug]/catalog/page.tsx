@@ -13,6 +13,7 @@ import {
   loadCatalogCategories,
   loadCatalogPriceIndex,
   loadCatalogProducts,
+  loadCatalogReleases,
   parseCatalogSearchParams,
 } from "@/lib/storefront/catalog.queries";
 import { getStoreBySlug } from "@/lib/storefront/get-store-by-slug";
@@ -141,7 +142,7 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
   // Downstream the category is always an id; only the URL speaks in slugs.
   const filters = category ? { ...urlFilters, category: category.id } : urlFilters;
 
-  const [t, tBrowse, page, priceIndex, attributeAxes] = await Promise.all([
+  const [t, tBrowse, page, priceIndex, attributeAxes, releases] = await Promise.all([
     getTranslations("storefront.catalog"),
     getTranslations("storefront.availability.categoryBrowse"),
     loadCatalogProducts({
@@ -160,6 +161,7 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
     }),
     loadCatalogPriceIndex(store.id, filters.startDate, filters.endDate, store.settings?.timezone),
     loadCatalogAttributeAxes(store.id),
+    loadCatalogReleases(store.id),
   ]);
 
   const rules: RentalPeriodRules = {
@@ -241,8 +243,13 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
               Каталог проката
             </p>
             <h1 className="mt-3 max-w-4xl font-display text-4xl leading-[.95] font-black tracking-[-0.04em] uppercase sm:text-6xl">
-              {store.name}
+              Строительный инструмент
             </h1>
+            {store.tagline || store.description ? (
+              <p className="mt-4 max-w-2xl text-sm text-foreground/75 sm:text-base">
+                {store.tagline || store.description}
+              </p>
+            ) : null}
           </div>
         </section>
         <CatalogBrowser
@@ -255,6 +262,7 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
           priceBounds={priceIndex.bounds}
           filters={filters}
           initialPage={page}
+          releases={releases}
           initialDataUpdatedAt={Date.now()}
         />
       </div>

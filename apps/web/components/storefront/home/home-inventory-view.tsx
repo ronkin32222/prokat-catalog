@@ -1,10 +1,9 @@
 import type { ReactNode } from "react";
 
-import { useTranslations } from "next-intl";
+import { ArrowUpRightIcon } from "lucide-react";
 
-import { SectionHeader } from "@/components/storefront/ui/section-header";
+import { HOME_COPY } from "@/components/storefront/home/home-copy";
 import { StorefrontLink } from "@/components/storefront/ui/storefront-link";
-import { StorefrontSection } from "@/components/storefront/ui/storefront-section";
 
 interface HomeInventoryViewProps {
   kind: "categories" | "products";
@@ -12,26 +11,44 @@ interface HomeInventoryViewProps {
   linkPrefetch?: boolean;
 }
 
-/** Shared home section; its caller supplies the server-backed or local grid. */
+/** Light home section with an eyebrow, a big title and a link into the catalog. */
 export const HomeInventoryView = ({ kind, children, linkPrefetch }: HomeInventoryViewProps) => {
-  const t = useTranslations("storefront");
+  const copy = HOME_COPY[kind];
+  const titleId = `home-${kind}-title`;
 
   return (
-    <StorefrontSection aria-labelledby="home-inventory-title" className="py-16 sm:py-24">
-      <SectionHeader
-        id="home-inventory-title"
-        title={kind === "categories" ? "Весь спектр оборудования" : "Актуальные позиции"}
-        action={
+    <section
+      aria-labelledby={titleId}
+      className={
+        kind === "products"
+          ? "light border-t bg-background py-16 text-foreground sm:py-20"
+          : "light bg-background py-16 text-foreground sm:py-20"
+      }
+    >
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="font-display text-xs font-light tracking-[0.4em] text-muted-foreground uppercase">
+              {copy.eyebrow}
+            </p>
+            <h2
+              id={titleId}
+              className="mt-3 font-display text-4xl leading-[.95] font-black tracking-[-0.03em] uppercase sm:text-5xl"
+            >
+              {copy.title}
+            </h2>
+          </div>
           <StorefrontLink
             href="/catalog"
             prefetch={linkPrefetch}
-            className="inline-flex min-h-11 items-center border-b border-foreground text-xs font-semibold uppercase transition-colors hover:text-primary"
+            className="inline-flex min-h-11 items-center gap-2 border-b border-foreground text-sm font-semibold transition-colors hover:text-primary"
           >
-            {t("home.viewAll")}
+            {copy.action}
+            <ArrowUpRightIcon aria-hidden className="size-4" />
           </StorefrontLink>
-        }
-      />
-      {children}
-    </StorefrontSection>
+        </div>
+        <div className="mt-10">{children}</div>
+      </div>
+    </section>
   );
 };

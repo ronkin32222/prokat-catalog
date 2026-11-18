@@ -26,6 +26,7 @@ export interface ProductGridViewProps {
   onProductHover?: (product: StorefrontCatalogProduct, limit: number | null | undefined) => void;
   onProductLeave?: () => void;
   onProductFocus?: (product: StorefrontCatalogProduct, limit: number | null | undefined) => void;
+  variant?: "default" | "catalog";
 }
 
 export const ProductGridView = ({
@@ -38,6 +39,7 @@ export const ProductGridView = ({
   onProductHover,
   onProductLeave,
   onProductFocus,
+  variant,
 }: ProductGridViewProps) => {
   return (
     <ul className={cn(productGridClassName, className)} data-slot="product-grid">
@@ -60,6 +62,7 @@ export const ProductGridView = ({
               period={period}
               availability={availability}
               priority={index < PRODUCT_GRID_PRIORITY_COUNT}
+              variant={variant}
               onQuickAdd={
                 quickAddLimit !== undefined
                   ? () => onQuickAdd(product, quickAddLimit, period ?? null)

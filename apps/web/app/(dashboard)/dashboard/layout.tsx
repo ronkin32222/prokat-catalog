@@ -212,7 +212,7 @@ export default async function DashboardMainLayout({ children }: { children: Reac
                 <PasskeyEnrollment />
                 <SettingsSearchFocus />
                 {/* Self-hosted instances only: the cloud never asks. */}
-                {isSelfHosted() && <StarPrompt />}
+                {false && isSelfHosted() && <StarPrompt />}
               </Suspense>
             </div>
           </ReservationPollingProvider>

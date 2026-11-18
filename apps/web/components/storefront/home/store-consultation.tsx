@@ -1,18 +1,18 @@
-/** Visual lead form; submission continues on the existing contact page. */
+/** Dark consultation block: phone, name and button in one row. Submission continues on the contact page. */
 export const StoreConsultation = () => (
-  <section className="px-4 py-8 sm:px-6 sm:py-14 lg:px-8" aria-labelledby="consultation-title">
-    <div className="storefront-concrete mx-auto max-w-7xl rounded-sm border px-5 py-10 sm:px-10 lg:px-14">
-      <div className="grid gap-5 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+  <section className="light bg-background px-4 py-8 sm:px-6 sm:py-12 lg:px-8" aria-labelledby="consultation-title">
+    <div className="dark mx-auto max-w-7xl rounded-2xl bg-background px-6 py-10 text-foreground sm:px-10 lg:px-14">
+      <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr] lg:items-end">
         <div>
+          <p className="font-display text-xs font-light tracking-[0.4em] text-primary uppercase">
+            Нужна консультация?
+          </p>
           <h2
             id="consultation-title"
-            className="font-display text-3xl font-black tracking-[-0.01em] uppercase sm:text-4xl"
+            className="mt-3 font-display text-2xl leading-tight font-extrabold uppercase sm:text-3xl"
           >
-            Консультация
+            Поможем подобрать инструмент под вашу задачу
           </h2>
-          <p className="mt-3 max-w-md text-sm text-muted-foreground">
-            Оставьте контакты — поможем выбрать подходящую позицию и рассчитать срок аренды.
-          </p>
         </div>
         <form action="contact" method="get" className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
           <label className="sr-only" htmlFor="consultation-phone">
@@ -44,7 +44,7 @@ export const StoreConsultation = () => (
           </button>
         </form>
       </div>
-      <p className="mt-5 text-center text-xs text-muted-foreground">
+      <p className="mt-5 text-center text-xs text-muted-foreground sm:text-left">
         Нажимая кнопку, вы соглашаетесь на обработку персональных данных.
       </p>
     </div>

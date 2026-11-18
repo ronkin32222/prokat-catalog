@@ -101,7 +101,9 @@ export const StoreMap = ({
       ref={containerRef}
       role="region"
       aria-label={`Карта: ${storeName}`}
-      className={cn("h-full min-h-full w-full", className)}
+      // isolate: Leaflet's panes (z-index up to 1000) stay inside the map and
+      // cannot paint over the sticky store header.
+      className={cn("isolate relative h-full min-h-full w-full", className)}
       data-slot="store-map"
     />
   );

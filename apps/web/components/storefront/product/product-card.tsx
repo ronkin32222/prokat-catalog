@@ -39,6 +39,8 @@ interface ProductCardBaseProps {
   availability?: ProductCardAvailability | null;
   /** Above the fold: the first four cards of a grid. */
   priority?: boolean;
+  /** `catalog`: the light listing card of the catalog page. */
+  variant?: "default" | "catalog";
   className?: string;
 }
 
@@ -68,8 +70,10 @@ export const ProductCard = ({
   availability,
   onQuickAdd,
   priority = false,
+  variant = "default",
   className,
 }: ProductCardProps) => {
+  const isCatalog = variant === "catalog";
   const t = useTranslations("storefront.product");
   const formatMoney = useFormatMoney();
   const pricing = useProductCardPricing(product, period);
@@ -87,6 +91,7 @@ export const ProductCard = ({
 
   const shellClassName = cn(
     "relative flex h-full flex-col gap-3 rounded-lg border bg-card text-left outline-none",
+    isCatalog && "rounded-xl shadow-sm",
     // Browsing: the hairline of the resting card darkens under the pointer.
     // No elevation — the image zoom below is what answers the hover. The ring
     // follows the title link, the only thing here a keyboard can focus.
@@ -104,7 +109,12 @@ export const ProductCard = ({
       {/* Inset image: a frame of card around it, its radius concentric with
           the card's own (outer radius = inner radius + padding). */}
       <div className="p-1 pb-0">
-        <div className="relative aspect-square overflow-hidden rounded-md border bg-muted">
+        <div
+          className={cn(
+            "relative aspect-square overflow-hidden rounded-md border",
+            isCatalog ? "bg-background" : "bg-muted",
+          )}
+        >
           <ProductImage
             src={product.images?.[0] || "/demo/tool-placeholder.svg"}
             alt={product.name}
@@ -166,6 +176,9 @@ export const ProductCard = ({
             </StorefrontLink>
           )}
         </h3>
+        {isCatalog && product.description ? (
+          <p className="line-clamp-1 text-xs text-muted-foreground">{product.description}</p>
+        ) : null}
         <Price
           amount={pricing.amount}
           compareAt={pricing.compareAt}
@@ -183,7 +196,11 @@ export const ProductCard = ({
 
       {onQuickAdd ? (
         <div className="px-4 pb-4">
-          <QuickAddButton label="Арендовать" onClick={onQuickAdd} />
+          <QuickAddButton
+            label="Арендовать"
+            onClick={onQuickAdd}
+            className={isCatalog ? "bg-foreground text-background hover:bg-foreground/90" : undefined}
+          />
         </div>
       ) : null}
 

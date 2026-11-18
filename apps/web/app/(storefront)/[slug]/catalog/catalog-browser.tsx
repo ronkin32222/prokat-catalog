@@ -4,14 +4,18 @@ import { useMemo } from "react";
 
 import { hashKey, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { PackageIcon, SearchIcon } from "lucide-react";
 
 import { Button } from "@louez/ui";
 import { cn } from "@louez/utils";
 
+import { RentalPeriodPicker } from "@/components/storefront/date-picker/rental-period-picker";
 import { PageTracker } from "@/components/storefront/page-tracker";
 import { ProductGrid } from "@/components/storefront/product/product-grid";
 import { ProductGridSkeleton } from "@/components/storefront/product/product-grid-skeleton";
 import { useProductCardAvailability } from "@/components/storefront/product/use-product-card-availability";
+import { StorefrontLink } from "@/components/storefront/ui/storefront-link";
+import { StorefrontSection } from "@/components/storefront/ui/storefront-section";
 import { useStore } from "@/contexts/store-context";
 import { catalogQueries } from "@/lib/queries/catalog.queries";
 import { useStorefrontSearch } from "@/contexts/storefront-search-context";
@@ -22,6 +26,7 @@ import type {
   CatalogCategory,
   CatalogPriceBounds,
   CatalogProductsPage,
+  CatalogRelease,
 } from "@/lib/storefront/catalog.queries";
 import {
   CLEAR_CATALOG_FILTERS_PATCH,
@@ -35,6 +40,7 @@ import type { RentalPeriodRules } from "@/lib/utils/util.rental-period";
 import { CatalogActiveFilters } from "./catalog-active-filters";
 import { CatalogEmptyState } from "./catalog-empty-state";
 import { CatalogLayout } from "./catalog-layout";
+import { CatalogReleaseCard } from "./catalog-release-card";
 import { CatalogSidebar } from "./catalog-sidebar";
 import { useCatalogParams } from "./use-catalog-params";
 import { useCatalogPeriod } from "./use-catalog-period";
@@ -57,6 +63,8 @@ interface CatalogBrowserProps {
   /** The filters the server page answers. */
   filters: CatalogFilters;
   initialPage: CatalogProductsPage;
+  /** Fully rented products and when they come back; the block hides when empty. */
+  releases: CatalogRelease[];
   initialDataUpdatedAt: number;
 }
 
@@ -76,6 +84,7 @@ export const CatalogBrowser = ({
   priceBounds: initialPriceBounds,
   filters: serverFilters,
   initialPage,
+  releases,
   initialDataUpdatedAt,
 }: CatalogBrowserProps) => {
   const t = useTranslations("storefront");
@@ -180,6 +189,43 @@ export const CatalogBrowser = ({
     <>
       <PageTracker page="catalog" categoryId={trackedCategoryId} />
 
+      <StorefrontSection spacing="tight" className="pt-8 sm:pt-10">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+          <form
+            role="search"
+            className="relative min-w-0 flex-1"
+            onSubmit={(event) => {
+              event.preventDefault();
+              const value = new FormData(event.currentTarget).get("search");
+              const term = typeof value === "string" ? value.trim() : "";
+              update({ search: term || null });
+            }}
+          >
+            <SearchIcon
+              aria-hidden
+              className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground"
+            />
+            <input
+              key={search}
+              name="search"
+              type="search"
+              defaultValue={search}
+              aria-label="Поиск по каталогу"
+              placeholder="Поиск по названию или модели..."
+              className="h-12 w-full rounded-lg border bg-card pr-4 pl-11 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            />
+          </form>
+          <div className="shrink-0">
+            <RentalPeriodPicker
+              layout="inline"
+              value={periodValue}
+              onChange={setPeriod}
+              rules={rules}
+            />
+          </div>
+        </div>
+      </StorefrontSection>
+
       <CatalogLayout
         title={title}
         count={count}
@@ -222,7 +268,23 @@ export const CatalogBrowser = ({
           {visibleProducts.length === 0 ? (
             isPending ? (
               <ProductGridSkeleton />
-            ) : query.isError ? null : (
+            ) : query.isError ? null : totalCount === 0 ? (
+              <div
+                data-slot="catalog-no-products"
+                className="flex min-h-32 flex-col items-center justify-center gap-3 rounded-xl border border-dashed bg-card p-6 text-center"
+              >
+                <PackageIcon aria-hidden className="size-8 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  Позиции появятся здесь после публикации
+                </p>
+                <StorefrontLink
+                  href="/contact"
+                  className="inline-flex h-10 items-center rounded-sm bg-foreground px-5 text-sm font-semibold text-background"
+                >
+                  Связаться
+                </StorefrontLink>
+              </div>
+            ) : (
               <CatalogEmptyState
                 search={search}
                 onShowAll={handleShowAll}
@@ -239,6 +301,7 @@ export const CatalogBrowser = ({
               products={visibleProducts}
               period={period}
               availabilityByProductId={availabilityByProductId}
+              variant="catalog"
             />
           )}
 
@@ -253,21 +316,32 @@ export const CatalogBrowser = ({
             </Button>
           ) : null}
         </div>
+        {releases.length > 0 ? (
+          <section
+            aria-labelledby="catalog-releases-title"
+            className="dark flex flex-col gap-5 text-foreground"
+          >
+            <div>
+              <h2
+                id="catalog-releases-title"
+                className="font-display text-2xl font-black uppercase sm:text-3xl"
+              >
+                Скоро освобождаются
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Оборудование, которое будет доступно в ближайшее время
+              </p>
+            </div>
+            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {releases.map((release) => (
+                <li key={release.id} className="flex">
+                  <CatalogReleaseCard release={release} timeZone={rules.timezone} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
       </CatalogLayout>
-
-      <section className="dark border-y bg-background py-10 text-foreground sm:py-12">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="font-display text-xs tracking-[0.4em] text-primary uppercase">
-            Ближайшие возвраты
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-black uppercase sm:text-4xl">
-            Скоро освобождаются
-          </h2>
-          <div className="mt-6 rounded-lg border border-dashed p-6 text-sm text-muted-foreground">
-            Нет позиций с опубликованной датой освобождения.
-          </div>
-        </div>
-      </section>
     </>
   );
 };

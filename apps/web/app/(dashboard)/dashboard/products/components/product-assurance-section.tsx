@@ -200,7 +200,7 @@ export const ProductAssuranceSection = ({
   if (!state.connected) return null;
 
   const tulipItems = state.tulipProducts.map((item) => ({
-    label: item.louezManaged ? `${item.title} (Louez)` : item.title,
+    label: item.louezManaged ? `${item.title}` : item.title,
     value: item.id,
     brand: item.brand,
     model: item.model,
