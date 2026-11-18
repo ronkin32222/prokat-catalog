@@ -227,12 +227,12 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
       <div className="light min-h-dvh bg-background text-foreground">
         <section className="dark relative isolate min-h-72 overflow-hidden border-b text-foreground sm:min-h-80">
           <Image
-            src={store.theme?.heroImages?.[0] ?? "/demo/hero-placeholder.svg"}
+            src={store.theme?.heroImages?.[0] ?? "/demo/hero-drill.webp"}
             alt=""
             fill
             priority
             sizes="100vw"
-            className="-z-20 object-cover"
+            className="-z-20 object-cover object-right"
           />
           <div
             aria-hidden
