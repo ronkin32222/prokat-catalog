@@ -10,6 +10,7 @@ import { Separator } from "@louez/ui";
 
 import { Price } from "@/components/storefront/ui/price";
 import { StorefrontLink } from "@/components/storefront/ui/storefront-link";
+import { ReservationCartReset } from "@/components/storefront/account/reservation-cart-reset";
 import { StorefrontPageRefresh } from "@/components/storefront/ui/storefront-page-refresh";
 import { StorefrontSection } from "@/components/storefront/ui/storefront-section";
 import { defaultLocale } from "@/i18n/config";
@@ -100,6 +101,7 @@ const CheckoutSuccessPage = async ({ params, searchParams }: CheckoutSuccessPage
 
   return (
     <>
+      <ReservationCartReset event="requested" />
       <StorefrontPageRefresh renderedAt={Date.now()} />
       <StorefrontSection
         spacing="tight"
