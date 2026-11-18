@@ -509,6 +509,8 @@ describe("online store procedures (database)", { skip: skipWithoutTestDatabase()
       "updateAppearance",
       {
         primaryColor: "#0A7EA4",
+        templateId: "events",
+        content: { titleStrong: "ПРАЗДНИК" },
         logoUrl: logoDone.url,
         heroImages: [heroDone.url],
         heroLayout: "split",
@@ -518,6 +520,8 @@ describe("online store procedures (database)", { skip: skipWithoutTestDatabase()
     assert.equal(look.appearance.logoUrl, logoDone.url);
     assert.deepEqual(look.appearance.heroImages, [heroDone.url]);
     assert.equal(look.appearance.heroLayout, "split");
+    assert.equal(look.appearance.templateId, "events");
+    assert.equal(look.appearance.content.titleStrong, "ПРАЗДНИК");
     assert.equal(look.appearance.mode, "light");
     assert.equal((events.at(-1) as { themeChanged?: boolean }).themeChanged, false);
 

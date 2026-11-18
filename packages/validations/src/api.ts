@@ -1,6 +1,8 @@
 import { productPromotionSchema } from "./product-promotion";
 import { z } from "zod";
 
+import { siteContentOverridesSchema, siteTemplateIdSchema } from "./store-theme";
+
 import { isValidImageUrl } from "./image";
 
 const dateTimeOrDateSchema = z
@@ -644,6 +646,8 @@ const onlineStoreIdentityInputSchema = z.object({
   theme: z.object({
     mode: z.enum(["light", "dark"]),
     primaryColor: hexColorSchema,
+    templateId: siteTemplateIdSchema.optional(),
+    content: siteContentOverridesSchema.optional(),
   }),
 });
 

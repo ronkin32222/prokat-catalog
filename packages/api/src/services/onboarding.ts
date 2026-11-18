@@ -29,7 +29,7 @@ export async function getOnboardingDraft(params: GetOnboardingDraftParams) {
     store.longitude !== null && store.longitude !== undefined ? Number(store.longitude) : null;
 
   const theme = store.theme;
-  const primaryColor = theme?.primaryColor ?? "#C9A24B";
+  const primaryColor = theme?.templateId ? theme.primaryColor : "#E8BE91";
   const mode = theme?.mode === "dark" ? "dark" : "light";
 
   return {
@@ -48,6 +48,8 @@ export async function getOnboardingDraft(params: GetOnboardingDraftParams) {
       logoUrl: store.logoUrl ?? "",
       primaryColor,
       theme: mode as "light" | "dark",
+      templateId: theme?.templateId ?? "tools",
+      content: theme?.content ?? {},
     },
     stripe: {
       // A Connect account exists but the KYC isn't finished — lets the UI say

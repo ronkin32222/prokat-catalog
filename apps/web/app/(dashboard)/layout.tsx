@@ -9,9 +9,10 @@ export const generateMetadata = async (): Promise<Metadata> => {
   // The tab carries the store's own name and logo, not the product's.
   const store = await getCurrentStore().catch(() => null);
   const name = store?.name ?? "Каталог проката";
+  const icon = store?.faviconUrl || store?.logoUrl;
   return {
     title: { default: `${name} · Админка`, template: `%s · ${name}` },
-    ...(store?.logoUrl ? { icons: { icon: store.logoUrl, apple: store.logoUrl } } : {}),
+    ...(icon ? { icons: { icon, apple: icon } } : {}),
     manifest: "/manifest.webmanifest",
     appleWebApp: { capable: true, title: name, statusBarStyle: "default" },
   };

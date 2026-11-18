@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { isValidImageUrl, isValidImageUrlClient } from "./image";
 import { isPossiblePhoneNumberInput } from "./phone";
+import { siteContentOverridesSchema, siteTemplateIdSchema } from "./store-theme";
 
 // ===== RESERVED SLUGS =====
 // These slugs are reserved to prevent namespace conflicts and potential phishing
@@ -241,6 +242,8 @@ export const createBrandingSchema = (
       .or(z.literal("")),
     primaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, t("color")),
     theme: z.enum(["light", "dark"]),
+    templateId: siteTemplateIdSchema,
+    content: siteContentOverridesSchema,
   });
 
 export const createFirstProductSchema = (

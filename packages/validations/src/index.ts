@@ -21,6 +21,7 @@ export * from "./product";
 export * from "./promo-code";
 export * from "./reservation";
 export * from "./review-booster";
+export * from "./store-theme";
 
 export * from "./product-promotion";
 export * from "./date-change-request";

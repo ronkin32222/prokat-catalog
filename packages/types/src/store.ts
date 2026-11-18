@@ -428,9 +428,31 @@ export const DEFAULT_STORE_HOME_SECTIONS: StoreHomeSections = {
   reassurance: true,
 };
 
+export const SITE_TEMPLATE_IDS = [
+  "tools",
+  "machinery",
+  "home-garden",
+  "auto",
+  "events",
+  "electronics",
+  "sport",
+] as const;
+
+export type SiteTemplateId = (typeof SITE_TEMPLATE_IDS)[number];
+
+export interface SiteContentOverrides {
+  eyebrow?: string;
+  titleStrong?: string;
+  titleLight?: string;
+  lead?: string;
+  perks?: [string, string, string, string];
+}
+
 export interface StoreTheme {
   mode: "light" | "dark";
   primaryColor: string;
+  templateId?: SiteTemplateId;
+  content?: SiteContentOverrides;
   heroImages?: string[];
   /** Home hero layout. 'cover' (default) = the text over full-width photos; 'split' = the text beside a framed photo. Without photos both render the same centred band. */
   heroLayout?: "cover" | "split";

@@ -154,7 +154,12 @@ test("identity maps the form to the theme and drops the dark logo of a light sto
 
   const payload = buildOnlineStorePayload({ value, baseline });
   assert.ok(payload?.identity);
-  assert.deepEqual(payload.identity.theme, { mode: "light", primaryColor: "#0d9488" });
+  assert.deepEqual(payload.identity.theme, {
+    mode: "light",
+    primaryColor: "#0d9488",
+    templateId: "tools",
+    content: {},
+  });
   assert.equal(payload.identity.darkLogoUrl, null);
   assert.equal(payload.identity.locale, null);
   assert.equal(payload.identity.logoUrl, "https://s3/s1/logo/logo.png");

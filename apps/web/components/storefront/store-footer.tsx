@@ -177,10 +177,11 @@ export const StoreFooter = ({
               />
             ) : null}
             <a
-              href={process.env.NEXT_PUBLIC_SOURCE_URL ?? "https://github.com/Synapsr/Louez"}
+              // AGPL-3.0 §13: the offer of the source stays, as small as it can be. Points at this fork.
+              href={process.env.NEXT_PUBLIC_SOURCE_URL ?? "https://github.com/ronkin32222/prokat-catalog"}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-foreground hover:underline"
+              className="text-[10px] leading-none opacity-40 hover:opacity-100"
             >
               Исходный код
             </a>

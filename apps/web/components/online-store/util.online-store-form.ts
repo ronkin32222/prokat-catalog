@@ -10,8 +10,14 @@ import {
   type StoreSettings,
   type StoreSocialNetwork,
   type StoreTheme,
+  type SiteContentOverrides,
+  type SiteTemplateId,
 } from "@louez/types";
-import type { UpdateOnlineStoreClientInput } from "@louez/validations";
+import {
+  siteContentOverridesSchema,
+  siteTemplateIdSchema,
+  type UpdateOnlineStoreClientInput,
+} from "@louez/validations";
 
 import { resolveStoreContactSettings } from "@/lib/storefront/util.store-contact";
 import { stripHtml } from "@louez/utils";
@@ -44,6 +50,8 @@ export interface OnlineStoreIdentityValues {
   faviconUrl: string | null;
   primaryColor: string;
   themeMode: "light" | "dark";
+  templateId: SiteTemplateId;
+  content: SiteContentOverrides;
 }
 
 export interface OnlineStoreHomeValues {
@@ -160,6 +168,8 @@ export const onlineStoreFormSchema = z.object({
     faviconUrl: z.string().nullable(),
     primaryColor: z.string().regex(HEX_COLOR_PATTERN),
     themeMode: z.enum(["light", "dark"]),
+    templateId: siteTemplateIdSchema,
+    content: siteContentOverridesSchema,
   }),
   home: z.object({
     heroImages: z.array(z.string()).max(MAX_HERO_IMAGES),
@@ -257,6 +267,8 @@ export const buildOnlineStoreDefaults = (store: OnlineStoreEditorStore): OnlineS
       faviconUrl: store.faviconUrl,
       primaryColor: theme?.primaryColor || DEFAULT_PRIMARY_COLOR,
       themeMode: theme?.mode === "dark" ? "dark" : "light",
+      templateId: theme?.templateId ?? "tools",
+      content: theme?.content ?? {},
     },
     home: {
       heroImages: theme?.heroImages ?? [],
@@ -389,7 +401,12 @@ export const buildOnlineStorePayload = ({
       tagline: identity.tagline,
       description: identity.description,
       locale: identity.locale === "" ? null : identity.locale,
-      theme: { mode: identity.themeMode, primaryColor: identity.primaryColor },
+      theme: {
+        mode: identity.themeMode,
+        primaryColor: identity.primaryColor,
+        templateId: identity.templateId,
+        content: identity.content,
+      },
       ...(logo.send ? { logoUrl: logo.value } : {}),
       ...(darkLogo.send ? { darkLogoUrl: darkLogo.value } : {}),
       ...(favicon.send ? { faviconUrl: favicon.value } : {}),

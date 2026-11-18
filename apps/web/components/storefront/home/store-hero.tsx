@@ -12,6 +12,7 @@ import {
 import { Button } from "@louez/ui";
 
 import { HOME_COPY, type HomeHeroPerkIcon } from "@/components/storefront/home/home-copy";
+import type { resolveHomeCopy } from "@/lib/site-templates";
 import { StorefrontLink } from "@/components/storefront/ui/storefront-link";
 import { SharedImage } from "@/components/ui/shared-image";
 
@@ -35,10 +36,11 @@ interface StoreHeroProps {
   badges?: ReactNode;
   /** Compact content under the perks, such as the period search. */
   children?: ReactNode;
+  copy?: ReturnType<typeof resolveHomeCopy>;
 }
 
 /** Dark hero: copy from `home-copy.ts`, photo on the right, perks row under the buttons. */
-export const StoreHero = ({ photo, badges, children }: StoreHeroProps) => (
+export const StoreHero = ({ photo, badges, children, copy = HOME_COPY }: StoreHeroProps) => (
   <section
     className="dark relative isolate overflow-hidden border-b bg-background text-foreground"
     aria-labelledby="store-hero-title"
@@ -71,47 +73,51 @@ export const StoreHero = ({ photo, badges, children }: StoreHeroProps) => (
         {badges ? <div className="mb-6 flex flex-wrap items-center gap-2">{badges}</div> : null}
 
         <p className="font-display text-xs font-light tracking-[0.42em] text-primary uppercase sm:text-sm">
-          {HOME_COPY.hero.eyebrow}
+          {copy.hero.eyebrow}
         </p>
         <h1
           id="store-hero-title"
           className="mt-4 font-display text-[clamp(2.25rem,6vw,4.25rem)] leading-[.95] tracking-[-0.03em] uppercase"
         >
-          <span className="block font-black">{HOME_COPY.hero.titleStrong}</span>
-          <span className="block font-light">{HOME_COPY.hero.titleLight}</span>
+          <span className="block font-black">{copy.hero.titleStrong}</span>
+          <span className="block font-light">{copy.hero.titleLight}</span>
         </h1>
         <p className="mt-6 max-w-xl text-base leading-7 text-foreground/75 sm:text-lg">
-          {HOME_COPY.hero.lead}
+          {copy.hero.lead}
         </p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button
-            render={<StorefrontLink href={HOME_COPY.hero.primaryHref} />}
+            render={<StorefrontLink href={copy.hero.primaryHref} />}
             size="lg"
             className="min-h-12 rounded-lg px-7 font-semibold"
           >
-            {HOME_COPY.hero.primaryCta}
+            {copy.hero.primaryCta}
             <ArrowRightIcon aria-hidden className="size-4" />
           </Button>
           <Button
-            render={<StorefrontLink href={HOME_COPY.hero.secondaryHref} />}
+            render={<StorefrontLink href={copy.hero.secondaryHref} />}
             size="lg"
             variant="outline"
             className="min-h-12 rounded-lg border-foreground/40 bg-transparent px-7 text-foreground hover:bg-foreground hover:text-background"
           >
-            {HOME_COPY.hero.secondaryCta}
+            {copy.hero.secondaryCta}
           </Button>
         </div>
 
         <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-foreground/15 pt-6 sm:grid-cols-4">
-          {HOME_COPY.hero.perks.map(({ icon, text }) => {
+          {copy.hero.perks.map(({ icon, text }) => {
             const Icon = PERK_ICONS[icon];
             return (
               <li
                 key={text}
                 className="flex items-start gap-2.5 text-xs leading-5 text-foreground/80 sm:text-sm"
               >
-                <Icon aria-hidden className="mt-0.5 size-5 shrink-0 text-primary" strokeWidth={1.5} />
+                <Icon
+                  aria-hidden
+                  className="mt-0.5 size-5 shrink-0 text-primary"
+                  strokeWidth={1.5}
+                />
                 {text}
               </li>
             );

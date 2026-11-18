@@ -115,6 +115,8 @@ export async function updateOnlineStore(actor: SettingsActor, input: UpdateOnlin
       if (identity.faviconUrl !== undefined) values.faviconUrl = identity.faviconUrl || null;
       theme.mode = identity.theme.mode;
       theme.primaryColor = identity.theme.primaryColor;
+      if (identity.theme.templateId !== undefined) theme.templateId = identity.theme.templateId;
+      if (identity.theme.content !== undefined) theme.content = identity.theme.content;
       settings.locale = identity.locale;
     }
 
@@ -183,6 +185,8 @@ export const toAppearanceView = (row: {
   return {
     mode: theme.mode,
     primaryColor: theme.primaryColor,
+    templateId: theme.templateId ?? "tools",
+    content: theme.content ?? {},
     logoUrl: row.logoUrl || null,
     darkLogoUrl: row.darkLogoUrl || null,
     faviconUrl: row.faviconUrl || null,
@@ -207,6 +211,8 @@ export async function updateAppearance(actor: SettingsActor, input: UpdateAppear
     const theme: StoreTheme = { ...THEME_SEED, ...row.theme };
     if (input.mode !== undefined) theme.mode = input.mode;
     if (input.primaryColor !== undefined) theme.primaryColor = input.primaryColor;
+    if (input.templateId !== undefined) theme.templateId = input.templateId;
+    if (input.content !== undefined) theme.content = input.content;
     if (input.heroImages !== undefined) theme.heroImages = input.heroImages;
     if (input.heroLayout !== undefined) theme.heroLayout = input.heroLayout;
     if (input.heroAlign !== undefined) theme.heroAlign = input.heroAlign;

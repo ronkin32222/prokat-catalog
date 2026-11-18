@@ -15,6 +15,7 @@ import {
 } from "@louez/validations";
 
 import { orpc } from "@/lib/orpc/react";
+import { getSiteTemplate } from "@/lib/site-templates";
 import {
   onboardingAnalyticsBaseProperties,
   productAnalyticsEvents,
@@ -32,8 +33,10 @@ const HEX_COLOR_PATTERN = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
 
 const DEFAULT_BRANDING_VALUES: BrandingInput = {
   logoUrl: "",
-  primaryColor: "#C9A24B",
+  primaryColor: "#E8BE91",
   theme: "light",
+  templateId: "tools",
+  content: {},
 };
 
 export const useBrandingStep = () => {
@@ -56,6 +59,8 @@ export const useBrandingStep = () => {
   const selectedLogoFile = useRef<File | null>(null);
   const localPreviewUrl = useRef<string | null>(null);
   const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
+  const [createTemplateCategories, setCreateTemplateCategories] = useState(true);
+  const createCategoryMutation = useMutation(orpc.dashboard.categories.create.mutationOptions());
 
   const releaseLocalPreview = useCallback(() => {
     if (!localPreviewUrl.current) return;
@@ -85,17 +90,12 @@ export const useBrandingStep = () => {
         await updateBrandingMutation.mutateAsync({
           mode: value.theme,
           primaryColor: value.primaryColor,
+          templateId: value.templateId,
+          content: value.content,
           logoUrl: logoUrl || null,
         });
 
-        posthog.capture(productAnalyticsEvents.onboardingBrandingSaved, {
-          ...onboardingAnalyticsBaseProperties,
-          has_logo: Boolean(logoUrl),
-          theme: value.theme,
-          primary_color: value.primaryColor,
-          is_default_primary_color: value.primaryColor === "#C9A24B",
-        });
-
+        uploadedKey = null;
         selectedLogoFile.current = null;
         releaseLocalPreview();
         form.setFieldValue("logoUrl", logoUrl);
@@ -103,6 +103,22 @@ export const useBrandingStep = () => {
         if (previousLogoUrl && previousLogoUrl !== logoUrl) {
           void deleteImage(previousLogoUrl).catch(() => undefined);
         }
+
+        if (createTemplateCategories) {
+          await Promise.all(
+            getSiteTemplate(value.templateId).suggestedCategories.map((name) =>
+              createCategoryMutation.mutateAsync({ name }),
+            ),
+          );
+        }
+
+        posthog.capture(productAnalyticsEvents.onboardingBrandingSaved, {
+          ...onboardingAnalyticsBaseProperties,
+          has_logo: Boolean(logoUrl),
+          theme: value.theme,
+          primary_color: value.primaryColor,
+          is_default_primary_color: value.primaryColor === "#E8BE91",
+        });
 
         goToNextStep();
       } catch (error) {
@@ -134,6 +150,8 @@ export const useBrandingStep = () => {
 
     form.setFieldValue("logoUrl", logoUrl);
     form.setFieldValue("primaryColor", draft.primaryColor || "#C9A24B");
+    form.setFieldValue("templateId", draft.templateId);
+    form.setFieldValue("content", draft.content);
     // The store draft has a database-level light default before this step is
     // completed, so it must not override the user's resolved dashboard theme.
 
@@ -190,6 +208,12 @@ export const useBrandingStep = () => {
     handleLogoRemove,
     isUploading,
     isNavigating,
-    isBusy: updateBrandingMutation.isPending || isUploading || isNavigating,
+    createTemplateCategories,
+    setCreateTemplateCategories,
+    isBusy:
+      updateBrandingMutation.isPending ||
+      createCategoryMutation.isPending ||
+      isUploading ||
+      isNavigating,
   };
 };

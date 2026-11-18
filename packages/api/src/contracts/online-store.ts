@@ -1,4 +1,9 @@
-import { IMAGE_UPLOAD_MIME_TYPES, storeInfoSchema } from "@louez/validations";
+import {
+  IMAGE_UPLOAD_MIME_TYPES,
+  siteContentOverridesSchema,
+  siteTemplateIdSchema,
+  storeInfoSchema,
+} from "@louez/validations";
 import { z } from "zod";
 
 import { apiError } from "../platform/errors";
@@ -52,6 +57,8 @@ const ownedImageUrl = z
 export const appearanceView = z.object({
   mode: z.enum(["light", "dark"]),
   primaryColor: z.string(),
+  templateId: siteTemplateIdSchema,
+  content: siteContentOverridesSchema,
   logoUrl: z.string().nullable(),
   darkLogoUrl: z.string().nullable(),
   faviconUrl: z.string().nullable(),
@@ -69,6 +76,10 @@ export const updateAppearanceInput = z.object({
     .regex(/^#[0-9A-Fa-f]{6}$/)
     .optional()
     .describe("The brand colour of buttons and links, as #RRGGBB."),
+  templateId: siteTemplateIdSchema.optional().describe("The storefront niche template."),
+  content: siteContentOverridesSchema
+    .optional()
+    .describe("Owner overrides for the home hero copy."),
   logoUrl: ownedImageUrl.nullable().optional().describe("The logo; null removes it."),
   darkLogoUrl: ownedImageUrl
     .nullable()

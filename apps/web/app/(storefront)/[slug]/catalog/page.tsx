@@ -33,6 +33,7 @@ import {
 } from "@/lib/utils/util.category-browse-entries";
 import type { RentalPeriodRules } from "@/lib/utils/util.rental-period";
 import { getStorefrontPricingSummary } from "@/lib/utils/util.storefront-pricing";
+import { resolveHomeCopy } from "@/lib/site-templates";
 
 import { CatalogBrowser } from "./catalog-browser";
 
@@ -128,6 +129,12 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
   }
 
   const settings = store.settings ?? null;
+  const copy = resolveHomeCopy(store.theme);
+  const catalogHero =
+    store.theme?.heroImages?.[0] ??
+    (store.theme?.templateId === undefined || store.theme.templateId === "tools"
+      ? "/demo/hero-drill.webp"
+      : null);
   const summary = await loadCatalogCategories(store.id);
   const category = findRealCategory(urlFilters.category, summary.categories);
 
@@ -226,24 +233,29 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
       />
       <div className="light min-h-dvh bg-background text-foreground">
         <section className="dark relative isolate min-h-72 overflow-hidden border-b text-foreground sm:min-h-80">
-          <Image
-            src={store.theme?.heroImages?.[0] ?? "/demo/hero-drill.webp"}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="-z-20 object-cover object-right"
-          />
+          {catalogHero ? (
+            <Image
+              src={catalogHero}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="-z-20 object-cover object-right"
+            />
+          ) : (
+            <div aria-hidden className="storefront-concrete absolute inset-0 -z-20" />
+          )}
           <div
             aria-hidden
             className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(20,21,20,.96),rgba(20,21,20,.68),rgba(20,21,20,.24))]"
           />
           <div className="mx-auto flex min-h-72 w-full max-w-7xl flex-col justify-end px-4 py-10 sm:min-h-80 sm:px-6 lg:px-8">
             <p className="font-display text-xs tracking-[0.4em] text-primary uppercase">
-              Каталог проката
+              {copy.hero.eyebrow}
             </p>
             <h1 className="mt-3 max-w-4xl font-display text-4xl leading-[.95] font-black tracking-[-0.04em] uppercase sm:text-6xl">
-              Строительный инструмент
+              <span className="block">{copy.hero.titleStrong}</span>
+              <span className="block font-light">{copy.hero.titleLight}</span>
             </h1>
             {store.tagline || store.description ? (
               <p className="mt-4 max-w-2xl text-sm text-foreground/75 sm:text-base">

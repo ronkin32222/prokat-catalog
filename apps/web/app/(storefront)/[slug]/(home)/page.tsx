@@ -13,12 +13,19 @@ import { StoreHero } from "@/components/storefront/home/store-hero";
 import { StoreLocation } from "@/components/storefront/home/store-location";
 import { StoreTestimonials } from "@/components/storefront/home/store-testimonials";
 import { PageTracker } from "@/components/storefront/page-tracker";
-import { JsonLd, generateLocalBusinessSchema, generateStoreMetadata, generateWebSiteSchema, stripHtml } from "@/lib/seo";
+import {
+  JsonLd,
+  generateLocalBusinessSchema,
+  generateStoreMetadata,
+  generateWebSiteSchema,
+  stripHtml,
+} from "@/lib/seo";
 import { getStoreBySlug } from "@/lib/storefront/get-store-by-slug";
 import { loadHomePage } from "@/lib/storefront/home.queries";
 import { resolveStoreContactChannels } from "@/lib/storefront/util.store-contact";
 import { buildOpeningHoursSpecification } from "@/lib/utils/util.opening-hours";
 import { getStorePeriodRules } from "@/lib/utils/util.store-period-rules";
+import { resolveHomeCopy } from "@/lib/site-templates";
 
 interface StorefrontPageProps {
   params: Promise<{ slug: string }>;
@@ -64,12 +71,15 @@ const StorefrontPage = async ({ params }: StorefrontPageProps) => {
     notFound();
   }
 
-  const { store, settings, inventory, place, sections } = data;
+  const { store, settings, inventory, place, sections, theme, heroImages } = data;
   const ratingHref = place.showReviews ? "#reviews" : (place.details?.mapsUrl ?? null);
-  // The hero photo is the first picture of the featured products; the bundled drill photo stands in until one exists.
-  const heroPhoto =
+  const copy = resolveHomeCopy(theme);
+  const toolsFallback =
     inventory.products.find((product) => product.images?.[0])?.images?.[0] ??
     "/demo/hero-drill.webp";
+  const heroPhoto =
+    heroImages[0] ??
+    (theme.templateId === undefined || theme.templateId === "tools" ? toolsFallback : null);
   const reviews =
     sections.reviews && place.showReviews && place.details
       ? place.details.reviews
@@ -96,9 +106,14 @@ const StorefrontPage = async ({ params }: StorefrontPageProps) => {
 
       <StoreHero
         photo={heroPhoto}
+        copy={copy}
         badges={
           sections.reviews && place.rating !== null ? (
-            <GoogleRatingPill rating={place.rating} reviewCount={place.reviewCount} href={ratingHref} />
+            <GoogleRatingPill
+              rating={place.rating}
+              reviewCount={place.reviewCount}
+              href={ratingHref}
+            />
           ) : undefined
         }
       >

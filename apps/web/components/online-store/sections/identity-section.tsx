@@ -7,12 +7,12 @@ import { useTranslations } from "next-intl";
 import { Label, SelectItem } from "@louez/ui";
 
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
+import { SiteTemplatePicker } from "@/components/online-store/site-template-picker";
 import { getFieldError } from "@/hooks/form/form-context";
 import { withForm } from "@/hooks/form/form";
 import { localeFlags, localeNames, locales } from "@/i18n/config";
 
 import { LogoUploadField } from "../fields/logo-upload-field";
-import { PrimaryColorField } from "../fields/primary-color-field";
 import { StoreUrlField } from "../fields/store-url-field";
 import { PanelGroup } from "../panel/panel-group";
 import { PanelRow } from "../panel/panel-row";
@@ -33,6 +33,9 @@ export const IdentitySection = withForm({
     const tStore = useTranslations("dashboard.settings.storeSettings");
     const tAppearance = useTranslations("dashboard.settings.appearanceSettings");
     const themeMode = useStore(form.store, (state) => state.values.identity.themeMode);
+    const templateId = useStore(form.store, (state) => state.values.identity.templateId);
+    const primaryColor = useStore(form.store, (state) => state.values.identity.primaryColor);
+    const content = useStore(form.store, (state) => state.values.identity.content);
 
     return (
       <>
@@ -135,12 +138,6 @@ export const IdentitySection = withForm({
             </form.Field>
           </div>
 
-          <form.Field name="identity.primaryColor">
-            {(field) => (
-              <PrimaryColorField value={field.state.value} onChange={field.handleChange} />
-            )}
-          </form.Field>
-
           <form.Field name="identity.themeMode">
             {(field) => (
               <PanelRow label={tAppearance("theme")}>
@@ -166,6 +163,17 @@ export const IdentitySection = withForm({
               </PanelRow>
             )}
           </form.Field>
+        </PanelGroup>
+
+        <PanelGroup title="Шаблон сайта">
+          <SiteTemplatePicker
+            templateId={templateId}
+            primaryColor={primaryColor}
+            content={content}
+            onTemplateChange={(value) => form.setFieldValue("identity.templateId", value)}
+            onPrimaryColorChange={(value) => form.setFieldValue("identity.primaryColor", value)}
+            onContentChange={(value) => form.setFieldValue("identity.content", value)}
+          />
         </PanelGroup>
 
         <PanelGroup title={t("language.title")}>

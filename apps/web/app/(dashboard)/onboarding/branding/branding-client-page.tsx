@@ -2,31 +2,18 @@
 
 import { useRouter } from "next/navigation";
 
+import { useStore } from "@tanstack/react-form";
 import { useTranslations } from "next-intl";
 
-import { Button } from "@louez/ui";
-import { Input } from "@louez/ui";
-import { Label } from "@louez/ui";
-import { Radio, RadioGroup } from "@louez/ui";
+import { Button, Checkbox, Label, Radio, RadioGroup } from "@louez/ui";
+import { cn } from "@louez/utils";
 
+import { SiteTemplatePicker } from "@/components/online-store/site-template-picker";
 import { getFieldError } from "@/hooks/form/form-context";
 
 import { OnboardingStepHeader } from "../_components/step-header";
 import { ThemeDashboardPreview } from "./theme-dashboard-preview";
 import { useBrandingStep } from "./use-branding-step";
-import { cn } from "@louez/utils";
-
-const PRESET_COLORS = [
-  "#C9A24B",
-  "#E8BE91",
-  "#F59E0B",
-  "#EF4444",
-  "#8B5CF6",
-  "#EC4899",
-  "#06B6D4",
-  "#84CC16",
-];
-
 const THEME_OPTIONS = [
   { value: "light", label: "themeLight" },
   { value: "dark", label: "themeDark" },
@@ -44,7 +31,12 @@ export function BrandingClientPage() {
     isUploading,
     isBusy,
     isNavigating,
+    createTemplateCategories,
+    setCreateTemplateCategories,
   } = useBrandingStep();
+  const templateId = useStore(form.store, (state) => state.values.templateId);
+  const primaryColor = useStore(form.store, (state) => state.values.primaryColor);
+  const content = useStore(form.store, (state) => state.values.content);
 
   return (
     <>
@@ -72,49 +64,27 @@ export function BrandingClientPage() {
             )}
           </form.AppField>
 
-          <form.Field name="primaryColor">
-            {(field) => (
-              <div className="space-y-2">
-                <Label>{t("primaryColor")}</Label>
-                <div className="space-y-3">
-                  <div className="flex flex-wrap gap-2">
-                    {PRESET_COLORS.map((color) => (
-                      <button
-                        key={color}
-                        type="button"
-                        aria-label={color}
-                        className={`size-7 rounded-full transition-all ${
-                          field.state.value === color
-                            ? "ring-foreground ring-offset-background ring-2 ring-offset-2"
-                            : "hover:scale-110"
-                        }`}
-                        style={{ backgroundColor: color }}
-                        onClick={() => form.setFieldValue("primaryColor", color)}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="size-9 shrink-0 rounded-md border"
-                      style={{ backgroundColor: field.state.value }}
-                    />
-                    <Input
-                      value={field.state.value}
-                      onChange={(event) => field.handleChange(event.target.value)}
-                      onBlur={field.handleBlur}
-                      placeholder="#C9A24B"
-                      className="font-mono"
-                    />
-                  </div>
-                </div>
-                {field.state.meta.errors.length > 0 && (
-                  <p className="text-destructive text-sm font-medium">
-                    {getFieldError(field.state.meta.errors[0])}
-                  </p>
-                )}
-              </div>
-            )}
-          </form.Field>
+          <SiteTemplatePicker
+            templateId={templateId}
+            primaryColor={primaryColor}
+            content={content}
+            onTemplateChange={(value) => form.setFieldValue("templateId", value)}
+            onPrimaryColorChange={(value) => form.setFieldValue("primaryColor", value)}
+            onContentChange={(value) => form.setFieldValue("content", value)}
+          />
+
+          <Label className="flex cursor-pointer items-start gap-3 rounded-lg border p-3 font-normal">
+            <Checkbox
+              checked={createTemplateCategories}
+              onCheckedChange={setCreateTemplateCategories}
+            />
+            <span>
+              <span className="block text-sm font-medium">Создать категории шаблона</span>
+              <span className="mt-0.5 block text-sm text-muted-foreground">
+                Уже существующие категории с теми же названиями не дублируются.
+              </span>
+            </span>
+          </Label>
 
           <form.Field name="theme">
             {(field) => (
