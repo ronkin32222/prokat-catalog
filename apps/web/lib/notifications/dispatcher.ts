@@ -13,7 +13,8 @@ import { formatSupplementalMessage } from "@/lib/i18n/supplemental-messages";
  */
 
 import { db } from "@louez/db";
-import { stores, pushSubscriptions, storeMembers } from "@louez/db";
+import { stores, pushSubscriptions, storeMembers, reservationItems, products } from "@louez/db";
+import { getStorefrontUrl } from "@/lib/storefront-url";
 import { eq } from "drizzle-orm";
 import { format } from "date-fns";
 import { env } from "@/env";
@@ -56,10 +57,17 @@ import { buildAdminPushPayload } from "@/lib/push/notifications";
 import type { NotificationEventType, NotificationSettings } from "@louez/types";
 import {
   sendTelegramMessage,
+  sendTelegramPhoto,
   sendMaxMessage,
   formatMessengerMessage,
+  formatMessengerMoney,
+  formatMessengerPeriod,
+  formatReservationMessage,
+  splitPhotoCaption,
+  toAbsoluteUrl,
   MESSENGER_EVENT_LABELS,
   escapeHtml,
+  type ReservationMessageItem,
 } from "@/lib/notifications/messengers";
 
 // ============================================================================
@@ -915,6 +923,108 @@ function buildMessengerEventText(
   });
 }
 
+/** События бронирования: в мессенджер уходит полная карточка с товарами. */
+const RESERVATION_MESSENGER_EVENTS = new Set<string>([
+  "reservation_new",
+  "reservation_confirmed",
+  "reservation_rejected",
+  "reservation_cancelled",
+  "reservation_picked_up",
+  "reservation_completed",
+]);
+
+interface MessengerReservationDetails {
+  items: ReservationMessageItem[];
+  /** Абсолютный URL фото первой позиции, если есть. */
+  photoUrl: string | null;
+  timeZone?: string | null;
+}
+
+/**
+ * Позиции брони и данные витрины для мессенджера: один запрос на отправку.
+ * null при ошибке, тогда уходит короткое сообщение, уведомление не теряется.
+ */
+async function loadMessengerReservation(
+  ctx: NotificationContext,
+  reservationId: string,
+): Promise<MessengerReservationDetails | null> {
+  try {
+    const [store] = await db
+      .select({ slug: stores.slug, settings: stores.settings })
+      .from(stores)
+      .where(eq(stores.id, ctx.store.id))
+      .limit(1);
+    const rows = await db
+      .select({
+        productId: reservationItems.productId,
+        quantity: reservationItems.quantity,
+        unitPrice: reservationItems.unitPrice,
+        snapshot: reservationItems.productSnapshot,
+        productName: products.name,
+        productSlug: products.slug,
+        images: products.images,
+      })
+      .from(reservationItems)
+      .leftJoin(products, eq(products.id, reservationItems.productId))
+      .where(eq(reservationItems.reservationId, reservationId))
+      .orderBy(reservationItems.createdAt);
+
+    const currency = reservationCurrencyOf(ctx);
+    const items = rows.map((row) => ({
+      name: row.snapshot.name || row.productName || "Товар",
+      quantity: row.quantity,
+      unitPriceLabel: formatMessengerMoney(Number(row.unitPrice), currency),
+      productUrl:
+        row.productId && store?.slug
+          ? getStorefrontUrl(store.slug, `/product/${row.productSlug ?? row.productId}`)
+          : undefined,
+    }));
+    const firstImage = rows[0]?.images?.[0];
+    return {
+      items,
+      photoUrl: firstImage ? toAbsoluteUrl(firstImage, env.NEXT_PUBLIC_APP_URL ?? "") : null,
+      timeZone: store?.settings?.timezone,
+    };
+  } catch (error) {
+    log.error(
+      "notifications",
+      `${ctx.store.id} messenger details failed: ${channelErrorLabel(error)}`,
+    );
+    return null;
+  }
+}
+
+/** Карточка заявки для мессенджера: клиент, телефон, период, товары, итого, комментарий, ссылка. */
+function buildReservationMessengerText(
+  eventType: NotificationEventType,
+  ctx: NotificationContext,
+  reservation: NonNullable<NotificationContext["reservation"]>,
+  details: MessengerReservationDetails,
+  format: "html" | "plain",
+): string {
+  const adminUrl = toAbsoluteUrl(
+    `/dashboard/reservations/${reservation.id}`,
+    env.NEXT_PUBLIC_APP_URL ?? "",
+  );
+  return formatReservationMessage(
+    {
+      title: `${MESSENGER_EVENT_LABELS[eventType] ?? eventType} №${reservation.number}`,
+      customerName: ctx.customer ? `${ctx.customer.firstName} ${ctx.customer.lastName}` : undefined,
+      customerPhone: ctx.customer?.phone ?? undefined,
+      periodLabel: formatMessengerPeriod(
+        reservation.startDate,
+        reservation.endDate,
+        details.timeZone ?? "",
+      ),
+      items: details.items,
+      totalLabel: formatMessengerMoney(reservation.totalAmount, reservationCurrencyOf(ctx)),
+      customerNotes: reservation.customerNotes,
+      adminUrl: adminUrl ?? undefined,
+    },
+    format,
+  );
+}
+
 /** Отправка события в мессенджер владельца. Токен не попадает ни в текст, ни в ошибку. */
 async function sendStoreMessenger(
   kind: "telegram" | "max",
@@ -923,11 +1033,46 @@ async function sendStoreMessenger(
 ): Promise<{ sent: boolean; error?: string }> {
   const messenger = ctx.store.notificationSettings?.messengers?.[kind];
   if (!messenger?.enabled) return { sent: false, error: "мессенджер не подключён" };
-  const raw = buildMessengerEventText(eventType, ctx);
-  const result =
-    kind === "telegram"
-      ? await sendTelegramMessage(messenger.botToken, messenger.chatId, escapeHtml(raw))
-      : await sendMaxMessage(messenger.botToken, messenger.chatId, raw);
+  const { botToken, chatId } = messenger;
+  const short = buildMessengerEventText(eventType, ctx);
+
+  // Позиции грузим один раз; без них (или при ошибке) уходит короткое сообщение.
+  const details =
+    ctx.reservation && RESERVATION_MESSENGER_EVENTS.has(eventType)
+      ? await loadMessengerReservation(ctx, ctx.reservation.id)
+      : null;
+  const card =
+    details && ctx.reservation
+      ? buildReservationMessengerText(
+          eventType,
+          ctx,
+          ctx.reservation,
+          details,
+          kind === "telegram" ? "html" : "plain",
+        )
+      : null;
+
+  if (kind === "max") {
+    const result = await sendMaxMessage(botToken, chatId, card ?? short);
+    return { sent: result.ok, error: result.error };
+  }
+
+  if (!card) {
+    const result = await sendTelegramMessage(botToken, chatId, escapeHtml(short));
+    return { sent: result.ok, error: result.error };
+  }
+
+  // С фото: подпись к фото, а при отказе Telegram (недоступный URL и т.п.) тот же текст обычным сообщением.
+  if (details?.photoUrl) {
+    const { caption, followUp } = splitPhotoCaption(card);
+    const photo = await sendTelegramPhoto(botToken, chatId, details.photoUrl, caption);
+    if (photo.ok) {
+      if (!followUp) return { sent: true };
+      const rest = await sendTelegramMessage(botToken, chatId, followUp);
+      return { sent: rest.ok, error: rest.error };
+    }
+  }
+  const result = await sendTelegramMessage(botToken, chatId, card);
   return { sent: result.ok, error: result.error };
 }
 

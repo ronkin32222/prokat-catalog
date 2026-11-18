@@ -113,17 +113,17 @@ export async function findTelegramChat(
   }
 }
 
-/** Отправка текста в чат Telegram (parse_mode=HTML). */
-export async function sendTelegramMessage(
+/** Вызов метода Telegram Bot API. Токен в тексте ошибки не попадает. */
+async function callTelegram(
   botToken: string,
-  chatId: string,
-  text: string,
+  method: string,
+  payload: Record<string, unknown>,
 ): Promise<{ ok: boolean; error?: string }> {
   try {
-    const res = await fetchWithTimeout(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    const res = await fetchWithTimeout(`https://api.telegram.org/bot${botToken}/${method}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId.trim(), text, parse_mode: "HTML" }),
+      body: JSON.stringify(payload),
     });
     const data: unknown = await res.json().catch(() => null);
     if (!res.ok) {
@@ -146,6 +146,34 @@ export async function sendTelegramMessage(
   } catch {
     return { ok: false, error: "Не удалось связаться с Telegram API" };
   }
+}
+
+/** Отправка текста в чат Telegram (parse_mode=HTML). */
+export function sendTelegramMessage(
+  botToken: string,
+  chatId: string,
+  text: string,
+): Promise<{ ok: boolean; error?: string }> {
+  return callTelegram(botToken, "sendMessage", {
+    chat_id: chatId.trim(),
+    text,
+    parse_mode: "HTML",
+  });
+}
+
+/** Фото с подписью (parse_mode=HTML). Подпись до 1024 символов, см. splitPhotoCaption. */
+export function sendTelegramPhoto(
+  botToken: string,
+  chatId: string,
+  photoUrl: string,
+  caption: string,
+): Promise<{ ok: boolean; error?: string }> {
+  return callTelegram(botToken, "sendPhoto", {
+    chat_id: chatId.trim(),
+    photo: photoUrl,
+    caption,
+    parse_mode: "HTML",
+  });
 }
 
 // ============================================================================
@@ -222,6 +250,115 @@ export function formatMessengerMessage(input: MessengerEventInput): string {
   if (input.customerName) lines.push(`Клиент: ${input.customerName}`);
   if (input.periodLabel) lines.push(`Период: ${input.periodLabel}`);
   if (input.amountLabel) lines.push(`Сумма: ${input.amountLabel}`);
+  return lines.join("\n");
+}
+
+/** Лимит подписи к фото в Telegram. */
+export const TELEGRAM_CAPTION_LIMIT = 1024;
+
+/** Относительный путь (/files/…) становится абсолютным от baseUrl; null, если не вышло. */
+export function toAbsoluteUrl(url: string, baseUrl: string): string | null {
+  try {
+    return new URL(url, baseUrl).toString();
+  } catch {
+    return null;
+  }
+}
+
+/** Подпись целиком, если влезает; иначе первая строка-заголовок, а весь текст уходит следом сообщением. */
+export function splitPhotoCaption(text: string): { caption: string; followUp?: string } {
+  if (text.length <= TELEGRAM_CAPTION_LIMIT) return { caption: text };
+  return { caption: text.split("\n")[0].slice(0, TELEGRAM_CAPTION_LIMIT), followUp: text };
+}
+
+const MONTHS_SHORT = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
+const FALLBACK_TIME_ZONE = "Europe/Moscow";
+
+function safeTimeZone(timeZone: string): string {
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone });
+    return timeZone;
+  } catch {
+    return FALLBACK_TIME_ZONE;
+  }
+}
+
+function formatPeriodPoint(date: Date, timeZone: string): string {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    day: "numeric",
+    month: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(date);
+  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
+  return `${get("day")} ${MONTHS_SHORT[Number(get("month")) - 1]}, ${get("hour")}:${get("minute")}`;
+}
+
+/** Период «19 ноя, 14:30 — 21 ноя, 14:30» во времени магазина. */
+export function formatMessengerPeriod(start: Date, end: Date, timeZone: string): string {
+  const tz = safeTimeZone(timeZone);
+  return `${formatPeriodPoint(start, tz)} — ${formatPeriodPoint(end, tz)}`;
+}
+
+/** Сумма для мессенджера: «2 250 ₽». */
+export function formatMessengerMoney(amount: number, currency: string = "RUB"): string {
+  return new Intl.NumberFormat("ru-RU", {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
+export interface ReservationMessageItem {
+  name: string;
+  quantity: number;
+  /** Цена за единицу в сутки, уже отформатированная: «750 ₽». */
+  unitPriceLabel: string;
+  /** Абсолютная ссылка на товар на витрине. */
+  productUrl?: string;
+}
+
+export interface ReservationMessageInput {
+  title: string;
+  customerName?: string;
+  customerPhone?: string;
+  periodLabel?: string;
+  items: ReservationMessageItem[];
+  totalLabel?: string;
+  customerNotes?: string | null;
+  adminUrl?: string;
+}
+
+/** Атрибут href в Telegram HTML: экранируем и кавычки. */
+const escapeAttr = (text: string) => escapeHtml(text).replace(/"/g, "&quot;");
+
+/** Текст заявки. html: данные экранируются под Telegram; plain: для MAX, без разметки. */
+export function formatReservationMessage(
+  input: ReservationMessageInput,
+  format: "html" | "plain",
+): string {
+  const html = format === "html";
+  const esc = (text: string) => (html ? escapeHtml(text) : text);
+  const lines = [esc(input.title)];
+  if (input.customerName) lines.push(`Клиент: ${esc(input.customerName)}`);
+  if (input.customerPhone) lines.push(`Телефон: ${esc(input.customerPhone)}`);
+  if (input.periodLabel) lines.push(`Период: ${esc(input.periodLabel)}`);
+  if (input.items.length > 0) {
+    lines.push("");
+    for (const item of input.items) {
+      const name =
+        html && item.productUrl
+          ? `<a href="${escapeAttr(item.productUrl)}">${esc(item.name)}</a>`
+          : esc(item.name);
+      lines.push(`• ${name} × ${item.quantity} — ${esc(item.unitPriceLabel)}/сут`);
+    }
+  }
+  if (input.totalLabel) lines.push(`Итого: ${esc(input.totalLabel)}`);
+  if (input.customerNotes) lines.push(`Комментарий: ${esc(input.customerNotes)}`);
+  if (input.adminUrl) lines.push(`Заявка: ${esc(input.adminUrl)}`);
   return lines.join("\n");
 }
 
