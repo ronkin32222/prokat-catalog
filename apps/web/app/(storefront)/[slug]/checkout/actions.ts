@@ -16,6 +16,7 @@ import {
 import { log } from "@/lib/evlog";
 import { PRIVACY_CONSENT_VERSION } from "@/lib/legal-templates";
 import { getClientIp } from "@/lib/request";
+import { isRateLimited } from "@/lib/util.rate-limit";
 import { getTulipCoverageSummary } from "@/lib/integrations/tulip/contracts";
 import {
   searchFrenchCompanies,
@@ -236,6 +237,16 @@ export async function createReservation(input: unknown): Promise<CreateReservati
   const { privacyConsent, ...body } = input as Record<string, unknown>;
   if (privacyConsent !== true) return { error: "errors.invalidData" };
 
+  // A public form: without a limit a bot could fill the stock and the owner's chat.
+  // The client address comes from Caddy's X-Forwarded-For (a client-sent X-Real-IP is ignored).
+  const requestHeaders = await headers();
+  const visitor = requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  if (
+    isRateLimited(`reservation:${visitor}`, 5, 10 * 60_000) ||
+    isRateLimited("reservation:all", 100, 10 * 60_000)
+  ) {
+    return { error: "errors.tooManyRequests" };
+  }
   const parsed = createReservationInputSchema.safeParse(body);
   if (!parsed.success) {
     return { error: "errors.invalidData" };

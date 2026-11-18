@@ -27,7 +27,7 @@
     "test": "pnpm build && node --test dist/*.test.js"
   },
   "dependencies": {
-    "zod": "^4.3.5"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
