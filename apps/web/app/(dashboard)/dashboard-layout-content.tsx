@@ -47,8 +47,10 @@ export const DashboardLayoutContent = async ({ children }: { children: React.Rea
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          // The admin is designed dark only: in the browser's light mode the sidebar and
+          // table text became unreadable (light text on a light background).
+          defaultTheme="dark"
+          forcedTheme="dark"
           disableTransitionOnChange
         >
           <OpenReplayProvider

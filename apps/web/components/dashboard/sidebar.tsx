@@ -94,6 +94,8 @@ const UserMenu = ({
 );
 
 export const DashboardSidebar = ({
+  stores,
+  currentStoreId,
   storeSlug,
   userId,
   userName,
@@ -101,6 +103,7 @@ export const DashboardSidebar = ({
   userImage,
 }: DashboardSidebarProps) => {
   const pathname = usePathname();
+  const currentStore = stores.find((item) => item.id === currentStoreId);
   const { getAbsoluteUrl } = useStorefrontUrl(storeSlug ?? "");
 
   return (
@@ -111,9 +114,18 @@ export const DashboardSidebar = ({
             href="/dashboard"
             className="flex items-center gap-3 text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
           >
-            <span aria-hidden className="h-5 w-8 -skew-x-12 bg-primary" />
-            <span className="text-xl font-bold tracking-[0.18em] group-data-[collapsible=icon]:hidden">
-              ПРОКАТ
+            {currentStore?.logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={currentStore.logoUrl}
+                alt=""
+                className="h-9 w-9 shrink-0 rounded-md object-contain"
+              />
+            ) : (
+              <span aria-hidden className="h-5 w-8 shrink-0 -skew-x-12 bg-primary" />
+            )}
+            <span className="truncate text-lg font-bold uppercase tracking-[0.1em] group-data-[collapsible=icon]:hidden">
+              {currentStore?.name ?? "Каталог"}
             </span>
           </SidebarLink>
         </SidebarHeader>
