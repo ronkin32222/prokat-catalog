@@ -17,7 +17,7 @@ export function LoginLegalNotice() {
   const t = useTranslations('auth');
   const { billingEnabled } = useInstanceConfig();
   const privacyLink = (
-    <Link href="/privacy" target="_blank" rel="noopener noreferrer" className={linkClassName}>
+    <Link href="/legal" target="_blank" rel="noopener noreferrer" className={linkClassName}>
       {t('privacyPolicy')}
     </Link>
   );

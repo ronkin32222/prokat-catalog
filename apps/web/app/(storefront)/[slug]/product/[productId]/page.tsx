@@ -165,7 +165,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
 
   return (
     <>
-      <PageTracker page="product" productId={productId} />
+      <PageTracker page="product" productId={product.id} />
       <JsonLd
         data={[
           generateProductSchema(storeForSchema, productForSchema),
