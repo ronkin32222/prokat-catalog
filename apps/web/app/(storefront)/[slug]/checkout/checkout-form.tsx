@@ -288,7 +288,8 @@ export const CheckoutForm = ({
             promo={promo}
             hasActivePromoCodes={hasActivePromoCodes}
             isSubmitting={isSubmitting}
-            isBlocked={blockedReason !== null}
+            blockedReason={blockedReason}
+            advanceNoticeMinutes={advanceNotice.issue?.advanceNoticeMinutes ?? advanceNoticeMinutes}
           />
         </form.Form>
       </form.AppForm>

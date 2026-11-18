@@ -18,9 +18,27 @@ import { formatRussianPhone, PHONE_MASK_LENGTH } from "@/lib/sms/ru-phone";
 
 import type { CheckoutFieldsLine } from "../checkout.types";
 import type { useCheckoutPromo } from "../hooks/use-checkout-promo";
+import type { CheckoutBlockedReason } from "../checkout.types";
 import { toItemFieldName, toParticipantFieldName, toUnitKey } from "../util.checkout-custom-fields";
 import { checkoutFormOptions, checkoutStepProps } from "../validator.checkout";
 import { CheckoutPromoCode } from "./checkout-promo-code";
+
+/** Why the request cannot be sent yet, in words the renter understands. */
+const blockedMessage = (reason: CheckoutBlockedReason, noticeMinutes: number): string => {
+  switch (reason) {
+    case "advanceNotice": {
+      const hours = Math.max(1, Math.round(noticeMinutes / 60));
+      return `Заявку нужно подать не менее чем за ${hours} ч до начала аренды. Выберите более позднее время.`;
+    }
+    case "lineNeedsUpdate":
+      return "На выбранные даты позиция недоступна. Измените даты или состав заказа.";
+    case "resolving":
+    case "quoteLoading":
+      return "Проверяем наличие, секунду…";
+    default:
+      return "Заявку пока нельзя отправить. Проверьте даты и позиции.";
+  }
+};
 
 interface CheckoutRequestFormProps {
   /** Lines asking unit details; one card per rented unit. */
@@ -28,8 +46,10 @@ interface CheckoutRequestFormProps {
   promo: ReturnType<typeof useCheckoutPromo>;
   hasActivePromoCodes: boolean;
   isSubmitting: boolean;
-  /** A refused cart or a missing quote stops the request before it is sent. */
-  isBlocked: boolean;
+  /** A refused cart or a missing quote stops the request before it is sent; the reason is told to the visitor. */
+  blockedReason: CheckoutBlockedReason | null;
+  /** Minimum notice before the start, in minutes (store setting). */
+  advanceNoticeMinutes: number;
 }
 
 /**
@@ -39,7 +59,8 @@ interface CheckoutRequestFormProps {
 export const CheckoutRequestForm = withForm({
   ...checkoutFormOptions,
   props: checkoutStepProps<CheckoutRequestFormProps>(),
-  render: ({ form, lines, promo, hasActivePromoCodes, isSubmitting, isBlocked }) => {
+  render: ({ form, lines, promo, hasActivePromoCodes, isSubmitting, blockedReason, advanceNoticeMinutes }) => {
+    const isBlocked = blockedReason !== null;
     const t = useTranslations("storefront.checkout");
     const askingLines = lines.filter((line) => line.itemFields.length > 0);
     // Not ticked by default: the request cannot be sent until the customer ticks it.
@@ -203,6 +224,8 @@ export const CheckoutRequestForm = withForm({
         <Alert>
           <p>{t("managerCallback")}</p>
         </Alert>
+
+        {blockedReason ? (<p role="alert" className="text-destructive text-sm">{blockedMessage(blockedReason, advanceNoticeMinutes)}</p>) : null}
 
         <Button
           type="submit"
