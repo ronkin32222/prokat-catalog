@@ -23,19 +23,33 @@ export const normalizeRussianPhone = (phone: string): string | null => {
 export const isValidRussianPhone = (phone: string): boolean =>
   normalizeRussianPhone(phone) !== null;
 
-const national = (phone: string): string => (normalizeRussianPhone(phone) ?? phone).slice(-10);
+/**
+ * National digits of what the user sees or pastes. The masked display itself
+ * (`+7 (9`) comes back through here on every keystroke, so a leading country
+ * code `7` / `8` is dropped only when it is a prefix (a `+`, or more than ten
+ * digits), never when it is the first digit of the national number.
+ */
+const toNationalDigits = (value: string): string => {
+  const raw = value.trim();
+  let digits = raw.replace(/\D/g, "");
+  if ((raw.startsWith("+") || digits.length > 10) && (digits[0] === "7" || digits[0] === "8")) {
+    digits = digits.slice(1);
+  }
+  return digits.slice(0, 10);
+};
 
 /** `+7 (900) 000-00-00` is 18 characters; the input never needs more. */
 export const PHONE_MASK_LENGTH = 18;
 
-/** `+7 (900) 000-00-00`, progressively while typing: `+7 (900) 0...` */
+/**
+ * `+7 (900) 000-00-00`, progressively while typing. A separator appears only
+ * once a digit follows it, so Backspace can always remove the last character.
+ */
 export const formatRussianPhone = (phone: string): string => {
-  const digits = national(phone).replace(/\D/g, "").slice(0, 10);
+  const digits = toNationalDigits(phone);
   if (digits.length === 0) return "";
-  let out = "+7";
-  if (digits.length > 0) out += ` (${digits.slice(0, 3)}`;
-  if (digits.length >= 3) out += ")";
-  if (digits.length > 3) out += ` ${digits.slice(3, 6)}`;
+  let out = `+7 (${digits.slice(0, 3)}`;
+  if (digits.length > 3) out += `) ${digits.slice(3, 6)}`;
   if (digits.length > 6) out += `-${digits.slice(6, 8)}`;
   if (digits.length > 8) out += `-${digits.slice(8, 10)}`;
   return out;

@@ -14,8 +14,11 @@ test("accepts a 10-digit national number and the +7 / 7 / 8 forms", () => {
 test("formats progressively while typing", () => {
   assert.equal(formatRussianPhone(""), "");
   assert.equal(formatRussianPhone("9"), "+7 (9");
-  assert.equal(formatRussianPhone("900"), "+7 (900)");
+  assert.equal(formatRussianPhone("900"), "+7 (900");
+  assert.equal(formatRussianPhone("9001"), "+7 (900) 1");
   assert.equal(formatRussianPhone("900000"), "+7 (900) 000");
+  assert.equal(formatRussianPhone("89001112233"), "+7 (900) 111-22-33");
+  assert.equal(formatRussianPhone("+7 900 111 22 33"), "+7 (900) 111-22-33");
   assert.equal(formatRussianPhone("9000000000"), "+7 (900) 000-00-00");
 });
 
@@ -25,4 +28,28 @@ test("refuses numbers that are not 10 digits", () => {
   assert.equal(normalizeRussianPhone("abc"), null);
   assert.equal(isValidRussianPhone(""), false);
   assert.equal(isValidRussianPhone("+7 (900) 000-00-00"), true);
+});
+
+// The input shows the mask and feeds it back: typing and Backspace must be stable.
+test("typing one digit at a time never garbles the mask", () => {
+  let shown = "";
+  for (const ch of "9001112233") shown = formatRussianPhone(shown + ch);
+  assert.equal(shown, "+7 (900) 111-22-33");
+});
+
+test("typing a national number that starts with 8 keeps the 8", () => {
+  let shown = "";
+  for (const ch of "8001112233") shown = formatRussianPhone(shown + ch);
+  assert.equal(shown, "+7 (800) 111-22-33");
+});
+
+test("Backspace erases the mask down to empty", () => {
+  let shown = formatRussianPhone("9001112233");
+  const seen = [shown];
+  while (shown !== "") {
+    shown = formatRussianPhone(shown.slice(0, -1));
+    seen.push(shown);
+    assert.ok(seen.length < 30, "mask keeps re-adding characters");
+  }
+  assert.equal(shown, "");
 });
