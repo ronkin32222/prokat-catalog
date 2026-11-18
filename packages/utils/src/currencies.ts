@@ -15,6 +15,7 @@ export const SUPPORTED_CURRENCY_CODES = [
   "CZK",
   "HUF",
   "RON",
+  "RUB",
   // North America
   "USD",
   "CAD",

@@ -35,7 +35,7 @@ export const StoreContactDetails = ({
       {address ? (
         <li>
           <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`}
+            href={`https://yandex.ru/maps/?text=${encodeURIComponent(address)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex min-h-11 items-start gap-3 rounded-2xl px-3 py-2 transition-colors hover:bg-muted/40 outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -64,7 +64,12 @@ export const StoreContactDetails = ({
       ) : null}
       {phone ? (
         <li>
-          <StorePhoneContact phone={phone} sms={sms} iconClassName={iconClassName} autoFocus={autoFocus} />
+          <StorePhoneContact
+            phone={phone}
+            sms={sms}
+            iconClassName={iconClassName}
+            autoFocus={autoFocus}
+          />
         </li>
       ) : null}
       {whatsapp ? (

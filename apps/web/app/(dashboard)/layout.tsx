@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    title: "Louez",
+    title: "Каталог проката",
     statusBarStyle: "default",
   },
 };

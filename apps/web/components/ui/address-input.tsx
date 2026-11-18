@@ -261,7 +261,7 @@ export const AddressInput = ({
     [queryClient, source],
   );
 
-  const debouncedSearch = useDebouncedCallback(searchAddresses, 300);
+  const debouncedSearch = useDebouncedCallback(searchAddresses, 1000);
 
   const resolveTypedAddress = useCallback(async () => {
     // A pick still answering speaks for the field.

@@ -40,7 +40,7 @@ export function PhoneCallbackLandlordEmail({
   return (
     <BaseLayout
       preview={messages.subject.replace("{store}", storeName)}
-      storeName="Louez.io"
+      storeName="Каталог проката"
       logoUrl={null}
       primaryColor={primaryColor}
       locale={locale}

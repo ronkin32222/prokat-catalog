@@ -1,201 +1,157 @@
 import type { ReactNode } from "react";
 
-import { cn } from "@louez/utils";
+import {
+  CheckCircle2Icon,
+  DrillIcon,
+  HammerIcon,
+  HardHatIcon,
+  PaintbrushIcon,
+  RulerIcon,
+  WrenchIcon,
+} from "lucide-react";
+
+import { Button } from "@louez/ui";
 
 import { HeroImageSlider } from "@/components/storefront/home/hero-image-slider";
 import { RichTextHtml } from "@/components/storefront/ui/rich-text-html";
+import { StorefrontLink } from "@/components/storefront/ui/storefront-link";
 import type {
   StoreHeroAlign,
   StoreHeroShape,
   StoreHeroVerticalAlign,
 } from "@/lib/utils/util.store-hero";
 
+interface StoreHeroCategory {
+  name: string;
+  href: string;
+}
+
 interface StoreHeroProps {
   name: string;
-  /** One-line pitch under the name, sanitised editor HTML; takes the place of the description when set. */
   tagline?: string | null;
-  /** The store description, sanitised editor HTML (the page sanitises it on the server). */
   description: string | null;
-  /** Background or framed photos, depending on the shape. */
   backgroundImages?: string[];
-  /** `cover` = text over the photos, `split` = text beside a framed photo, `band` = no photo. */
   shape: StoreHeroShape;
   align: StoreHeroAlign;
   verticalAlign: StoreHeroVerticalAlign;
-  /** Status badge and rating pill. */
+  categories?: StoreHeroCategory[];
   badges?: ReactNode;
-  /** The period search. */
   children?: ReactNode;
-  /** The reassurance line, under the search. */
   footer?: ReactNode;
 }
 
-const ALIGN_ITEMS: Record<StoreHeroAlign, string> = {
-  start: "items-start text-start",
-  center: "items-center text-center",
-  end: "items-end text-end",
-};
+const CATEGORY_ICONS = [DrillIcon, HammerIcon, RulerIcon, WrenchIcon, PaintbrushIcon, HardHatIcon];
+const DEFAULT_CATEGORIES: StoreHeroCategory[] = [
+  { name: "Шуруповёрты", href: "/catalog" },
+  { name: "Перфораторы", href: "/catalog" },
+  { name: "Пилы", href: "/catalog" },
+  { name: "Шлифмашины", href: "/catalog" },
+  { name: "Лобзики", href: "/catalog" },
+  { name: "Оснастка", href: "/catalog" },
+];
 
-const VERTICAL_ALIGN_ITEMS: Record<StoreHeroVerticalAlign, string> = {
-  start: "items-start",
-  center: "items-center",
-  end: "items-end",
-};
-
-/**
- * The scrim follows the text: it darkens the edge the headline sits on and
- * leaves the rest of the photo untinted; at the bottom it is fully clear
- * over the last 5% so the photo runs untinted into the opaque header bar.
- */
-const SCRIM: Record<StoreHeroVerticalAlign, string> = {
-  start: "bg-linear-to-b from-black/70 via-black/30 via-55% to-transparent to-95%",
-  center: "bg-black/40",
-  end: "bg-linear-to-t from-black/75 via-black/30 via-45% to-transparent to-90%",
-};
-
-/** Written out in full so Tailwind sees them. */
-const SPLIT_VERTICAL_ALIGN_ITEMS: Record<StoreHeroVerticalAlign, string> = {
-  start: "lg:items-start",
-  center: "lg:items-center",
-  end: "lg:items-end",
-};
-
-const ALIGN_JUSTIFY: Record<StoreHeroAlign, string> = {
-  start: "justify-start",
-  center: "justify-center",
-  end: "justify-end",
-};
-
-/**
- * The description keeps its paragraphs, lists and links; on a photo it
- * goes white like the headline, elsewhere it stays muted under it.
- */
-const DESCRIPTION_CLASS_NAME = "max-w-prose text-pretty";
-const DESCRIPTION_ON_PHOTO_CLASS_NAME =
-  "prose-invert prose-p:text-white/85 prose-li:text-white/85 prose-headings:text-white prose-strong:text-white prose-a:text-white prose-blockquote:text-white/85 prose-hr:border-white/30";
-
-/**
- * Home hero: the store's name, its description, the badges and the period search.
- *
- * `cover`: on the store photos, `min-h-[70svh]` so the inventory starts
- * before the first scroll; pulled under the header (`-mt-14 md:-mt-16`, the
- * header's own height). The scrim only carries the contrast the headline
- * needs, on the edge the text sits on.
- *
- * `split`: the text on the page surface next to the photo in a rounded
- * frame, no scrim, no white text, so a light illustration works as well as
- * a dark photo. `align` picks the side of the text column, `verticalAlign`
- * where it sits against the photo.
- *
- * `band`: no photo, so a short muted band with everything centred; nothing
- * to look at, so the inventory arrives at once.
- */
+/** Tool-rental hero based on the reference layout; tenant data remains in the live slots. */
 export const StoreHero = ({
   name,
   tagline,
   description,
   backgroundImages = [],
-  shape,
-  align,
-  verticalAlign,
+  categories = [],
   badges,
   children,
   footer,
 }: StoreHeroProps) => {
-  const heading = (
-    <h1
-      id="store-hero-title"
-      className="text-balance text-2xl font-semibold leading-tight tracking-tight sm:text-3xl lg:text-4xl"
-    >
-      {name}
-    </h1>
-  );
-  const cover = shape === "cover";
-  // The tagline is editor HTML too (inline marks only) and reads like the
-  // description's first paragraph: same measure, same tones.
-  const lead = (
-    <RichTextHtml
-      safeHtml={tagline || description}
-      size="lg"
-      className={cn(DESCRIPTION_CLASS_NAME, cover && DESCRIPTION_ON_PHOTO_CLASS_NAME)}
-    />
-  );
-
-  if (shape === "split") {
-    return (
-      <section
-        className="bg-background text-foreground"
-        aria-labelledby="store-hero-title"
-        data-slot="store-hero"
-      >
-        <div
-          className={cn(
-            "mx-auto grid w-full max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-12 lg:px-8 lg:py-12",
-            SPLIT_VERTICAL_ALIGN_ITEMS[verticalAlign],
-          )}
-        >
-          <div
-            className={cn(
-              "relative aspect-[16/10] overflow-hidden rounded-2xl bg-muted lg:aspect-[5/4]",
-              align === "end" ? "lg:order-first" : "lg:order-last",
-            )}
-          >
-            <HeroImageSlider images={backgroundImages} />
-          </div>
-
-          <div className="flex max-w-2xl flex-col gap-4">
-            {badges ? <div className="flex flex-wrap items-center gap-2">{badges}</div> : null}
-            {heading}
-            {lead}
-            {children ? <div className="mt-2 flex w-full">{children}</div> : null}
-            {footer}
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const images = backgroundImages.length > 0 ? backgroundImages : ["/demo/hero-drill.webp"];
+  const shownCategories = categories.length > 0 ? categories : DEFAULT_CATEGORIES;
 
   return (
     <section
-      className={cn(
-        "relative flex overflow-hidden",
-        cover
-          ? cn(
-              "-mt-14 min-h-[70svh] bg-foreground text-white md:-mt-16",
-              VERTICAL_ALIGN_ITEMS[verticalAlign],
-            )
-          : "bg-muted text-foreground",
-      )}
+      className="relative overflow-hidden border-b bg-background"
       aria-labelledby="store-hero-title"
-      data-slot="store-hero"
     >
-      {cover ? (
-        <>
-          <HeroImageSlider images={backgroundImages} />
-          <div
-            aria-hidden
-            className={cn("pointer-events-none absolute inset-0", SCRIM[verticalAlign])}
-          />
-        </>
-      ) : null}
+      <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[15rem_minmax(0,1fr)] lg:px-8 lg:py-10">
+        <nav aria-label="Категории инструмента" className="min-w-0">
+          <ul className="flex snap-x gap-2 overflow-x-auto pb-2 lg:flex-col lg:gap-0 lg:overflow-visible lg:rounded-sm lg:border lg:bg-card lg:pb-0">
+            {shownCategories.slice(0, 6).map((category, index) => {
+              const Icon = CATEGORY_ICONS[index % CATEGORY_ICONS.length];
+              return (
+                <li
+                  key={`${category.href}-${category.name}`}
+                  className="shrink-0 lg:border-b lg:last:border-b-0"
+                >
+                  <StorefrontLink
+                    href={category.href}
+                    className="flex min-h-12 items-center gap-3 border bg-card px-4 text-xs font-medium uppercase transition-colors hover:border-primary hover:text-primary lg:border-0"
+                  >
+                    <Icon aria-hidden className="size-5 shrink-0 text-primary" strokeWidth={1.5} />
+                    {category.name}
+                  </StorefrontLink>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
-      <div
-        className={cn(
-          "relative mx-auto flex w-full max-w-7xl flex-col gap-5 px-4 sm:px-6 lg:px-8",
-          cover ? "pt-24 pb-16 md:pb-10" : "py-10 sm:py-14",
-          ALIGN_ITEMS[align],
-        )}
-      >
-        <div className={cn("flex max-w-3xl flex-col gap-3", ALIGN_ITEMS[align])}>
-          {badges ? <div className="flex flex-wrap items-center gap-2">{badges}</div> : null}
-          {heading}
-          {lead}
+        <div className="storefront-concrete relative grid min-h-[36rem] overflow-hidden rounded-sm border lg:grid-cols-[minmax(0,1.05fr)_minmax(18rem,.95fr)]">
+          <div className="relative z-20 flex max-w-2xl flex-col justify-center gap-5 px-6 py-12 sm:px-10 lg:px-12">
+            <div className="flex flex-wrap items-center gap-2">{badges}</div>
+            <p className="font-display text-sm font-light tracking-[0.04em] text-primary uppercase sm:text-base">
+              Аренда и прокат
+            </p>
+            <h1
+              id="store-hero-title"
+              className="font-display text-balance text-4xl leading-[1.05] font-black tracking-[-0.01em] uppercase sm:text-5xl xl:text-6xl"
+            >
+              Строительных инструментов
+            </h1>
+            <RichTextHtml
+              safeHtml={tagline || description || name}
+              size="lg"
+              className="max-w-xl prose-p:text-foreground/75 prose-strong:text-foreground"
+            />
+            <ul className="space-y-2 text-sm text-foreground/85">
+              <li className="flex items-center gap-2">
+                <CheckCircle2Icon
+                  aria-hidden
+                  className="size-5 shrink-0 fill-primary text-primary-foreground"
+                />
+                Проверенный инструмент, готовый к работе
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2Icon
+                  aria-hidden
+                  className="size-5 shrink-0 fill-primary text-primary-foreground"
+                />
+                Быстрая выдача и понятные условия аренды
+              </li>
+            </ul>
+            <Button
+              render={<StorefrontLink href="/catalog" />}
+              size="lg"
+              className="w-fit rounded-sm px-7 font-semibold uppercase"
+            >
+              Смотреть каталог
+            </Button>
+            {footer}
+          </div>
+
+          <div className="relative min-h-72 overflow-hidden sm:min-h-96 lg:min-h-full">
+            <div
+              aria-hidden
+              className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.35)_60%,rgba(0,0,0,.1))] lg:-left-24"
+            />
+            <div
+              aria-hidden
+              className="absolute inset-x-[12%] bottom-[7%] z-10 h-16 rounded-[50%] bg-primary/25 blur-2xl"
+            />
+            <HeroImageSlider
+              images={images}
+              className="transition-transform duration-500 motion-safe:[transform:perspective(900px)_rotateY(-6deg)] motion-safe:hover:[transform:perspective(900px)_rotateY(0deg)] [&_img]:object-contain [&_img]:drop-shadow-[0_24px_32px_rgba(0,0,0,.6)]"
+            />
+          </div>
         </div>
 
-        {children ? (
-          <div className={cn("flex w-full", ALIGN_JUSTIFY[align])}>{children}</div>
-        ) : null}
-        {footer ? <div className={cn("flex w-full", ALIGN_JUSTIFY[align])}>{footer}</div> : null}
+        {children ? <div className="lg:col-start-2">{children}</div> : null}
       </div>
     </section>
   );

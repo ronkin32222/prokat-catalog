@@ -182,7 +182,7 @@ export function IntegrationsCatalogView() {
       {/* Built-in by Louez.io */}
       <section className="space-y-3">
         <h3 className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-          {resolveMessage("dashboard.settings.integrationsHub.sections.byLouez", "By Louez.io")}
+          {resolveMessage("dashboard.settings.integrationsHub.sections.byLouez", "Каталог проката")}
         </h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {LOUEZ_ITEMS.map((item) => (

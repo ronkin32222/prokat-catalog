@@ -1,4 +1,4 @@
-const DEFAULT_FORMAT_LOCALE = "fr-FR";
+const DEFAULT_FORMAT_LOCALE = "ru-RU";
 
 // Currency formatting
 export interface FormatCurrencyOptions {
@@ -8,7 +8,7 @@ export interface FormatCurrencyOptions {
 
 export function formatCurrency(
   amount: number,
-  currency: string = "EUR",
+  currency: string = "RUB",
   locale?: string,
   options?: FormatCurrencyOptions,
 ): string {
@@ -32,6 +32,7 @@ export function formatCurrency(
     CZK: "cs-CZ",
     HUF: "hu-HU",
     RON: "ro-RO",
+    RUB: "ru-RU",
     SGD: "en-SG",
     HKD: "zh-HK",
     KRW: "ko-KR",
@@ -69,7 +70,7 @@ export function formatCurrency(
  */
 export function formatCurrencyForSms(
   amount: number,
-  currency: string = "EUR",
+  currency: string = "RUB",
   locale: string = DEFAULT_FORMAT_LOCALE,
 ): string {
   const formatted = new Intl.NumberFormat(locale, {
@@ -83,6 +84,7 @@ export function formatCurrencyForSms(
     USD: "dollars",
     GBP: "livres",
     CHF: "CHF",
+    RUB: "рублей",
   };
 
   const currencyName = currencyNames[currency] || currency;
@@ -248,7 +250,7 @@ export function formatDurationHuman(days: number): string {
 }
 
 // Get currency symbol
-export function getCurrencySymbol(currency: string = "EUR"): string {
+export function getCurrencySymbol(currency: string = "RUB"): string {
   const symbolMap: Record<string, string> = {
     EUR: "€",
     USD: "$",
@@ -268,6 +270,7 @@ export function getCurrencySymbol(currency: string = "EUR"): string {
     CZK: "Kč",
     HUF: "Ft",
     RON: "lei",
+    RUB: "₽",
     SGD: "S$",
     HKD: "HK$",
     KRW: "₩",
@@ -293,7 +296,7 @@ export function getCurrencySymbol(currency: string = "EUR"): string {
 // Format amount with symbol suffix (e.g., "10.50€")
 export function formatAmountWithSymbol(
   amount: number,
-  currency: string = "EUR",
+  currency: string = "RUB",
   decimals: number = 2,
 ): string {
   const symbol = getCurrencySymbol(currency);

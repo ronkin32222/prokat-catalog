@@ -31,7 +31,7 @@ export function SupplierInvoiceReceivedEmail({
   return (
     <BaseLayout
       preview={messages.subject}
-      storeName="Louez.io"
+      storeName="Каталог проката"
       logoUrl={null}
       primaryColor={primaryColor}
       locale={locale}

@@ -1,17 +1,8 @@
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
-
-import { eq } from "drizzle-orm";
-
-import { db, users } from "@louez/db";
 
 import { auth } from "@/lib/auth";
-import { getMcpEndpoint } from "@/lib/agent-connections/mcp-endpoint";
 import { isCurrentUserPlatformAdmin } from "@/lib/platform-admin";
 import { getCurrentStore, getUserStores } from "@/lib/store-context";
-import { getCountryByCode } from "@louez/utils/countries";
-import { ONBOARDING_FALLBACK_COUNTRY } from "@/lib/utils/util.browser-country-detection";
-import { detectCountryFromRequestHeaders } from "@/lib/utils/util.request-country-detection";
 
 import { StoreOnboardingClientPage } from "./store-onboarding-client-page";
 
@@ -32,13 +23,9 @@ export default async function OnboardingStorePage({
   const { new: newStore } = await searchParams;
   const isCreatingNewStore = newStore === "true";
 
-  const [user, currentStore, isPlatformAdmin, requestHeaders] = await Promise.all([
-    db.query.users.findFirst({
-      where: eq(users.id, session.user.id),
-    }),
+  const [currentStore, isPlatformAdmin] = await Promise.all([
     getCurrentStore(),
     isCurrentUserPlatformAdmin(),
-    headers(),
   ]);
 
   // A completed active store is not an onboarding draft. This also closes the
@@ -47,29 +34,16 @@ export default async function OnboardingStorePage({
     redirect("/dashboard");
   }
 
-  // Platform admins act on behalf of stores: their own user profile must never
-  // become a prerequisite for inspecting or completing somebody else's draft.
-  if (!user?.profileCompletedAt && !isPlatformAdmin) {
-    redirect("/onboarding/profile");
-  }
-
   const stores = isPlatformAdmin ? await getUserStores() : [];
   const currentStoreId = currentStore?.id ?? stores[0]?.id ?? null;
-  const savedCountry = isCreatingNewStore
-    ? null
-    : (getCountryByCode(currentStore?.settings?.country ?? "")?.code ?? null);
-  const requestCountry = detectCountryFromRequestHeaders(requestHeaders)?.country ?? null;
-  const initialCountry = savedCountry ?? requestCountry ?? ONBOARDING_FALLBACK_COUNTRY;
-
   return (
     <StoreOnboardingClientPage
       stores={stores}
       currentStoreId={isPlatformAdmin ? currentStoreId : null}
       editingStoreId={isCreatingNewStore ? null : (currentStore?.id ?? null)}
-      initialCountry={initialCountry}
-      shouldDetectBrowserCountry={!savedCountry && !requestCountry}
+      initialCountry="RU"
+      shouldDetectBrowserCountry={false}
       accountEmail={session.user.email}
-      mcpEndpoint={getMcpEndpoint()}
     />
   );
 }

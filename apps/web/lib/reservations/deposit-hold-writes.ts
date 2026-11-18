@@ -838,7 +838,7 @@ export async function recordUnmatchedIntent(
       reservationId: input.reservationId,
       userId: input.actorUserId,
       activityType: "payment_updated",
-      description: `Autorisation trouvée chez Stripe (${intent.paymentIntentId}) pour la demande d'empreinte, mais différente de la demande: non enregistrée. Annulez-la dans Stripe, puis clôturez la demande. Si vous la prélevez dans Stripe à la place, Louez n'enregistre pas ce montant et la demande reste ouverte: contactez le support Louez.`,
+      description: `В Stripe найдена авторизация (${intent.paymentIntentId}) для залога, но её параметры отличаются от запроса, поэтому она не записана. Отмените её в Stripe, затем закройте запрос. Если списать эту сумму в Stripe, сервис не запишет платёж и запрос останется открытым: обратитесь в поддержку.`,
       metadata: {
         kind: UNMATCHED_INTENT_ACTIVITY,
         attemptId: input.claim.attemptId,

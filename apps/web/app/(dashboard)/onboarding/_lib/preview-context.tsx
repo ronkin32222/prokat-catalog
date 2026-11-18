@@ -28,7 +28,7 @@ const DEFAULT_PREVIEW: OnboardingPreviewState = {
   storeName: "",
   slug: "",
   logoUrl: null,
-  primaryColor: "#0066FF",
+  primaryColor: "#C9A24B",
   theme: "light",
   reservationMode: "payment",
   userName: "",

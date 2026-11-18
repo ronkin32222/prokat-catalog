@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="Фото инструмента">
+  <defs><radialGradient id="g"><stop stop-color="#ffc400" stop-opacity=".18"/><stop offset="1" stop-color="#0b0b0c" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1600" height="1000" fill="#0b0b0c"/><ellipse cx="1120" cy="760" rx="430" ry="160" fill="url(#g)"/>
+  <g transform="translate(620 180)" fill="none" stroke="#ffc400" stroke-linecap="round" stroke-linejoin="round" stroke-width="22" opacity=".9">
+    <path d="M130 260h500l145 108v165H130z"/><path d="M630 260V145h170v223"/><path d="M285 533v245h190V533"/><path d="M130 345H0v95h130"/><circle cx="655" cy="405" r="45"/>
+  </g>
+  <text x="1100" y="905" fill="#a1a1a8" font-family="Arial, sans-serif" font-size="48" letter-spacing="10" text-anchor="middle">ФОТО</text>
+</svg>

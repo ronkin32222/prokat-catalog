@@ -6,7 +6,7 @@ import { MapPinIcon } from "@louez/ui/icons";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@louez/ui";
 
 import { InfoCallout } from "@/components/dashboard/info-callout";
-import { getCountryName } from "@louez/utils/countries";
+import { getCountryName, SUPPORTED_COUNTRIES } from "@louez/utils/countries";
 
 interface StoreSettingsBillingSectionProps {
   form: any;
@@ -78,7 +78,12 @@ export function StoreSettingsBillingSection({
             </div>
 
             <form.AppField name="billingCountry">
-              {(field: any) => <field.CountrySelect label={t("billingAddress.country")} />}
+              {(field: any) => (
+                <field.CountrySelect
+                  label={t("billingAddress.country")}
+                  countries={SUPPORTED_COUNTRIES.filter(({ code }) => code === "RU")}
+                />
+              )}
             </form.AppField>
 
             {(billingAddress || billingCity) && (

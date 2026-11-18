@@ -140,7 +140,9 @@ export function OnboardingShell({
             </main>
 
             <footer className="px-6 pb-8 lg:px-12">
-              <p className="text-muted-foreground text-xs">© Louez {new Date().getFullYear()}</p>
+              <p className="text-muted-foreground text-xs">
+                © Каталог проката {new Date().getFullYear()}
+              </p>
             </footer>
           </div>
 

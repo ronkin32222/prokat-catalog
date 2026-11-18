@@ -1,39 +1,39 @@
 import { supplementalMessages } from "../messages";
-import { Body, Container, Head, Html, Link, Preview, Section, Text } from "@react-email/components";
+import { Body, Container, Head, Html, Preview, Section, Text } from "@react-email/components";
 import type { EmailLocale } from "../types";
 import { shell } from "./theme";
 
 const translations: Record<string, { sentBy: string; ignoreIfNotYou: string }> = {
   fr: {
-    sentBy: "Cet email a été envoyé par Louez.",
+    sentBy: "Cet email a été envoyé par Каталог проката.",
     ignoreIfNotYou: "Si vous n'êtes pas à l'origine de cette action, vous pouvez l'ignorer.",
   },
   en: {
-    sentBy: "This email was sent by Louez.",
+    sentBy: "This email was sent by Каталог проката.",
     ignoreIfNotYou: "If you didn't initiate this action, you can ignore it.",
   },
   de: {
-    sentBy: "Diese E-Mail wurde von Louez gesendet.",
+    sentBy: "Diese E-Mail wurde von Каталог проката gesendet.",
     ignoreIfNotYou: "Wenn Sie diese Aktion nicht initiiert haben, können Sie sie ignorieren.",
   },
   es: {
-    sentBy: "Este correo fue enviado por Louez.",
+    sentBy: "Este correo fue enviado por Каталог проката.",
     ignoreIfNotYou: "Si no inició esta acción, puede ignorarla.",
   },
   it: {
-    sentBy: "Questa email è stata inviata da Louez.",
+    sentBy: "Questa email è stata inviata da Каталог проката.",
     ignoreIfNotYou: "Se non hai avviato questa azione, puoi ignorarla.",
   },
   nl: {
-    sentBy: "Deze e-mail is verzonden door Louez.",
+    sentBy: "Deze e-mail is verzonden door Каталог проката.",
     ignoreIfNotYou: "Als u deze actie niet heeft gestart, kunt u deze negeren.",
   },
   pl: {
-    sentBy: "Ten e-mail został wysłany przez Louez.",
+    sentBy: "Ten e-mail został wysłany przez Каталог проката.",
     ignoreIfNotYou: "Jeśli nie zainicjowałeś tej akcji, możesz ją zignorować.",
   },
   pt: {
-    sentBy: "Este email foi enviado por Louez.",
+    sentBy: "Este email foi enviado por Каталог проката.",
     ignoreIfNotYou: "Se você não iniciou esta ação, pode ignorá-la.",
   },
 
@@ -81,7 +81,7 @@ export function BaseLayoutSimple({ preview, locale = "fr", children }: BaseLayou
         <Section style={shell.page}>
           <Container style={shell.container}>
             <Section style={shell.header}>
-              <Text style={shell.wordmark}>Louez</Text>
+              <Text style={shell.wordmark}>Каталог проката</Text>
             </Section>
             <Section style={shell.content}>{children}</Section>
           </Container>
@@ -91,11 +91,6 @@ export function BaseLayoutSimple({ preview, locale = "fr", children }: BaseLayou
           <Container style={shell.container}>
             <Text style={shell.footerText}>
               {t.sentBy} {t.ignoreIfNotYou}
-            </Text>
-            <Text style={shell.footerText}>
-              <Link href="https://louez.io" style={shell.footerLink}>
-                louez.io
-              </Link>
             </Text>
           </Container>
         </Section>

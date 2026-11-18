@@ -17,7 +17,6 @@ import { apiErrorKey } from "@/lib/orpc/errors";
 import { orpc } from "@/lib/orpc/react";
 import { getDefaultCurrencyForCountry } from "@/lib/utils/currency";
 import { createLoginUrl } from "@/lib/utils/util.url";
-import { detectCountryFromBrowser } from "@/lib/utils/util.browser-country-detection";
 
 import { useAppForm } from "@/hooks/form/form";
 
@@ -90,7 +89,7 @@ export const useStoreStep = ({
       latitude: null as number | null,
       longitude: null as number | null,
       email: "",
-      phone: "",
+      phone: "+7",
     },
     validationLogic: revalidateLogic({
       mode: "submit",
@@ -143,7 +142,7 @@ export const useStoreStep = ({
     updatePreview({
       logoUrl:
         branding.logoUrl && isValidImageUrlClient(branding.logoUrl) ? branding.logoUrl : null,
-      primaryColor: branding.primaryColor || "#0066FF",
+      primaryColor: branding.primaryColor || "#C9A24B",
       theme: branding.theme === "dark" ? "dark" : "light",
     });
 
@@ -174,13 +173,9 @@ export const useStoreStep = ({
     form.setFieldValue("latitude", draft.latitude ?? null);
     form.setFieldValue("longitude", draft.longitude ?? null);
     form.setFieldValue("email", draft.email || "");
-    form.setFieldValue("phone", draft.phone || "");
-    if (draft.country) {
-      form.setFieldValue("country", draft.country);
-    }
-    if (draft.currency) {
-      form.setFieldValue("currency", draft.currency);
-    }
+    form.setFieldValue("phone", draft.phone || "+7");
+    form.setFieldValue("country", "RU");
+    form.setFieldValue("currency", "RUB");
 
     hasHydratedDraft.current = true;
     hasAppliedBrowserDefaults.current = true;
@@ -197,11 +192,8 @@ export const useStoreStep = ({
   useEffect(() => {
     if (hasAppliedBrowserDefaults.current) return;
 
-    const detection = detectCountryFromBrowser();
-    const detectedCurrency = getDefaultCurrencyForCountry(detection.country);
-
-    form.setFieldValue("country", detection.country);
-    form.setFieldValue("currency", detectedCurrency);
+    form.setFieldValue("country", "RU");
+    form.setFieldValue("currency", "RUB");
 
     hasAppliedBrowserDefaults.current = true;
   }, [form]);

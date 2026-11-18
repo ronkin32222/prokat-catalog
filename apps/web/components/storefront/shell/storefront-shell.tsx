@@ -49,7 +49,7 @@ export const StorefrontShell = ({
   ownerNotice,
   children,
 }: StorefrontShellProps) => {
-  const isDark = theme.mode === "dark";
+  const isDark = true;
   const themeStyle = buildStoreThemeStyle(theme);
   const themeHead = (
     <>
@@ -60,7 +60,7 @@ export const StorefrontShell = ({
 
   if (variant === "bare") {
     return (
-      <div className={cn("text-foreground", getStoreThemeClassName(theme.mode))}>
+      <div className={cn("storefront-theme text-foreground", getStoreThemeClassName(theme.mode))}>
         {themeHead}
         <style>{"html,body{background:transparent!important}"}</style>
         {children}
@@ -78,10 +78,7 @@ export const StorefrontShell = ({
 
   return (
     <div
-      className={cn(
-        "flex min-h-dvh flex-col bg-background text-foreground",
-        getStoreThemeClassName(theme.mode),
-      )}
+      className={cn("storefront-theme dark flex min-h-dvh flex-col bg-background text-foreground")}
     >
       {themeHead}
       {ownerNotice}

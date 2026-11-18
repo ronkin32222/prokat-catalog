@@ -55,7 +55,7 @@ export function VoiceNumberBillingEmail({
   return (
     <BaseLayout
       preview={variantMessages.subject.replace("{number}", e164)}
-      storeName="Louez.io"
+      storeName="Каталог проката"
       logoUrl={null}
       primaryColor={primaryColor}
       locale={locale}

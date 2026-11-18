@@ -14,8 +14,8 @@ export interface StoreThemeInput {
   primaryColor: string;
 }
 
-/** Theme of a store that never picked one: light, platform blue. */
-export const DEFAULT_STORE_THEME: StoreThemeInput = { mode: "light", primaryColor: "#0066FF" };
+/** Tool-rental storefront default; tenants still override the accent with primaryColor. */
+export const DEFAULT_STORE_THEME: StoreThemeInput = { mode: "dark", primaryColor: "#FFC400" };
 
 /**
  * `theme-color` of the viewport meta per mode. `dark` is the hex form of
@@ -23,8 +23,8 @@ export const DEFAULT_STORE_THEME: StoreThemeInput = { mode: "light", primaryColo
  * so the browser chrome matches the page behind it.
  */
 export const STORE_THEME_VIEWPORT_COLORS: Record<StoreThemeMode, string> = {
-  light: "#ffffff",
-  dark: "#0a0a0a",
+  light: "#0B0B0C",
+  dark: "#0B0B0C",
 };
 
 export interface StoreThemeVariables {

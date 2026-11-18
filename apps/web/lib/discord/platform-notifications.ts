@@ -54,7 +54,7 @@ async function sendOrThrow(message: string): Promise<void> {
     // An outbox sender's abort and timeout (lib/api/effect-signal.ts).
     signal: providerSignal(),
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ content: message, username: 'Louez', flags: 4 }),
+    body: JSON.stringify({ content: message, username: 'Каталог проката', flags: 4 }),
   })
   if (!res.ok) {
     throw new Error(`[Discord] Webhook returned ${res.status}: ${await res.text().catch(() => '')}`)

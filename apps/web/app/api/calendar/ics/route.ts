@@ -221,13 +221,13 @@ export async function GET(request: Request) {
   const lines: string[] = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Louez//Calendar//FR',
+    'PRODID:-//Catalog Prokata//Calendar//RU',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     `REFRESH-INTERVAL;VALUE=DURATION:${CALENDAR_REFRESH_INTERVAL}`,
     `X-PUBLISHED-TTL:${CALENDAR_REFRESH_INTERVAL}`,
-    `X-WR-CALNAME:${escapeICSText(store.name)} - Reservations`,
-    `X-WR-TIMEZONE:Europe/Paris`,
+    `X-WR-CALNAME:${escapeICSText(store.name)} - Бронирования`,
+    `X-WR-TIMEZONE:Europe/Moscow`,
   ];
 
   // Add events for each reservation

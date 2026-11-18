@@ -31,6 +31,7 @@ export const SUPPORTED_COUNTRIES: Country[] = [
   { code: 'PL', timezone: 'Europe/Warsaw' },
   { code: 'PT', timezone: 'Europe/Lisbon' },
   { code: 'RO', timezone: 'Europe/Bucharest' },
+  { code: 'RU', timezone: 'Europe/Moscow' },
   { code: 'SE', timezone: 'Europe/Stockholm' },
 
   // North America
@@ -68,7 +69,7 @@ export const SUPPORTED_COUNTRIES: Country[] = [
 ]
 
 // Sort by translated name for display (will be sorted at runtime)
-export function getCountriesSortedByName(locale: string = 'fr'): Country[] {
+export function getCountriesSortedByName(locale: string = 'ru'): Country[] {
   return [...SUPPORTED_COUNTRIES].sort((a, b) => {
     const nameA = getCountryName(a.code, locale)
     const nameB = getCountryName(b.code, locale)
@@ -82,10 +83,10 @@ export function getCountryByCode(code: string): Country | undefined {
 
 export function getTimezoneForCountry(countryCode: string): string {
   const country = getCountryByCode(countryCode)
-  return country?.timezone || 'Europe/Paris' // Default to Paris
+  return country?.timezone || 'Europe/Moscow'
 }
 
-export function getCountryName(code: string, locale: string = 'fr'): string {
+export function getCountryName(code: string, locale: string = 'ru'): string {
   try {
     const regionNames = new Intl.DisplayNames([locale], { type: 'region' })
     return regionNames.of(code) || code

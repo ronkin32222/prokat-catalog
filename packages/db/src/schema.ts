@@ -851,7 +851,7 @@ export const stores = mysqlTable(
     // Theme
     theme: json("theme").$type<StoreTheme>().default({
       mode: "light",
-      primaryColor: "#0066FF",
+      primaryColor: "#C9A24B",
     }),
 
     // Legal

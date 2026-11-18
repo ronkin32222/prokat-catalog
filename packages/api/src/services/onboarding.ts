@@ -29,7 +29,7 @@ export async function getOnboardingDraft(params: GetOnboardingDraftParams) {
     store.longitude !== null && store.longitude !== undefined ? Number(store.longitude) : null;
 
   const theme = store.theme;
-  const primaryColor = theme?.primaryColor ?? "#0066FF";
+  const primaryColor = theme?.primaryColor ?? "#C9A24B";
   const mode = theme?.mode === "dark" ? "dark" : "light";
 
   return {

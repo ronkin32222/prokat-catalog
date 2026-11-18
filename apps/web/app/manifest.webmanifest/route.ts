@@ -23,8 +23,8 @@ export async function GET() {
   });
 
   const manifest = {
-    name: 'Louez',
-    short_name: 'Louez',
+    name: 'Каталог проката',
+    short_name: 'Прокат',
     description: t('subtitle'),
     id: '/',
     start_url: '/',

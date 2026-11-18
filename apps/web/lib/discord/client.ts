@@ -46,7 +46,7 @@ export async function sendDiscordNotification(
       },
       body: JSON.stringify({
         ...payload,
-        username: payload.username || 'Louez',
+        username: payload.username || 'Каталог проката',
       }),
     })
 
@@ -104,7 +104,7 @@ export async function sendTestDiscordNotification(
         description: `Les notifications Discord sont maintenant actives pour **${storeName}**.`,
         color: 0x22c55e, // green
         timestamp: new Date().toISOString(),
-        footer: { text: 'Louez.io' },
+        footer: { text: 'Каталог проката' },
       },
     ],
   })

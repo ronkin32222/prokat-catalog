@@ -46,7 +46,7 @@ const DEFAULT_STORE_SETTINGS: StoreSettings = {
   turnoverBufferMinutes: 0,
 };
 
-const DEFAULT_STORE_THEME: StoreTheme = { mode: "light", primaryColor: "#0066FF" };
+const DEFAULT_STORE_THEME: StoreTheme = { mode: "light", primaryColor: "#C9A24B" };
 
 export type HomeInventory =
   | { kind: "categories"; entries: CategoryBrowseEntry[] }

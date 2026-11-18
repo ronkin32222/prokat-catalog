@@ -60,6 +60,7 @@ export const ProductGridView = ({
               period={period}
               availability={availability}
               priority={index < PRODUCT_GRID_PRIORITY_COUNT}
+              fallbackIndex={index}
               onQuickAdd={
                 quickAddLimit !== undefined
                   ? () => onQuickAdd(product, quickAddLimit, period ?? null)

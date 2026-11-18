@@ -42,7 +42,7 @@ export function ContactMessageEmail({
   return (
     <BaseLayout
       preview={messages.subject.replace("{name}", senderName).replace("{store}", storeName)}
-      storeName="Louez.io"
+      storeName="Каталог проката"
       logoUrl={null}
       primaryColor={primaryColor}
       locale={locale}

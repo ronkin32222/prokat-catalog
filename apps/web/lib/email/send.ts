@@ -1425,7 +1425,7 @@ export async function sendVoiceNumberBillingEmail({
   )
 
   try {
-    const result = await sendEmail({ to, subject, html, fromName: 'Louez.io' })
+    const result = await sendEmail({ to, subject, html, fromName: 'Каталог проката' })
     await logEmail({
       storeId,
       to,
@@ -1485,7 +1485,7 @@ export async function sendBalanceLimitEmail({
   )
 
   try {
-    const result = await sendEmail({ to, subject, html, fromName: 'Louez.io' })
+    const result = await sendEmail({ to, subject, html, fromName: 'Каталог проката' })
     await logEmail({
       storeId,
       to,
@@ -2370,7 +2370,7 @@ export async function sendSupplierInvoiceReceivedEmail({
   )
 
   try {
-    const result = await sendEmail({ to, subject, html, fromName: 'Louez.io' })
+    const result = await sendEmail({ to, subject, html, fromName: 'Каталог проката' })
     await logEmail({
       storeId: store.id,
       to,

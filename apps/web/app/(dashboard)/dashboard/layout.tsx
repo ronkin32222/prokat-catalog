@@ -118,7 +118,8 @@ export default async function DashboardMainLayout({ children }: { children: Reac
   }
 
   const settings = (store.settings as StoreSettings) || {};
-  const showAIChat = isAIChatConfigured();
+  // Продукт без ИИ: чат в шапке выключен всегда.
+  const showAIChat = false && isAIChatConfigured();
 
   // Get current plan for the store
   const [

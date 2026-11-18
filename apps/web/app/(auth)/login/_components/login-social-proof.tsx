@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { ArrowUpRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import {
@@ -21,19 +21,16 @@ const reviews = [
     id: "review1",
     name: "Timothée",
     logo: "/images/testimonials/bicy-dijon-logo.webp",
-    shopUrl: "https://bicy-dijon.louez.io",
   },
   {
     id: "review2",
     name: "Martin",
     logo: "/images/testimonials/bloom-store-logo.svg",
-    shopUrl: "https://bloom.louez.io",
   },
   {
     id: "review3",
     name: "Romain",
     logo: "/images/testimonials/les-freres-complices-logo.webp",
-    shopUrl: "https://les-freres-complices.louez.io",
   },
 ] as const;
 
@@ -108,13 +105,7 @@ export const LoginSocialProof = () => {
                   &ldquo;{t(`${review.id}Quote`)}&rdquo;
                 </blockquote>
                 <figcaption className="mt-6">
-                  <a
-                    href={review.shopUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${t("visitShop")} — ${review.name}`}
-                    className="group inline-flex items-center gap-3 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-                  >
+                  <div className="inline-flex items-center gap-3">
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-0.5">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -126,12 +117,11 @@ export const LoginSocialProof = () => {
                     </span>
                     <span className="min-w-0">
                       <span className="block font-semibold">{review.name}</span>
-                      <span className="text-primary-foreground/70 flex items-center gap-1 text-sm">
+                      <span className="text-primary-foreground/70 block text-sm">
                         {t(`${review.id}Role`)}
-                        <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100" />
                       </span>
                     </span>
-                  </a>
+                  </div>
                 </figcaption>
               </figure>
             </CarouselItem>

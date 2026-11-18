@@ -32,7 +32,7 @@ const HEX_COLOR_PATTERN = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
 
 const DEFAULT_BRANDING_VALUES: BrandingInput = {
   logoUrl: "",
-  primaryColor: "#0066FF",
+  primaryColor: "#C9A24B",
   theme: "light",
 };
 
@@ -93,7 +93,7 @@ export const useBrandingStep = () => {
           has_logo: Boolean(logoUrl),
           theme: value.theme,
           primary_color: value.primaryColor,
-          is_default_primary_color: value.primaryColor === "#0066FF",
+          is_default_primary_color: value.primaryColor === "#C9A24B",
         });
 
         selectedLogoFile.current = null;
@@ -133,7 +133,7 @@ export const useBrandingStep = () => {
     const logoUrl = draft.logoUrl && isValidImageUrlClient(draft.logoUrl) ? draft.logoUrl : "";
 
     form.setFieldValue("logoUrl", logoUrl);
-    form.setFieldValue("primaryColor", draft.primaryColor || "#0066FF");
+    form.setFieldValue("primaryColor", draft.primaryColor || "#C9A24B");
     // The store draft has a database-level light default before this step is
     // completed, so it must not override the user's resolved dashboard theme.
 

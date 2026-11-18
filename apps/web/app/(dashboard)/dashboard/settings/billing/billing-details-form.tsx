@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 import { z } from "zod";
 
 import { DisabledControlsProvider, toastManager } from "@louez/ui";
+import { SUPPORTED_COUNTRIES } from "@louez/utils/countries";
 
 import type {
   BillingDetailsField,
@@ -64,7 +65,7 @@ export const BillingDetailsFormView = ({
       postalCode: details.address.postalCode,
       city: details.address.city,
       state: details.address.state,
-      country: details.address.country || details.storeCountry || "",
+      country: "RU",
       vatNumber: details.vat?.number ?? "",
     } satisfies BillingDetailsForm,
     validationLogic: revalidateLogic({ mode: "submit", modeAfterSubmission: "change" }),
@@ -139,7 +140,11 @@ export const BillingDetailsFormView = ({
             </form.AppField>
             <form.AppField name="country">
               {(field) => (
-                <field.CountrySelect label={t("country")} placeholder={t("countryPlaceholder")} />
+                <field.CountrySelect
+                  label={t("country")}
+                  placeholder={t("countryPlaceholder")}
+                  countries={SUPPORTED_COUNTRIES.filter(({ code }) => code === "RU")}
+                />
               )}
             </form.AppField>
           </div>

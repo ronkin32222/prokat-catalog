@@ -19,7 +19,7 @@ import { stripHtml } from "@louez/utils";
 import type { OnlineStoreSection } from "./online-store.constants";
 
 export const MAX_HERO_IMAGES = 5;
-export const DEFAULT_PRIMARY_COLOR = "#2563eb";
+export const DEFAULT_PRIMARY_COLOR = "#C9A24B";
 /** Visible characters of the tagline, HTML aside. */
 export const MAX_TAGLINE_LENGTH = 240;
 export const MAX_ANNOUNCEMENT_LENGTH = 200;

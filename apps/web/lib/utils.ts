@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-const DEFAULT_FORMAT_LOCALE = 'fr-FR'
+const DEFAULT_FORMAT_LOCALE = 'ru-RU'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 // Currency formatting
 export function formatCurrency(
   amount: number,
-  currency: string = 'EUR',
+  currency: string = 'RUB',
   locale?: string
 ): string {
   return new Intl.NumberFormat(locale ?? DEFAULT_FORMAT_LOCALE, {
@@ -25,7 +25,7 @@ export function formatCurrency(
  */
 export function formatCurrencyForSms(
   amount: number,
-  currency: string = 'EUR',
+  currency: string = 'RUB',
   locale?: string
 ): string {
   const formatted = new Intl.NumberFormat(locale ?? DEFAULT_FORMAT_LOCALE, {
@@ -35,6 +35,7 @@ export function formatCurrencyForSms(
 
   // Use readable currency names for common currencies
   const currencyNames: Record<string, string> = {
+    RUB: 'рублей',
     EUR: 'euros',
     USD: 'dollars',
     GBP: 'livres',
@@ -129,7 +130,7 @@ export function formatDateRange(
 }
 
 // Relative time formatting (e.g., "il y a 2 jours", "dans 3 heures")
-export function formatRelativeTime(date: Date | string, locale: string = 'fr'): string {
+export function formatRelativeTime(date: Date | string, locale: string = 'ru'): string {
   const d = typeof date === 'string' ? new Date(date) : date
   const now = new Date()
   const diffMs = d.getTime() - now.getTime()
@@ -181,8 +182,9 @@ export function formatDuration(days: number): string {
 }
 
 // Get currency symbol
-export function getCurrencySymbol(currency: string = 'EUR'): string {
+export function getCurrencySymbol(currency: string = 'RUB'): string {
   const symbolMap: Record<string, string> = {
+    RUB: '₽',
     EUR: '€',
     USD: '$',
     GBP: '£',
@@ -226,7 +228,7 @@ export function getCurrencySymbol(currency: string = 'EUR'): string {
 // Format amount with symbol suffix (e.g., "10.50€")
 export function formatAmountWithSymbol(
   amount: number,
-  currency: string = 'EUR',
+  currency: string = 'RUB',
   decimals: number = 2
 ): string {
   const symbol = getCurrencySymbol(currency)

@@ -166,7 +166,8 @@ const buildAiAssistantItem = (
 const buildNavigationSections = (
   aiCredits: { low: boolean; credits: number | null; hasUsedCredits: boolean } | null,
 ): NavigationSection[] => [
-  { items: [...mainNavigation, buildAiAssistantItem(aiCredits)] },
+  // shortcut: ИИ-раздел скрыт из меню, код оставлен ради слияния с upstream.
+  { items: mainNavigation },
   { labelKey: "catalog", items: catalogNavigation },
   // No label: the one row already names the section.
   // Purchase invoices (reception) are reachable from Settings → Facturation

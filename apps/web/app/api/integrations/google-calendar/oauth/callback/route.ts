@@ -57,7 +57,7 @@ export async function GET(request: Request) {
 
   const token = await exchangeGoogleCalendarCode(code);
   const accountEmail = await getGoogleAccountEmail(token.accessToken);
-  const calendarName = `Louez - ${store.name}`;
+  const calendarName = `Каталог проката — ${store.name}`;
   const calendar = await createGoogleCalendar({
     accessToken: token.accessToken,
     summary: calendarName,

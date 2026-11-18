@@ -118,7 +118,7 @@ export const CheckoutContactStep = withForm({
             {IS_DEVELOPMENT && (
               <Button type="button" variant="outline" size="sm" onClick={handleDevAutofill}>
                 <Wand2 data-slot="icon" />
-                Remplir dev
+                Заполнить для разработки
               </Button>
             )}
           </div>

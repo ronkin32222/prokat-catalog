@@ -753,7 +753,7 @@ async function sendToCustomer({
     message: compose(),
     templateType,
     creditSource: quotaCheck.creditSource,
-    sender: "Louez",
+    sender: "Prokat",
     deliveryKey,
   });
 }

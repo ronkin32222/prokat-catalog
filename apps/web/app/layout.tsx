@@ -23,7 +23,7 @@ import { ORPCProvider } from "@/lib/orpc/provider";
 import { NO_INDEX_ROBOTS, isSearchIndexingEnabled } from "@/lib/search-indexing";
 
 // Import translations directly since this is a root layout without NextIntlProvider
-import messages from "@/messages/fr.json";
+import messages from "@/messages/ru.json";
 
 import "./globals.css";
 

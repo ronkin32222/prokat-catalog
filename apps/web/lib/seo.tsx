@@ -284,7 +284,7 @@ export function generateProductMetadata(
   const description = product.description
     ? truncateText(stripHtml(product.description), 160)
     : options.description ||
-      `Louez ${product.name} chez ${store.name} à partir de ${priceFormatted}`;
+      `${product.name} напрокат в магазине ${store.name} от ${priceFormatted}`;
 
   const images = (product.images?.length ? product.images : []).map(absoluteAssetUrl);
   const canonicalUrl = getCanonicalUrl(store.slug, path || getProductPath(product));
@@ -370,7 +370,7 @@ export function generateLocalBusinessSchema(
     schema.address = {
       "@type": "PostalAddress",
       streetAddress: store.address,
-      addressCountry: store.settings?.country || "FR",
+      addressCountry: store.settings?.country || "RU",
     };
   }
 

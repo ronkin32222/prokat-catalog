@@ -20,6 +20,7 @@ import { useAppForm } from "@/hooks/form/form";
 import { apiErrorKey } from "@/lib/orpc/errors";
 import { orpc } from "@/lib/orpc/react";
 import { SUPPORTED_CURRENCIES, getDefaultCurrencyForCountry } from "@/lib/utils/currency";
+import { SUPPORTED_COUNTRIES } from "@louez/utils/countries";
 import { StoreSettingsBillingSection } from "./components/store-settings-billing-section";
 import { buildCompanyUpdate } from "./util.company-settings";
 
@@ -51,7 +52,7 @@ export const CompanySettingsForm = ({ settings }: CompanySettingsFormProps) => {
   const [rootError, setRootError] = useState<string | null>(null);
   const updateCompany = useMutation(orpc.dashboard.settings.updateCompany.mutationOptions());
 
-  const defaultCountry = settings?.country || "FR";
+  const defaultCountry = "RU";
   const storedCurrency = settings?.currency ?? null;
   const legacyCurrency =
     storedCurrency && !isSupportedCurrency(storedCurrency)
@@ -63,7 +64,7 @@ export const CompanySettingsForm = ({ settings }: CompanySettingsFormProps) => {
   const form = useAppForm({
     defaultValues: {
       country: defaultCountry,
-      currency: settings?.currency || getDefaultCurrencyForCountry(defaultCountry),
+      currency: "RUB",
       billingAddressSameAsStore: billingAddress.useSameAsStore,
       billingAddress: billingAddress.address ?? "",
       billingCity: billingAddress.city ?? "",
@@ -115,6 +116,7 @@ export const CompanySettingsForm = ({ settings }: CompanySettingsFormProps) => {
               {(field) => (
                 <field.CountrySelect
                   label={t("storeSettings.country")}
+                  countries={SUPPORTED_COUNTRIES.filter(({ code }) => code === "RU")}
                   // A new country brings its usual currency along; the store can still override it.
                   onValueChange={(country) =>
                     form.setFieldValue("currency", getDefaultCurrencyForCountry(country))
@@ -128,7 +130,7 @@ export const CompanySettingsForm = ({ settings }: CompanySettingsFormProps) => {
                 <field.CurrencySelect
                   label={t("storeSettings.currency")}
                   description={t("storeSettings.currencyDescription")}
-                  currencies={SUPPORTED_CURRENCIES}
+                  currencies={SUPPORTED_CURRENCIES.filter(({ code }) => code === "RUB")}
                   legacyCurrency={legacyCurrency}
                 />
               )}

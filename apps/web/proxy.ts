@@ -416,6 +416,11 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 async function routeRequest(request: NextRequest): Promise<NextResponse> {
   const host = request.headers.get("host") || "";
   const { pathname } = request.nextUrl;
+  // Голосовой ИИ и кредиты ИИ не входят в продукт: код оставлен ради слияния с upstream,
+  // но адреса закрыты. shortcut: вернуть доступ — убрать этот блок.
+  if (/^\/(dashboard\/(ai-assistant|ai-credits)|api\/voice)(\/|$)/.test(pathname)) {
+    return new NextResponse("Not Found", { status: 404, headers: { "content-type": "text/plain" } });
+  }
   // These internal markers only come from this proxy, never from a visitor.
   if (
     request.headers.has(DEMO_ROUTE_HEADER) ||

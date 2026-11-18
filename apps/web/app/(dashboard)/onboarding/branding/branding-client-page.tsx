@@ -17,7 +17,7 @@ import { useBrandingStep } from "./use-branding-step";
 import { cn } from "@louez/utils";
 
 const PRESET_COLORS = [
-  "#0066FF",
+  "#C9A24B",
   "#10B981",
   "#F59E0B",
   "#EF4444",
@@ -102,7 +102,7 @@ export function BrandingClientPage() {
                       value={field.state.value}
                       onChange={(event) => field.handleChange(event.target.value)}
                       onBlur={field.handleBlur}
-                      placeholder="#0066FF"
+                      placeholder="#C9A24B"
                       className="font-mono"
                     />
                   </div>

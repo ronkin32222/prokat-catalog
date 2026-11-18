@@ -61,6 +61,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: "Inter Variable", "Inter Variable Fallback", sans-serif;
+  --font-display: var(--font-head, var(--font-sans));
   --font-reeent: "Bricolage Grotesque", var(--font-sans);
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -232,25 +233,25 @@
    but `dark:` utilities still match — style such subtrees with tokens only. */
 :root,
 .light {
-  --radius: 0.625rem;
-  --shadow-border: 0px 0px 0px 1px rgba(0, 0, 0, 0.15);
-  --shadow-card: 0 1px 2px oklch(0 0 0 / 4%), 0 0 0 1px oklch(0 0 0 / 6%);
-  --shadow-raised: 0 4px 12px -2px oklch(0 0 0 / 8%), 0 0 0 1px oklch(0 0 0 / 6%);
-  --shadow-overlay: 0 8px 32px -8px oklch(0 0 0 / 16%), 0 0 0 1px oklch(0 0 0 / 6%);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.598 0.211 258);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --radius: 0.375rem;
+  --shadow-border: 0 0 0 1px rgb(80 68 45 / 12%);
+  --shadow-card: 0 2px 8px rgb(22 22 26 / 5%), 0 0 0 1px rgb(80 68 45 / 8%);
+  --shadow-raised: 0 8px 24px -8px rgb(22 22 26 / 14%), 0 0 0 1px rgb(80 68 45 / 8%);
+  --shadow-overlay: 0 18px 48px -16px rgb(22 22 26 / 24%), 0 0 0 1px rgb(80 68 45 / 10%);
+  --background: #faf8f4;
+  --foreground: #16161a;
+  --card: #ffffff;
+  --card-foreground: #16161a;
+  --popover: #ffffff;
+  --popover-foreground: #16161a;
+  --primary: #c9a24b;
+  --primary-foreground: #16161a;
+  --secondary: #f2eee6;
+  --secondary-foreground: #16161a;
+  --muted: #f2eee6;
+  --muted-foreground: #6f6a61;
+  --accent: #c9a24b;
+  --accent-foreground: #16161a;
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
   --info: oklch(0.546 0.228 264);
@@ -319,10 +320,10 @@
   --reservation-declined-soft: oklch(0.96 0.024 346.003);
   --reservation-declined-border: oklch(0.797 0.101 346.003);
   --reservation-declined-text: oklch(0.462 0.168 346.003);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --border: #ddd7cc;
+  --input: #ddd7cc;
   /* Focus ring follows the platform primary; a store overrides both together. */
-  --ring: oklch(0.649 0.193 252);
+  --ring: #c9a24b;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -381,20 +382,20 @@
   --shadow-card: 0 1px 2px oklch(0 0 0 / 24%), 0 0 0 1px oklch(1 0 0 / 8%);
   --shadow-raised: 0 4px 12px -2px oklch(0 0 0 / 40%), 0 0 0 1px oklch(1 0 0 / 10%);
   --shadow-overlay: 0 8px 32px -8px oklch(0 0 0 / 60%), 0 0 0 1px oklch(1 0 0 / 10%);
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: #16161a;
+  --foreground: #faf8f4;
+  --card: #1e1e23;
+  --card-foreground: #faf8f4;
+  --popover: #1e1e23;
+  --popover-foreground: #faf8f4;
+  --primary: #c9a24b;
+  --primary-foreground: #16161a;
+  --secondary: #29292f;
+  --secondary-foreground: #faf8f4;
+  --muted: #29292f;
+  --muted-foreground: #aaa49a;
+  --accent: #c9a24b;
+  --accent-foreground: #16161a;
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
   --info: oklch(0.65 0.22 258);
@@ -451,9 +452,9 @@
   --reservation-declined-soft: oklch(0.32 0.1 346.003 / 65%);
   --reservation-declined-border: oklch(0.533 0.139 346.003);
   --reservation-declined-text: oklch(0.787 0.145 346.003);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --border: #37373e;
+  --input: #45454d;
+  --ring: #c9a24b;
   --chart-1: oklch(0.546 0.228 264);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -520,6 +521,46 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Public rental storefront only: dashboard keeps the platform palette and Inter. */
+.storefront-theme {
+  --radius: 0.25rem;
+  --background: #0b0b0c;
+  --foreground: #f5f5f0;
+  --card: #1a1a1d;
+  --card-foreground: #f5f5f0;
+  --popover: #1a1a1d;
+  --popover-foreground: #f5f5f0;
+  --primary: #ffc400;
+  --primary-foreground: #111111;
+  --secondary: #121214;
+  --secondary-foreground: #f5f5f0;
+  --muted: #161618;
+  --muted-foreground: #a1a1a8;
+  --accent: var(--primary);
+  --accent-foreground: var(--primary-foreground);
+  --border: #2a2a2e;
+  --input: #2a2a2e;
+  --ring: var(--primary);
+  font-family: var(--font-body), sans-serif;
+  background-color: var(--background);
+  background-image:
+    radial-gradient(circle at 18% 12%, rgb(255 255 255 / 3%), transparent 34%),
+    radial-gradient(circle at 82% 70%, rgb(255 255 255 / 2%), transparent 28%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");
+}
+
+.storefront-theme :is(h1, h2, h3, .font-display) {
+  font-family: var(--font-head), sans-serif;
+}
+
+.storefront-concrete {
+  background-color: #121214;
+  background-image:
+    radial-gradient(circle at 12% 20%, rgb(255 255 255 / 5%), transparent 32%),
+    radial-gradient(circle at 88% 74%, rgb(0 0 0 / 28%), transparent 35%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
 }
 
 /* Calendar cell size per density (`Calendar density` in @louez/ui). Kept in

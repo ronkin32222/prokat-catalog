@@ -158,7 +158,7 @@ export function AddressMapModal({
     }
   }, [queryClient]);
 
-  const debouncedSearch = useDebouncedCallback(searchAddresses, 300);
+  const debouncedSearch = useDebouncedCallback(searchAddresses, 1000);
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);

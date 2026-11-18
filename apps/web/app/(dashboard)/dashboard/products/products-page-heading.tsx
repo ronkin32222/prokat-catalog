@@ -3,7 +3,7 @@
 import type { MouseEventHandler } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { FolderOpen, Lock, Plus } from "lucide-react";
+import { FolderOpen, Lock, Plus, Upload } from "lucide-react";
 import { Button } from "@louez/ui";
 import { NewFeatureBadge } from "@/components/dashboard/new-feature-badge";
 
@@ -11,12 +11,14 @@ export const ProductsPageHeading = ({
   readOnly = false,
   isAtLimit = false,
   onManageCategories,
+  onImport,
   onUpgrade,
   onAddProduct,
 }: {
   readOnly?: boolean;
   isAtLimit?: boolean;
   onManageCategories?: () => void;
+  onImport?: () => void;
   onUpgrade?: () => void;
   onAddProduct?: MouseEventHandler<HTMLAnchorElement>;
 }) => {
@@ -28,6 +30,26 @@ export const ProductsPageHeading = ({
         <p className="text-sm sm:text-base text-muted-foreground">{t("description")}</p>
       </div>
       <div className="flex shrink-0 items-center gap-2">
+        <Button
+          disabled={readOnly}
+          variant="outline"
+          size="icon"
+          className="sm:hidden"
+          title={t("import.title")}
+          aria-label={t("import.title")}
+          onClick={onImport}
+        >
+          <Upload className="h-4 w-4" />
+        </Button>
+        <Button
+          disabled={readOnly}
+          variant="outline"
+          className="hidden sm:inline-flex"
+          onClick={onImport}
+        >
+          <Upload className="mr-2 h-4 w-4" />
+          {t("import.button")}
+        </Button>
         <Button
           disabled={readOnly}
           variant="outline"

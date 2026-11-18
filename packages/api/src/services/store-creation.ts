@@ -216,7 +216,7 @@ export function describeNewStoreTerms(terms: NewStoreTerms): NewStoreTermsView {
 /** The settings a new store starts with, as the onboarding always set them. */
 function defaultSettings(input: { country: string; currency: string }) {
   return {
-    reservationMode: "payment" as const,
+    reservationMode: "request" as const,
     minRentalMinutes: 60,
     maxRentalMinutes: null,
     advanceNoticeMinutes: 1440,
@@ -225,6 +225,7 @@ function defaultSettings(input: { country: string; currency: string }) {
     country: input.country,
     timezone: getTimezoneForCountry(input.country),
     currency: input.currency,
+    locale: "ru",
   };
 }
 
@@ -698,7 +699,7 @@ export async function saveOnboardingStoreInfo(input: {
           referredByStoreId: referrerStoreId ?? target.referredByStoreId,
           settings: {
             ...current,
-            reservationMode: current?.reservationMode ?? "payment",
+            reservationMode: current?.reservationMode ?? "request",
             minRentalMinutes: current?.minRentalMinutes ?? 60,
             maxRentalMinutes: current?.maxRentalMinutes ?? null,
             advanceNoticeMinutes: current?.advanceNoticeMinutes ?? 1440,
@@ -710,6 +711,7 @@ export async function saveOnboardingStoreInfo(input: {
             country: store.country,
             timezone: getTimezoneForCountry(store.country),
             currency: store.currency,
+            locale: current?.locale ?? "ru",
           },
         },
         result: effectIds,

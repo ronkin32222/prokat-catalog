@@ -7,9 +7,13 @@ import { GoogleReviewsSection } from "@/components/storefront/google-reviews-sec
 import { GoogleRatingPill } from "@/components/storefront/home/google-rating-pill";
 import { HomeInventory } from "@/components/storefront/home/home-inventory";
 import { HomePeriodSearch } from "@/components/storefront/home/home-period-search";
+import { StoreAbout } from "@/components/storefront/home/store-about";
+import { StoreBenefits } from "@/components/storefront/home/store-benefits";
+import { StoreConsultation } from "@/components/storefront/home/store-consultation";
 import { StoreHero } from "@/components/storefront/home/store-hero";
 import { StoreLocation } from "@/components/storefront/home/store-location";
 import { StoreReassurance } from "@/components/storefront/home/store-reassurance";
+import { StoreTestimonials } from "@/components/storefront/home/store-testimonials";
 import { PageTracker } from "@/components/storefront/page-tracker";
 import { StoreStatusBadge } from "@/components/storefront/store-status-badge";
 import {
@@ -83,6 +87,30 @@ const StorefrontPage = async ({ params }: StorefrontPageProps) => {
   } = data;
   const ratingHref = place.showReviews ? "#reviews" : (place.details?.mapsUrl ?? null);
   const hero = resolveStoreHeroPresentation({ theme, imageCount: heroImages.length });
+  const heroCategories =
+    inventory.kind === "categories"
+      ? inventory.entries.flatMap((entry) =>
+          entry.href && entry.variant === "category"
+            ? [{ name: entry.name, href: entry.href }]
+            : [],
+        )
+      : Array.from(
+          new Map(
+            inventory.products.flatMap((product) =>
+              product.category
+                ? [
+                    [
+                      product.category.id,
+                      {
+                        name: product.category.name,
+                        href: `/catalog?category=${product.category.id}`,
+                      },
+                    ] as const,
+                  ]
+                : [],
+            ),
+          ).values(),
+        );
 
   return (
     <>
@@ -105,6 +133,7 @@ const StorefrontPage = async ({ params }: StorefrontPageProps) => {
         shape={hero.shape}
         align={hero.align}
         verticalAlign={hero.verticalAlign}
+        categories={heroCategories}
         badges={
           <>
             <StoreStatusBadge
@@ -139,7 +168,11 @@ const StorefrontPage = async ({ params }: StorefrontPageProps) => {
         />
       </StoreHero>
 
+      <StoreBenefits />
       <HomeInventory inventory={inventory} />
+      <StoreAbout />
+      <StoreConsultation />
+      <StoreTestimonials />
 
       {sections.reviews && place.showReviews && place.details ? (
         <GoogleReviewsSection details={place.details} />

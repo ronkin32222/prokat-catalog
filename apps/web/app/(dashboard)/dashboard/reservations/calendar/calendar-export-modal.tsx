@@ -122,7 +122,7 @@ export function CalendarExportModal({ open, onOpenChange, storeId }: CalendarExp
     ? `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(webcalUrl)}`
     : null;
   const outlookUrl = icsUrl
-    ? `https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(icsUrl)}&name=Louez`
+    ? `https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(icsUrl)}&name=${encodeURIComponent("Каталог проката")}`
     : null;
 
   const handleCopy = async () => {

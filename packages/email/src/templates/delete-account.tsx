@@ -17,8 +17,8 @@ interface DeleteAccountTranslation {
 
 const translations: Record<EmailLocale, DeleteAccountTranslation> = {
   fr: {
-    subject: "Confirmez la suppression de votre compte Louez",
-    title: "Supprimer votre compte Louez",
+    subject: "Confirmez la suppression de votre compte Каталог проката",
+    title: "Supprimer votre compte Каталог проката",
     greeting: "Bonjour,",
     body: "Vous avez demandé la suppression de votre compte, de vos boutiques et de leurs données. Ouvrez la page de confirmation pour vérifier une dernière fois cette action.",
     button: "Continuer la suppression",
@@ -28,8 +28,8 @@ const translations: Record<EmailLocale, DeleteAccountTranslation> = {
       "Si vous n’êtes pas à l’origine de cette demande, ignorez cet email et votre compte restera inchangé.",
   },
   en: {
-    subject: "Confirm deletion of your Louez account",
-    title: "Delete your Louez account",
+    subject: "Confirm deletion of your Каталог проката account",
+    title: "Delete your Каталог проката account",
     greeting: "Hello,",
     body: "You asked to delete your account, your stores and their data. Open the confirmation page to review this action one last time.",
     button: "Continue account deletion",
@@ -39,8 +39,8 @@ const translations: Record<EmailLocale, DeleteAccountTranslation> = {
       "If you did not make this request, ignore this email and your account will remain unchanged.",
   },
   de: {
-    subject: "Löschung Ihres Louez-Kontos bestätigen",
-    title: "Ihr Louez-Konto löschen",
+    subject: "Löschung Ihres Каталог проката-Kontos bestätigen",
+    title: "Ihr Каталог проката-Konto löschen",
     greeting: "Hallo,",
     body: "Sie haben die Löschung Ihres Kontos, Ihrer Shops und der zugehörigen Daten angefordert. Öffnen Sie die Bestätigungsseite, um diesen Vorgang ein letztes Mal zu prüfen.",
     button: "Löschung fortsetzen",
@@ -50,8 +50,8 @@ const translations: Record<EmailLocale, DeleteAccountTranslation> = {
       "Wenn Sie diese Anfrage nicht gestellt haben, ignorieren Sie diese E-Mail. Ihr Konto bleibt unverändert.",
   },
   es: {
-    subject: "Confirma la eliminación de tu cuenta Louez",
-    title: "Eliminar tu cuenta Louez",
+    subject: "Confirma la eliminación de tu cuenta Каталог проката",
+    title: "Eliminar tu cuenta Каталог проката",
     greeting: "Hola,",
     body: "Has solicitado eliminar tu cuenta, tus tiendas y sus datos. Abre la página de confirmación para revisar esta acción por última vez.",
     button: "Continuar con la eliminación",
@@ -60,8 +60,8 @@ const translations: Record<EmailLocale, DeleteAccountTranslation> = {
     ignore: "Si no has realizado esta solicitud, ignora este correo y tu cuenta no cambiará.",
   },
   it: {
-    subject: "Conferma l’eliminazione del tuo account Louez",
-    title: "Elimina il tuo account Louez",
+    subject: "Conferma l’eliminazione del tuo account Каталог проката",
+    title: "Elimina il tuo account Каталог проката",
     greeting: "Ciao,",
     body: "Hai richiesto di eliminare il tuo account, i tuoi negozi e i relativi dati. Apri la pagina di conferma per controllare un’ultima volta questa azione.",
     button: "Continua con l’eliminazione",
@@ -71,8 +71,8 @@ const translations: Record<EmailLocale, DeleteAccountTranslation> = {
       "Se non hai effettuato questa richiesta, ignora questa email e il tuo account resterà invariato.",
   },
   nl: {
-    subject: "Bevestig de verwijdering van uw Louez-account",
-    title: "Uw Louez-account verwijderen",
+    subject: "Bevestig de verwijdering van uw Каталог проката-account",
+    title: "Uw Каталог проката-account verwijderen",
     greeting: "Hallo,",
     body: "U hebt gevraagd om uw account, uw winkels en de bijbehorende gegevens te verwijderen. Open de bevestigingspagina om deze actie nog één keer te controleren.",
     button: "Doorgaan met verwijderen",
@@ -81,8 +81,8 @@ const translations: Record<EmailLocale, DeleteAccountTranslation> = {
     ignore: "Hebt u dit niet aangevraagd, negeer dan deze e-mail. Uw account blijft ongewijzigd.",
   },
   pl: {
-    subject: "Potwierdź usunięcie konta Louez",
-    title: "Usuń konto Louez",
+    subject: "Potwierdź usunięcie konta Каталог проката",
+    title: "Usuń konto Каталог проката",
     greeting: "Dzień dobry,",
     body: "Poproszono o usunięcie Twojego konta, sklepów i powiązanych danych. Otwórz stronę potwierdzenia, aby po raz ostatni sprawdzić tę operację.",
     button: "Kontynuuj usuwanie",
@@ -91,8 +91,8 @@ const translations: Record<EmailLocale, DeleteAccountTranslation> = {
     ignore: "Jeśli to nie Ty wysłałeś tę prośbę, zignoruj wiadomość. Konto pozostanie bez zmian.",
   },
   pt: {
-    subject: "Confirme a eliminação da sua conta Louez",
-    title: "Eliminar a sua conta Louez",
+    subject: "Confirme a eliminação da sua conta Каталог проката",
+    title: "Eliminar a sua conta Каталог проката",
     greeting: "Olá,",
     body: "Pediu para eliminar a sua conta, as suas lojas e os respetivos dados. Abra a página de confirmação para rever esta ação uma última vez.",
     button: "Continuar a eliminação",

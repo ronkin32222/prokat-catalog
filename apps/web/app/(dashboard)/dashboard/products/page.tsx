@@ -48,6 +48,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       limits={limits.products}
       planSlug={plan.slug}
       currency={store.settings?.currency}
+      country={store.settings?.country}
       canDelete={productPermissions(store.role).canDelete}
     />
   )

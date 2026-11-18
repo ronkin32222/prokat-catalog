@@ -16,6 +16,7 @@ import { productsQueries } from '@/lib/queries/products.queries'
 import { ProductsTable } from './products-table'
 import { ProductsFilters, useProductsFilters } from './products-filters'
 import { ProductsOrderDialog } from './products-order-dialog'
+import { ProductImportDialog } from './product-import-dialog'
 import {
   UpgradeModal,
   LimitBanner,
@@ -37,6 +38,7 @@ interface ProductsPageContentProps {
   limits: LimitStatus
   planSlug: string
   currency?: string
+  country?: string
   /** The member may delete products. */
   canDelete: boolean
 }
@@ -47,12 +49,14 @@ export function ProductsPageContent({
   limits,
   planSlug,
   currency,
+  country,
   canDelete,
 }: ProductsPageContentProps) {
   const t = useTranslations('dashboard.products')
   const queryClient = useQueryClient()
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [showOrderDialog, setShowOrderDialog] = useState(false)
+  const [showImportDialog, setShowImportDialog] = useState(false)
   const [categoryManagerOpen, setCategoryManagerOpen] = useState(false)
   const { status, categoryIds, search, setCategoryIds, setSearch } = useProductsFilters()
   // Fetch once typing pauses, but drop the search right away when it is cleared
@@ -121,6 +125,7 @@ export function ProductsPageContent({
       <ProductsPageHeading
         isAtLimit={isAtLimit}
         onManageCategories={() => setCategoryManagerOpen(true)}
+        onImport={() => (isAtLimit ? setShowUpgradeModal(true) : setShowImportDialog(true))}
         onUpgrade={() => setShowUpgradeModal(true)}
         onAddProduct={handleAddProductClick}
       />
@@ -231,6 +236,12 @@ export function ProductsPageContent({
         open={showOrderDialog}
         onOpenChange={setShowOrderDialog}
         products={products}
+      />
+      <ProductImportDialog
+        open={showImportDialog}
+        onOpenChange={setShowImportDialog}
+        currency={currency ?? 'RUB'}
+        country={country ?? 'RU'}
       />
     </div>
   )

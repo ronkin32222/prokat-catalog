@@ -476,7 +476,7 @@ export async function checkStripeRefund(
     return refused({
       code: "PAYMENT_CHARGE_SHARED",
       message:
-        "This Stripe charge is recorded on payments of several reservations, so Louez cannot tell how much of it each may give back. Refund it from the Stripe dashboard; Louez records the refund when Stripe reports it.",
+        "Этот платёж Stripe связан с несколькими бронированиями, поэтому нельзя определить сумму возврата для каждого из них. Оформите возврат в Stripe — сервис запишет его после уведомления от Stripe.",
     });
   }
   const chargePaymentIds = [...new Set([input.paymentId, ...siblings.map((row) => row.id)])].sort();

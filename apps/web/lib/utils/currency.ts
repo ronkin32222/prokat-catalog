@@ -28,6 +28,7 @@ export const SUPPORTED_CURRENCIES: Currency[] = [
   { code: "CZK", symbol: "Kč", name: "Czech Koruna", locale: "cs-CZ" },
   { code: "HUF", symbol: "Ft", name: "Hungarian Forint", locale: "hu-HU" },
   { code: "RON", symbol: "lei", name: "Romanian Leu", locale: "ro-RO" },
+  { code: "RUB", symbol: "₽", name: "Российский рубль", locale: "ru-RU" },
 
   // North America
   { code: "USD", symbol: "$", name: "US Dollar", locale: "en-US" },
@@ -91,6 +92,7 @@ export const COUNTRY_DEFAULT_CURRENCY: Record<string, CurrencyCode> = {
   HU: "HUF", // Hungary
   RO: "RON", // Romania
   HR: "EUR", // Croatia (joined Eurozone in 2023)
+  RU: "RUB", // Russia
 
   // North America
   US: "USD", // United States
@@ -130,7 +132,7 @@ export const COUNTRY_DEFAULT_CURRENCY: Record<string, CurrencyCode> = {
  * Get the default currency for a country
  */
 export function getDefaultCurrencyForCountry(countryCode: string): CurrencyCode {
-  return COUNTRY_DEFAULT_CURRENCY[countryCode] || "EUR";
+  return COUNTRY_DEFAULT_CURRENCY[countryCode] || "RUB";
 }
 
 /**
@@ -144,7 +146,7 @@ export function getCurrencyByCode(code: CurrencyCode): Currency | undefined {
  * Gets the country code represented by a currency's primary locale.
  */
 export function getCurrencyFlagCountry(currency: Currency): string {
-  return currency.locale.split("-").at(-1) || "FR";
+  return currency.locale.split("-").at(-1) || "RU";
 }
 
 /**
@@ -165,12 +167,12 @@ export function getCurrenciesSortedByName(): Currency[] {
 /**
  * Format currency with dynamic currency code
  * @param amount - The amount to format
- * @param currency - The currency code (defaults to EUR)
+ * @param currency - The currency code (defaults to RUB)
  * @param locale - The BCP 47 locale for formatting
  */
 export function formatCurrencyValue(
   amount: number,
-  currency: CurrencyCode = "EUR",
+  currency: CurrencyCode = "RUB",
   locale?: string,
 ): string {
   const formatLocale = locale ?? resolveFormatLocale(undefined).intl;
@@ -184,7 +186,7 @@ export function formatCurrencyValue(
 /**
  * Format currency for display in charts (compact format like "10k€")
  */
-export function formatCurrencyCompact(amount: number, currency: CurrencyCode = "EUR"): string {
+export function formatCurrencyCompact(amount: number, currency: CurrencyCode = "RUB"): string {
   const symbol = getCurrencySymbol(currency);
 
   if (amount >= 1000000) {
@@ -202,7 +204,7 @@ export function formatCurrencyCompact(amount: number, currency: CurrencyCode = "
  */
 export function formatAmountWithSymbol(
   amount: number,
-  currency: CurrencyCode = "EUR",
+  currency: CurrencyCode = "RUB",
   decimals: number = 2,
 ): string {
   const symbol = getCurrencySymbol(currency);

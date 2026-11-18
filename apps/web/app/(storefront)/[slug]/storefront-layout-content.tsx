@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { Montserrat, Rubik } from "next/font/google";
 import { Suspense } from "react";
 import { getMessages } from "next-intl/server";
 
@@ -18,6 +19,18 @@ import { getStorefrontPathPrefix } from "@/lib/util.storefront-host";
 import { getCustomerInitials } from "@/lib/utils/util.storefront-chrome";
 
 import { getCustomerSession } from "./account/actions";
+
+const storefrontHeadFont = Montserrat({
+  subsets: ["cyrillic", "latin"],
+  weight: ["300", "800", "900"],
+  variable: "--font-head",
+});
+
+const storefrontBodyFont = Rubik({
+  subsets: ["cyrillic", "latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-body",
+});
 
 interface StorefrontLayoutProps {
   children: React.ReactNode;
@@ -64,44 +77,46 @@ export const StorefrontLayoutContent = async ({ children, params }: StorefrontLa
   const customerInitials = customerSession ? getCustomerInitials(customerSession.customer) : null;
 
   return (
-    <StorefrontProviders
-      store={store}
-      variant={variant}
-      basePath={basePath}
-      messages={messages}
-      advisorEnabled={advisorEnabled}
-    >
-      <StorefrontShell
+    <div className={`${storefrontHeadFont.variable} ${storefrontBodyFont.variable}`}>
+      <StorefrontProviders
         store={store}
-        theme={theme}
         variant={variant}
+        basePath={basePath}
+        messages={messages}
         advisorEnabled={advisorEnabled}
-        customerInitials={customerInitials}
-        customerIdentity={
-          customerSession
-            ? {
-                firstName: customerSession.customer.firstName,
-                lastName: customerSession.customer.lastName,
-                email: customerSession.customer.email,
-              }
-            : null
-        }
-        channelBadge={
-          variant === "marketplace" ? (
-            <MarketplaceChannelBadge marketplaceUrl={env.MARKETPLACE_URL} />
-          ) : undefined
-        }
-        ownerNotice={
-          // The card gate's owner-only line; nothing outside service mode.
-          variant === "store" ? (
-            <Suspense fallback={null}>
-              <ReservationGateOwnerBanner storeId={store.id} />
-            </Suspense>
-          ) : undefined
-        }
       >
-        {children}
-      </StorefrontShell>
-    </StorefrontProviders>
+        <StorefrontShell
+          store={store}
+          theme={theme}
+          variant={variant}
+          advisorEnabled={advisorEnabled}
+          customerInitials={customerInitials}
+          customerIdentity={
+            customerSession
+              ? {
+                  firstName: customerSession.customer.firstName,
+                  lastName: customerSession.customer.lastName,
+                  email: customerSession.customer.email,
+                }
+              : null
+          }
+          channelBadge={
+            variant === "marketplace" ? (
+              <MarketplaceChannelBadge marketplaceUrl={env.MARKETPLACE_URL} />
+            ) : undefined
+          }
+          ownerNotice={
+            // The card gate's owner-only line; nothing outside service mode.
+            variant === "store" ? (
+              <Suspense fallback={null}>
+                <ReservationGateOwnerBanner storeId={store.id} />
+              </Suspense>
+            ) : undefined
+          }
+        >
+          {children}
+        </StorefrontShell>
+      </StorefrontProviders>
+    </div>
   );
 };

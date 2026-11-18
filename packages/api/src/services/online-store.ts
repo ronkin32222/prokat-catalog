@@ -32,7 +32,7 @@ import { raiseConfirmation, type ConfirmationRefusal } from "../platform/confirm
 const SETTINGS_SEED: StoreSettings = { reservationMode: "payment", advanceNoticeMinutes: 1440 };
 
 /** Column default of `theme`, for a row saved before it existed. */
-const THEME_SEED: StoreTheme = { mode: "light", primaryColor: "#0066FF" };
+const THEME_SEED: StoreTheme = { mode: "light", primaryColor: "#C9A24B" };
 
 /** Where a store's logos, favicon, share image and hero photos live in storage. */
 const storefrontImagePrefix = (storeId: string) => `${storeId}/logo`;

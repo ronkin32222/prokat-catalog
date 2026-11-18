@@ -17,7 +17,7 @@ export const HomeInventoryView = ({ kind, children, linkPrefetch }: HomeInventor
   const t = useTranslations("storefront");
 
   return (
-    <StorefrontSection aria-labelledby="home-inventory-title">
+    <StorefrontSection aria-labelledby="home-inventory-title" className="py-16 sm:py-24">
       <SectionHeader
         id="home-inventory-title"
         title={
@@ -27,7 +27,7 @@ export const HomeInventoryView = ({ kind, children, linkPrefetch }: HomeInventor
           <StorefrontLink
             href="/catalog"
             prefetch={linkPrefetch}
-            className="inline-flex min-h-11 items-center text-sm font-medium underline-offset-4 hover:underline"
+            className="inline-flex min-h-11 items-center rounded-sm bg-primary px-5 text-xs font-semibold text-primary-foreground uppercase transition-transform hover:-translate-y-0.5"
           >
             {t("home.viewAll")}
           </StorefrontLink>

@@ -145,7 +145,7 @@ export function ProductAssuranceDialog({
 
   const defaultTitle = mappedTulipProduct
     ? mappedTulipProduct.louezManaged
-      ? `${mappedTulipProduct.title} (Louez)`
+      ? `${mappedTulipProduct.title} (Каталог проката)`
       : mappedTulipProduct.title
     : product.name
 

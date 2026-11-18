@@ -14,7 +14,7 @@ interface StoreMapPanelProps {
 }
 
 const buildSearchUrl = (address: string): string =>
-  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`;
 
 const toCoordinate = (value: string | null): number | null => {
   const parsed = value === null ? NaN : Number.parseFloat(value);

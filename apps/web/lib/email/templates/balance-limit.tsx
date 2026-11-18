@@ -47,7 +47,7 @@ export function BalanceLimitEmail({
   return (
     <BaseLayout
       preview={variantMessages.subject.replace("{storeName}", storeName)}
-      storeName="Louez.io"
+      storeName="Каталог проката"
       logoUrl={null}
       primaryColor={primaryColor}
       locale={locale}

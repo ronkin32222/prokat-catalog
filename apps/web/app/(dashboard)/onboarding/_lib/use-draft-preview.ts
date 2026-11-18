@@ -28,7 +28,7 @@ export const useDraftPreview = () => {
         ? {
             logoUrl:
               branding.logoUrl && isValidImageUrlClient(branding.logoUrl) ? branding.logoUrl : null,
-            primaryColor: branding.primaryColor || "#0066FF",
+            primaryColor: branding.primaryColor || "#C9A24B",
             theme: branding.theme === "dark" ? "dark" : "light",
           }
         : {}),

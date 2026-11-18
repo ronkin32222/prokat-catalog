@@ -319,10 +319,10 @@ function applyReservationUnitIdentifiersToCoverage(
 
 function getTulipTerminationReason(context: "reservation_cancelled" | "coverage_removed") {
   if (context === "reservation_cancelled") {
-    return "Reservation cancelled in Louez";
+    return "Бронирование отменено в сервисе «Каталог проката»";
   }
 
-  return "Coverage removed from reservation in Louez";
+  return "Страховое покрытие удалено из бронирования в сервисе «Каталог проката»";
 }
 
 function buildTulipTerminationPayload(

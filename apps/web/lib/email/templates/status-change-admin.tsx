@@ -71,7 +71,7 @@ export function StatusChangeAdminEmail({
   return (
     <BaseLayout
       preview={getStatusChangeAdminEmailSubject(kind, reservationNumber, locale)}
-      storeName="Louez.io"
+      storeName="Каталог проката"
       logoUrl={null}
       primaryColor={primaryColor}
       locale={locale}

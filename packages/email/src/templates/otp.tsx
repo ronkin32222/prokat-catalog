@@ -21,15 +21,15 @@ const translations: Record<
   fr: {
     greeting: "Bonjour,",
     "sign-in": {
-      subject: "Votre code de connexion Louez",
+      subject: "Votre code de connexion Каталог проката",
       title: "Votre code de connexion",
-      body: "Voici votre code pour vous connecter à Louez. Il est valable 5 minutes.",
+      body: "Voici votre code pour vous connecter à Каталог проката. Il est valable 5 minutes.",
       expiry: "Si vous n'avez pas demandé ce code, vous pouvez ignorer cet email.",
     },
     "forget-password": {
-      subject: "Votre code pour réinitialiser votre mot de passe Louez",
+      subject: "Votre code pour réinitialiser votre mot de passe Каталог проката",
       title: "Réinitialiser votre mot de passe",
-      body: "Voici votre code pour choisir un nouveau mot de passe Louez. Il est valable 5 minutes.",
+      body: "Voici votre code pour choisir un nouveau mot de passe Каталог проката. Il est valable 5 minutes.",
       expiry:
         "Si vous n'avez pas demandé ce code, ignorez cet email : votre mot de passe reste inchangé.",
     },
@@ -37,30 +37,30 @@ const translations: Record<
   en: {
     greeting: "Hello,",
     "sign-in": {
-      subject: "Your Louez sign-in code",
+      subject: "Your Каталог проката sign-in code",
       title: "Your sign-in code",
-      body: "Here is your code to sign in to Louez. It is valid for 5 minutes.",
+      body: "Here is your code to sign in to Каталог проката. It is valid for 5 minutes.",
       expiry: "If you didn't request this code, you can ignore this email.",
     },
     "forget-password": {
-      subject: "Your Louez password reset code",
+      subject: "Your Каталог проката password reset code",
       title: "Reset your password",
-      body: "Here is your code to choose a new Louez password. It is valid for 5 minutes.",
+      body: "Here is your code to choose a new Каталог проката password. It is valid for 5 minutes.",
       expiry: "If you didn't request this code, ignore this email: your password stays unchanged.",
     },
   },
   de: {
     greeting: "Hallo,",
     "sign-in": {
-      subject: "Ihr Louez-Anmeldecode",
+      subject: "Ihr Каталог проката-Anmeldecode",
       title: "Ihr Anmeldecode",
-      body: "Hier ist Ihr Code für die Anmeldung bei Louez. Er ist 5 Minuten gültig.",
+      body: "Hier ist Ihr Code für die Anmeldung bei Каталог проката. Er ist 5 Minuten gültig.",
       expiry: "Wenn Sie diesen Code nicht angefordert haben, können Sie diese E-Mail ignorieren.",
     },
     "forget-password": {
-      subject: "Ihr Code zum Zurücksetzen Ihres Louez-Passworts",
+      subject: "Ihr Code zum Zurücksetzen Ihres Каталог проката-Passworts",
       title: "Passwort zurücksetzen",
-      body: "Hier ist Ihr Code, um ein neues Louez-Passwort festzulegen. Er ist 5 Minuten gültig.",
+      body: "Hier ist Ihr Code, um ein neues Каталог проката-Passwort festzulegen. Er ist 5 Minuten gültig.",
       expiry:
         "Wenn Sie diesen Code nicht angefordert haben, ignorieren Sie diese E-Mail. Ihr Passwort bleibt unverändert.",
     },
@@ -68,30 +68,30 @@ const translations: Record<
   es: {
     greeting: "Hola,",
     "sign-in": {
-      subject: "Tu código de inicio de sesión de Louez",
+      subject: "Tu código de inicio de sesión de Каталог проката",
       title: "Tu código de inicio de sesión",
-      body: "Este es tu código para iniciar sesión en Louez. Es válido durante 5 minutos.",
+      body: "Este es tu código para iniciar sesión en Каталог проката. Es válido durante 5 minutos.",
       expiry: "Si no has solicitado este código, puedes ignorar este correo.",
     },
     "forget-password": {
-      subject: "Tu código para restablecer tu contraseña de Louez",
+      subject: "Tu código para restablecer tu contraseña de Каталог проката",
       title: "Restablecer tu contraseña",
-      body: "Este es tu código para elegir una nueva contraseña de Louez. Es válido durante 5 minutos.",
+      body: "Este es tu código para elegir una nueva contraseña de Каталог проката. Es válido durante 5 minutos.",
       expiry: "Si no has solicitado este código, ignora este correo: tu contraseña no cambiará.",
     },
   },
   it: {
     greeting: "Ciao,",
     "sign-in": {
-      subject: "Il tuo codice di accesso a Louez",
+      subject: "Il tuo codice di accesso a Каталог проката",
       title: "Il tuo codice di accesso",
-      body: "Ecco il codice per accedere a Louez. È valido per 5 minuti.",
+      body: "Ecco il codice per accedere a Каталог проката. È valido per 5 minuti.",
       expiry: "Se non hai richiesto questo codice, puoi ignorare questa email.",
     },
     "forget-password": {
-      subject: "Il tuo codice per reimpostare la password di Louez",
+      subject: "Il tuo codice per reimpostare la password di Каталог проката",
       title: "Reimposta la tua password",
-      body: "Ecco il codice per scegliere una nuova password di Louez. È valido per 5 minuti.",
+      body: "Ecco il codice per scegliere una nuova password di Каталог проката. È valido per 5 minuti.",
       expiry:
         "Se non hai richiesto questo codice, ignora questa email: la tua password resterà invariata.",
     },
@@ -99,15 +99,15 @@ const translations: Record<
   nl: {
     greeting: "Hallo,",
     "sign-in": {
-      subject: "Uw Louez-inlogcode",
+      subject: "Uw Каталог проката-inlogcode",
       title: "Uw inlogcode",
-      body: "Dit is uw code om in te loggen bij Louez. De code is 5 minuten geldig.",
+      body: "Dit is uw code om in te loggen bij Каталог проката. De code is 5 minuten geldig.",
       expiry: "Hebt u deze code niet aangevraagd, dan kunt u deze e-mail negeren.",
     },
     "forget-password": {
-      subject: "Uw code om uw Louez-wachtwoord opnieuw in te stellen",
+      subject: "Uw code om uw Каталог проката-wachtwoord opnieuw in te stellen",
       title: "Uw wachtwoord opnieuw instellen",
-      body: "Dit is uw code om een nieuw Louez-wachtwoord te kiezen. De code is 5 minuten geldig.",
+      body: "Dit is uw code om een nieuw Каталог проката-wachtwoord te kiezen. De code is 5 minuten geldig.",
       expiry:
         "Hebt u deze code niet aangevraagd, negeer dan deze e-mail. Uw wachtwoord blijft ongewijzigd.",
     },
@@ -115,15 +115,15 @@ const translations: Record<
   pl: {
     greeting: "Dzień dobry,",
     "sign-in": {
-      subject: "Twój kod logowania do Louez",
+      subject: "Twój kod logowania do Каталог проката",
       title: "Twój kod logowania",
-      body: "Oto kod do zalogowania się w Louez. Jest ważny przez 5 minut.",
+      body: "Oto kod do zalogowania się w Каталог проката. Jest ważny przez 5 minut.",
       expiry: "Jeśli to nie Ty prosiłeś o ten kod, zignoruj tę wiadomość.",
     },
     "forget-password": {
-      subject: "Twój kod do zresetowania hasła Louez",
+      subject: "Twój kod do zresetowania hasła Каталог проката",
       title: "Zresetuj hasło",
-      body: "Oto kod, który pozwoli Ci ustawić nowe hasło do Louez. Jest ważny przez 5 minut.",
+      body: "Oto kod, który pozwoli Ci ustawić nowe hasło do Каталог проката. Jest ważny przez 5 minut.",
       expiry:
         "Jeśli to nie Ty prosiłeś o ten kod, zignoruj tę wiadomość. Hasło pozostanie bez zmian.",
     },
@@ -131,15 +131,15 @@ const translations: Record<
   pt: {
     greeting: "Olá,",
     "sign-in": {
-      subject: "O seu código de início de sessão Louez",
+      subject: "O seu código de início de sessão Каталог проката",
       title: "O seu código de início de sessão",
-      body: "Aqui está o seu código para iniciar sessão no Louez. É válido durante 5 minutos.",
+      body: "Aqui está o seu código para iniciar sessão no Каталог проката. É válido durante 5 minutos.",
       expiry: "Se não pediu este código, pode ignorar este email.",
     },
     "forget-password": {
-      subject: "O seu código para repor a palavra-passe Louez",
+      subject: "O seu código para repor a palavra-passe Каталог проката",
       title: "Repor a sua palavra-passe",
-      body: "Aqui está o seu código para escolher uma nova palavra-passe Louez. É válido durante 5 minutos.",
+      body: "Aqui está o seu código para escolher uma nova palavra-passe Каталог проката. É válido durante 5 minutos.",
       expiry:
         "Se não pediu este código, ignore este email: a sua palavra-passe permanece inalterada.",
     },

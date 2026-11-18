@@ -52,6 +52,7 @@ import {
   type StoreLegalProfileInput,
 } from "@louez/validations";
 import { cn } from "@louez/utils";
+import { SUPPORTED_COUNTRIES } from "@louez/utils/countries";
 
 import { FloatingSaveBar } from "@/components/dashboard/floating-save-bar";
 import { RootError } from "@/components/form/root-error";
@@ -308,6 +309,7 @@ export const InvoicingFlow = ({
             label={t("identity.country")}
             description={t("identity.countryDescription")}
             onValueChange={handleCountryChange}
+            countries={SUPPORTED_COUNTRIES.filter(({ code }) => code === "RU")}
           />
         )}
       </form.AppField>

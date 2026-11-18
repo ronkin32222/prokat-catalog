@@ -36,7 +36,7 @@ export const useStripeStep = () => {
 
   const form = useAppForm({
     defaultValues: {
-      reservationMode: "payment" as "request" | "payment",
+      reservationMode: "request" as "request" | "payment",
     },
     validators: {
       onSubmit: stripeSetupSchema,

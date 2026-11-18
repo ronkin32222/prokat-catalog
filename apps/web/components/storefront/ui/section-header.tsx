@@ -19,7 +19,7 @@ interface SectionHeaderProps {
 
 const HEADING_CLASS_NAMES: Record<SectionHeadingLevel, string> = {
   h1: "text-2xl font-semibold leading-tight tracking-tight sm:text-3xl",
-  h2: "text-xl font-semibold leading-tight tracking-tight sm:text-2xl",
+  h2: "font-display text-3xl font-black leading-[1.05] tracking-[-0.01em] uppercase sm:text-4xl",
   h3: "text-lg font-semibold leading-snug",
 };
 

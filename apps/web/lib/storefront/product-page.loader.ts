@@ -154,7 +154,7 @@ const DEFAULT_STORE_SETTINGS: StoreSettings = {
   turnoverBufferMinutes: 0,
 };
 
-const DEFAULT_STORE_THEME: StoreTheme = { mode: "light", primaryColor: "#0066FF" };
+const DEFAULT_STORE_THEME: StoreTheme = { mode: "light", primaryColor: "#C9A24B" };
 
 const toStoreSettings = (store: StorefrontStore): StoreSettings =>
   store.settings ?? DEFAULT_STORE_SETTINGS;

@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import { ArrowLeftIcon, LockIcon, PhoneIcon } from "lucide-react";
+import { ArrowLeftIcon, LockIcon, MenuIcon, PhoneIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@louez/utils";
@@ -11,6 +11,7 @@ import { CartTrigger } from "@/components/storefront/cart/cart-trigger";
 import { HeaderAccountButton } from "@/components/storefront/shell/header-account-button";
 import { HeaderSearchCapsule } from "@/components/storefront/shell/header-search-capsule";
 import { StoreLogo } from "@/components/storefront/shell/store-logo";
+import { StorefrontLink } from "@/components/storefront/ui/storefront-link";
 import { useHeaderSearchVisible } from "@/components/storefront/shell/use-header-search-visible";
 import { useChromeVariant } from "@/components/storefront/shell/use-chrome-variant";
 import { useWindowScrolled } from "@/hooks/use-window-scrolled";
@@ -70,13 +71,20 @@ export const StoreHeader = ({
   // already carries the period search.
   const mobileSearchVisible = useHeaderSearchVisible({ showAtTop: variant !== "transparent" });
   const showCapsule = variant !== "compact";
+  const showMainMenu = variant === "transparent";
+  const menuLinks = [
+    ["Главная", "/"],
+    ["Каталог", "/catalog"],
+    ["Условия", "/terms"],
+    ["Контакты", "/contact"],
+  ] as const;
 
   return (
     <header
       data-slot="store-header"
       data-variant={variant}
       className={cn(
-        "sticky top-0 z-40 border-b bg-background transition-colors duration-200",
+        "sticky top-0 z-40 border-b bg-background/95 backdrop-blur transition-colors duration-200",
         scrolled ? "border-border" : "border-transparent",
       )}
     >
@@ -116,7 +124,23 @@ export const StoreHeader = ({
             </div>
           ) : (
             <>
-              {showCapsule ? (
+              {showMainMenu ? (
+                <nav
+                  aria-label="Основное меню"
+                  className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-7 lg:flex"
+                >
+                  {menuLinks.map(([label, href]) => (
+                    <StorefrontLink
+                      key={href}
+                      href={href}
+                      className="text-xs font-medium uppercase transition-colors hover:text-primary"
+                    >
+                      {label}
+                    </StorefrontLink>
+                  ))}
+                </nav>
+              ) : null}
+              {showCapsule && !showMainMenu ? (
                 <div
                   className={cn(
                     "order-3 grid w-full transition-[grid-template-rows,opacity,visibility] duration-200 ease-out motion-reduce:transition-none md:visible md:absolute md:top-1/2 md:left-1/2 md:block md:max-w-sm md:-translate-x-1/2 md:-translate-y-1/2 md:opacity-100 lg:max-w-xl",
@@ -139,13 +163,45 @@ export const StoreHeader = ({
                 className="order-2 ml-auto flex items-center gap-1 md:order-3"
               >
                 {phone ? (
-                  <a
-                    href={`tel:${phone}`}
-                    aria-label={t("header.call")}
-                    className="flex size-12 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-                  >
-                    <PhoneIcon aria-hidden className="size-5" />
-                  </a>
+                  <div className="flex items-center gap-3">
+                    <a
+                      href={`tel:${phone}`}
+                      className="hidden text-sm font-semibold tabular-nums hover:text-primary lg:block"
+                    >
+                      {phone}
+                    </a>
+                    <a
+                      href={`tel:${phone}`}
+                      aria-label={t("header.call")}
+                      className="flex size-11 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                    >
+                      <PhoneIcon aria-hidden className="size-5" />
+                    </a>
+                  </div>
+                ) : null}
+                {showMainMenu ? (
+                  <details className="relative lg:hidden">
+                    <summary
+                      className="flex size-11 cursor-pointer list-none items-center justify-center rounded-sm border [&::-webkit-details-marker]:hidden"
+                      aria-label="Открыть меню"
+                    >
+                      <MenuIcon aria-hidden className="size-5" />
+                    </summary>
+                    <nav
+                      aria-label="Мобильное меню"
+                      className="absolute top-13 right-0 flex min-w-52 flex-col border bg-card p-2 shadow-overlay"
+                    >
+                      {menuLinks.map(([label, href]) => (
+                        <StorefrontLink
+                          key={href}
+                          href={href}
+                          className="px-4 py-3 text-sm font-medium uppercase hover:bg-muted hover:text-primary"
+                        >
+                          {label}
+                        </StorefrontLink>
+                      ))}
+                    </nav>
+                  </details>
                 ) : null}
                 {showCart ? (cartControl ?? <CartTrigger />) : null}
                 {showAccount ? (

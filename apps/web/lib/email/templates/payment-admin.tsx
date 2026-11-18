@@ -76,7 +76,7 @@ export function PaymentAdminEmail({
   return (
     <BaseLayout
       preview={getPaymentAdminEmailSubject(kind, reservationNumber, locale)}
-      storeName="Louez.io"
+      storeName="Каталог проката"
       logoUrl={null}
       primaryColor={primaryColor}
       locale={locale}

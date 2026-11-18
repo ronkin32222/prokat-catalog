@@ -207,7 +207,7 @@ export function TulipProductMappingSection({
 
   const editingDefaultTitle = editingTulipProduct
     ? editingTulipProduct.louezManaged
-      ? `${editingTulipProduct.title} (Louez)`
+      ? `${editingTulipProduct.title} (Каталог проката)`
       : editingTulipProduct.title
     : (editingProduct?.name ?? "");
 

@@ -6,12 +6,13 @@ import { useTranslations } from "next-intl";
 
 import { Button, Label } from "@louez/ui";
 
-import { AgentAssistantCard } from "@/components/agent-connections/agent-assistant-card";
 import { StoreSwitcher } from "@/components/dashboard/store-switcher";
 import { FormStoreNameSlug } from "@/components/form/form-store-name-slug";
 import { usePublicEnv } from "@/components/shared/public-env-provider";
 import { AddressInput } from "@/components/ui/address-input";
-import type { McpEndpoint } from "@/lib/agent-connections/mcp-endpoint";
+import { StoreMap } from "@/components/storefront/store-map";
+import { SUPPORTED_COUNTRIES } from "@louez/utils/countries";
+import { SUPPORTED_CURRENCIES } from "@/lib/utils/currency";
 
 import { getFieldError } from "@/hooks/form/form-context";
 
@@ -36,9 +37,10 @@ interface StoreOnboardingClientPageProps {
   shouldDetectBrowserCountry: boolean;
   /** The signed-in user's email. */
   accountEmail: string;
-  /** Where an assistant connects, for the offer above the form. */
-  mcpEndpoint: McpEndpoint;
 }
+
+const RUSSIA = SUPPORTED_COUNTRIES.filter(({ code }) => code === "RU");
+const RUBLE = SUPPORTED_CURRENCIES.filter(({ code }) => code === "RUB");
 
 export function StoreOnboardingClientPage({
   stores,
@@ -47,7 +49,6 @@ export function StoreOnboardingClientPage({
   initialCountry,
   shouldDetectBrowserCountry,
   accountEmail,
-  mcpEndpoint,
 }: StoreOnboardingClientPageProps) {
   const router = useRouter();
   const t = useTranslations("onboarding.store");
@@ -68,6 +69,8 @@ export function StoreOnboardingClientPage({
   });
 
   const { NEXT_PUBLIC_APP_DOMAIN: domain } = usePublicEnv();
+  const mapLatitude = latitude ?? 55.7558;
+  const mapLongitude = longitude ?? 37.6173;
   const canSwitchAccount = Boolean(currentStoreId && stores.length > 0);
   // Back to profile only when it is part of this flow (first onboarding):
   // the step list is snapshotted per page load, so it still includes the
@@ -83,8 +86,6 @@ export function StoreOnboardingClientPage({
         </div>
       )}
       <OnboardingStepHeader title={t("title")} description={t("description")} />
-      {/* Never in the way: the form below works without it. */}
-      <AgentAssistantCard {...mcpEndpoint} className="mb-6" />
       <form.AppForm>
         <form.Form className="space-y-6">
           {/* Store Name + Slug Preview */}
@@ -128,6 +129,7 @@ export function StoreOnboardingClientPage({
                     label={t("country")}
                     placeholder={t("countryPlaceholder")}
                     onValueChange={handleCountrySelection}
+                    countries={RUSSIA}
                   />
                 )}
               </form.AppField>
@@ -137,6 +139,7 @@ export function StoreOnboardingClientPage({
                   <field.CurrencySelect
                     label={t("currency")}
                     placeholder={t("currencyPlaceholder")}
+                    currencies={RUBLE}
                   />
                 )}
               </form.AppField>
@@ -186,6 +189,15 @@ export function StoreOnboardingClientPage({
                 </div>
               )}
             </form.Field>
+            <div className="h-64 overflow-hidden rounded-lg border">
+              <StoreMap
+                latitude={mapLatitude}
+                longitude={mapLongitude}
+                storeName={form.state.values.name || "Каталог проката"}
+                address={form.state.values.address || "Москва"}
+                zoom={latitude === null || longitude === null ? 11 : 14}
+              />
+            </div>
           </div>
 
           <div className="mt-2 flex items-center gap-3">

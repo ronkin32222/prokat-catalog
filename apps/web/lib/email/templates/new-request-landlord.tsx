@@ -71,7 +71,7 @@ export function NewRequestLandlordEmail({
   return (
     <BaseLayout
       preview={messages.subject.replace("{number}", reservationNumber)}
-      storeName="Louez.io"
+      storeName="Каталог проката"
       logoUrl={null}
       primaryColor={primaryColor}
       locale={locale}

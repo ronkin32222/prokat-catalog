@@ -75,7 +75,7 @@ export const EmbedHostPreview = ({
     full: (
       <div className="space-y-6 p-6 @lg:p-10">
         <div className="space-y-3">
-          <h2 className="text-2xl font-semibold @lg:text-3xl">Louez votre matériel</h2>
+          <h2 className="text-2xl font-semibold @lg:text-3xl">Каталог проката</h2>
           {paragraph("max-w-xl")}
         </div>
         <div className="mx-auto w-full max-w-[600px]">{iframe}</div>

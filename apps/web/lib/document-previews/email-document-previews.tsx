@@ -247,16 +247,17 @@ export const EMAIL_DOCUMENT_PREVIEWS: readonly EmailDocumentPreview[] = [
     id: "reservation-confirmation",
     title: "Confirmation de réservation",
     description: "Réservation payée ou confirmée par le loueur.",
-    compose: (context) => composeConfirmationPreview({
-      ...baseProps(context),
-      startDate,
-      endDate,
-      items,
-      subtotal,
-      deposit,
-      total,
-      reservationUrl: url,
-    }),
+    compose: (context) =>
+      composeConfirmationPreview({
+        ...baseProps(context),
+        startDate,
+        endDate,
+        items,
+        subtotal,
+        deposit,
+        total,
+        reservationUrl: url,
+      }),
   }),
   customerEmail({
     id: "request-received",
@@ -724,7 +725,7 @@ export const EMAIL_DOCUMENT_PREVIEWS: readonly EmailDocumentPreview[] = [
   balanceLimit(
     "near",
     "Facturation : solde impayé proche de la limite",
-    "Le solde impayé de la boutique approche de la limite fixée par Louez.",
+    "Неоплаченный баланс магазина приближается к установленному лимиту.",
   ),
   balanceLimit(
     "reached",
@@ -771,7 +772,7 @@ export const EMAIL_DOCUMENT_PREVIEWS: readonly EmailDocumentPreview[] = [
   // ----- Platform (Louez account) -----
   platformEmail({
     id: "otp",
-    title: "Code de connexion Louez",
+    title: "Код входа — Каталог проката",
     description: "Code à usage unique pour se connecter au tableau de bord.",
     compose: ({ locale }) => ({
       subject: null,
@@ -780,7 +781,7 @@ export const EMAIL_DOCUMENT_PREVIEWS: readonly EmailDocumentPreview[] = [
   }),
   platformEmail({
     id: "magic-link",
-    title: "Lien de connexion Louez",
+    title: "Ссылка для входа — Каталог проката",
     description: "Lien magique pour se connecter au tableau de bord.",
     compose: ({ locale }) => ({
       subject: null,
@@ -809,7 +810,7 @@ export const EMAIL_DOCUMENT_PREVIEWS: readonly EmailDocumentPreview[] = [
   platformEmail({
     id: "delete-account",
     title: "Suppression de compte",
-    description: "Confirmation avant suppression définitive du compte Louez.",
+    description: "Подтверждение окончательного удаления аккаунта.",
     compose: ({ locale }) => ({
       subject: getDeleteAccountEmailSubject(locale),
       element: DeleteAccountEmail({ url, locale }),

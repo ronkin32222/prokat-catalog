@@ -90,12 +90,6 @@ export function BaseLayout({
             <Text style={shell.footerText}>
               {baseLayout.sentBy.replace("{storeName}", storeName)}. {baseLayout.ignoreIfNotYou}
             </Text>
-            <Text style={shell.footerText}>
-              {baseLayout.poweredBy}{" "}
-              <Link href="https://louez.io" style={shell.footerLink}>
-                Louez.io
-              </Link>
-            </Text>
           </Container>
         </Section>
       </Body>

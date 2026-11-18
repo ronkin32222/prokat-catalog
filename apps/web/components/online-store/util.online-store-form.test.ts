@@ -100,7 +100,7 @@ test("a store without theme or settings gets the storefront defaults", () => {
     faviconUrl: null,
   });
   assert.equal(defaults.identity.themeMode, "light");
-  assert.equal(defaults.identity.primaryColor, "#2563eb");
+  assert.equal(defaults.identity.primaryColor, "#C9A24B");
   assert.equal(defaults.identity.locale, "");
   assert.deepEqual(defaults.home.heroImages, []);
   assert.equal(defaults.home.heroAlign, "center");

@@ -42,7 +42,7 @@ import { updateAdminSettings } from "./actions";
 
 type BillingMode = "subscription" | "pay_as_you_go";
 
-const CURRENCY_SYMBOLS: Record<string, string> = { eur: "€", usd: "$" };
+const CURRENCY_SYMBOLS: Record<string, string> = { eur: "€", rub: "₽", usd: "$" };
 
 const tierSchema = z.object({
   id: z.string(),

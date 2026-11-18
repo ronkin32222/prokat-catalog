@@ -423,7 +423,7 @@ export async function maybeGrantReferrerReward(
                 customer: customerId,
                 amount: -reward.creditCents,
                 currency,
-                description: `Récompense de parrainage Louez (${config.referrerRewardFreeReservations} réservations offertes)`,
+                description: `Реферальное вознаграждение — Каталог проката (${config.referrerRewardFreeReservations} бронирований в подарок)`,
                 metadata: {
                   type: 'referral_reward',
                   referredStoreId: input.referredStore.id,
@@ -682,7 +682,7 @@ export async function clawbackReferrerRewardForQualifyingPayment(input: {
             customer: customerId,
             amount: reward.creditCents,
             currency: reward.currency,
-            description: `Annulation de la récompense de parrainage Louez (${config.referrerRewardFreeReservations} réservations)`,
+            description: `Отмена реферального вознаграждения — Каталог проката (${config.referrerRewardFreeReservations} бронирований)`,
             metadata: {
               type: 'referral_reward_clawback',
               referralRewardId: reward.id,
