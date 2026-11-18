@@ -7,7 +7,7 @@ import { createReservationInputSchema } from "@louez/validations";
 import type { CartItem } from "@/contexts/cart-context";
 
 import type { CheckoutFieldsPlan, DeliveryAddress } from "./checkout.types";
-import { toUnitKey } from "./util.checkout-custom-fields";
+
 import { buildReservationPayload } from "./util.reservation-payload";
 import { CHECKOUT_DEFAULT_VALUES } from "./validator.checkout";
 
@@ -51,26 +51,11 @@ const field = (id: string, scope: "customer" | "item"): CustomerFieldPublic => (
   isSensitive: false,
 });
 
-const build = (checkoutFields?: CheckoutFieldsPlan) =>
+const build =(checkoutFields?: CheckoutFieldsPlan, phone = "+79161234567", email = "") =>
   buildReservationPayload({
     storeId: "store000000000000001",
-    locale: "fr",
-    values: {
-      ...CHECKOUT_DEFAULT_VALUES,
-      email: "lea@example.test",
-      firstName: "Léa",
-      lastName: "Essai",
-      phone: "+33612345678",
-      profileFields: {
-        birthDate: "1990-05-17",
-        acquisitionSource: { source: "walk_in", detail: "left behind" },
-        socialLinks: { instagram: "@lea", website: " " },
-      },
-      customerFields: { "id-number": "AB123" },
-      itemDetails: {
-        [toUnitKey("line-bike", 1)]: { participantName: "Tom", values: { height: "180" } },
-      },
-    },
+    locale: "ru",
+    values: { ...CHECKOUT_DEFAULT_VALUES, firstName: "Иван", phone, email, notes: "" },
     items: [bike],
     subtotalAmount: 152,
     depositAmount: 0,
@@ -79,19 +64,23 @@ const build = (checkoutFields?: CheckoutFieldsPlan) =>
     outboundAddress: NO_ADDRESS,
     returnMethod: "store",
     returnAddress: NO_ADDRESS,
-    tulipInsuranceMode: "no_public",
     checkoutFields,
   });
 
-describe("buildReservationPayload custom fields", () => {
-  it("carries what the cart asks, in the shape the server accepts", () => {
-    const payload = build({
-      profileFields: [
-        { key: "birthDate", collectMode: "required" },
-        { key: "acquisitionSource", collectMode: "optional" },
-      ],
-      customerFields: [field("id-number", "customer")],
-      customerLayout: [],
+describe("buildReservationPayload", () => {
+  it("sends the E.164 phone and a placeholder e-mail when none is typed", () => {
+    const payload = build(undefined, "8 (916) 123-45-67");
+    assert.equal(payload.customer.phone, "+79161234567");
+    assert.equal(payload.customer.email, "79161234567@phone.invalid");
+    assert.equal(createReservationInputSchema.safeParse(payload).success, true);
+  });
+
+  it("keeps a typed e-mail", () => {
+    assert.equal(build(undefined, "+79161234567", " Lea@Example.test ").customer.email, "Lea@Example.test");
+  });
+
+  it("carries the unit details the cart asks, in the shape the server accepts", () => {
+    const checkoutFields: CheckoutFieldsPlan = {
       lines: [
         {
           lineId: "line-bike",
@@ -101,28 +90,13 @@ describe("buildReservationPayload custom fields", () => {
           itemFields: [field("height", "item")],
         },
       ],
-    });
-
-    // Only the asked native fields travel; the detail stays behind a source without one.
-    assert.deepEqual(payload.profileFields, {
-      birthDate: "1990-05-17",
-      acquisitionSource: "walk_in",
-    });
-    assert.deepEqual(payload.customerFields, { "id-number": "AB123" });
-    assert.deepEqual(payload.itemDetails, [
-      {
-        lineIndex: 0,
-        units: [{ values: {} }, { participantName: "Tom", values: { height: "180" } }],
-      },
-    ]);
+    };
+    const payload = build(checkoutFields);
+    assert.deepEqual(payload.itemDetails, [{ lineIndex: 0, units: [{ values: {} }, { values: {} }] }]);
     assert.equal(createReservationInputSchema.safeParse(payload).success, true);
   });
 
-  it("leaves the keys out when nothing is asked", () => {
-    const payload = build({ profileFields: [], customerFields: [], customerLayout: [], lines: [] });
-    assert.equal("profileFields" in payload, false);
-    assert.equal("customerFields" in payload, false);
-    assert.equal("itemDetails" in payload, false);
-    assert.equal("customerFields" in build(), false);
+  it("sends no unit details when the cart asks none", () => {
+    assert.deepEqual(build({ lines: [] }).itemDetails, []);
   });
 });

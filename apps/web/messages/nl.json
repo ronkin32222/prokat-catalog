@@ -8061,7 +8061,8 @@
         "items": "Gereserveerde producten",
         "emailSent": "Een bevestigingsmail is verzonden naar {email}",
         "promoDiscount": "Actiekorting",
-        "backToStore": "Terug naar winkel"
+        "backToStore": "Terug naar winkel",
+        "requestTitle": "Request received"
       },
       "requestedAttributesLabel": "Aangevraagd",
       "resolvedAttributesLabel": "Definitief",
@@ -8156,8 +8157,13 @@
       },
       "customFields": {
         "savedSummary": "Gegevens al opgeslagen",
-        "detailsIntro": "Zo kan {store} uw materiaal klaarzetten."
-      }
+        "detailsIntro": "Zo kan {store} uw materiaal klaarzetten.",
+        "detailsTitle": "Details for each unit"
+      },
+      "phoneHint": "Russian numbers only, +7",
+      "emailHint": "Optional. Without an e-mail we will reach you by phone.",
+      "managerCallback": "A manager will contact you within 15 minutes to confirm.",
+      "hourAbbreviation": "h"
     },
     "confirmation": {
       "title": "Reservering bevestigd!",

@@ -1,0 +1,178 @@
+"use client";
+
+import { Send } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+import { Alert, Button, Separator } from "@louez/ui";
+import { cn } from "@louez/utils";
+
+import { CustomerFieldFormInput } from "@/components/storefront/customer-fields/customer-field-form-input";
+import { RentalUnitCard } from "@/components/storefront/customer-fields/rental-unit-card";
+import { RentalUnitParticipantInput } from "@/components/storefront/customer-fields/rental-unit-participant-input";
+import { withForm } from "@/hooks/form/form";
+import { formatRussianPhone, PHONE_MASK_LENGTH } from "@/lib/sms/ru-phone";
+
+import type { CheckoutFieldsLine } from "../checkout.types";
+import type { useCheckoutPromo } from "../hooks/use-checkout-promo";
+import { toItemFieldName, toParticipantFieldName, toUnitKey } from "../util.checkout-custom-fields";
+import { checkoutFormOptions, checkoutStepProps } from "../validator.checkout";
+import { CheckoutPromoCode } from "./checkout-promo-code";
+
+interface CheckoutRequestFormProps {
+  /** Lines asking unit details; one card per rented unit. */
+  lines: CheckoutFieldsLine[];
+  promo: ReturnType<typeof useCheckoutPromo>;
+  hasActivePromoCodes: boolean;
+  isSubmitting: boolean;
+  /** A refused cart or a missing quote stops the request before it is sent. */
+  isBlocked: boolean;
+}
+
+/**
+ * The whole public checkout: name, phone, an optional note and e-mail, one
+ * "Отправить заявку" button. Nothing is paid here; the manager calls back.
+ */
+export const CheckoutRequestForm = withForm({
+  ...checkoutFormOptions,
+  props: checkoutStepProps<CheckoutRequestFormProps>(),
+  render: ({ form, lines, promo, hasActivePromoCodes, isSubmitting, isBlocked }) => {
+    const t = useTranslations("storefront.checkout");
+    const askingLines = lines.filter((line) => line.itemFields.length > 0);
+
+    return (
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
+            {t("steps.contact")}
+          </h2>
+          <p className="text-sm text-muted-foreground">{t("contactDescription")}</p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <form.AppField name="firstName">
+            {(field) => (
+              <field.Input
+                label={t("firstName")}
+                placeholder={t("firstNamePlaceholder")}
+                autoComplete="given-name"
+              />
+            )}
+          </form.AppField>
+
+          <form.AppField name="phone">
+            {(field) => (
+              <field.Input
+                label={t("phone")}
+                description={t("phoneHint")}
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                // The field keeps what was typed; only the display is masked.
+                value={formatRussianPhone(field.state.value)}
+                maxLength={PHONE_MASK_LENGTH}
+              />
+            )}
+          </form.AppField>
+
+          <div className="sm:col-span-2">
+            <form.AppField name="email">
+              {(field) => (
+                <field.Input
+                  label={t("email")}
+                  description={t("emailHint")}
+                  placeholder={t("emailPlaceholder")}
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                />
+              )}
+            </form.AppField>
+          </div>
+
+          <div className="sm:col-span-2">
+            <form.AppField name="notes">
+              {(field) => (
+                <field.Textarea
+                  label={t("notes")}
+                  placeholder={t("notesPlaceholder")}
+                  rows={3}
+                />
+              )}
+            </form.AppField>
+          </div>
+        </div>
+
+        {askingLines.length > 0 && (
+          <>
+            <Separator />
+            <div className="flex flex-col gap-1">
+              <h3 className="text-base font-semibold">{t("customFields.detailsTitle")}</h3>
+              <p className="text-sm text-muted-foreground">{t("customFields.detailsIntro")}</p>
+            </div>
+            {askingLines.flatMap((line) =>
+              Array.from({ length: line.quantity }, (_, unitIndex) => {
+                const unitKey = toUnitKey(line.lineId, unitIndex);
+                return (
+                  <RentalUnitCard
+                    key={unitKey}
+                    productName={line.productName}
+                    productImage={line.productImage}
+                    unitIndex={unitIndex}
+                    quantity={line.quantity}
+                  >
+                    <div className="grid items-start gap-3 sm:grid-cols-2">
+                      <div className="sm:col-span-2">
+                        <form.AppField name={toParticipantFieldName(unitKey)}>
+                          {() => <RentalUnitParticipantInput />}
+                        </form.AppField>
+                      </div>
+                      {line.itemFields.map((field) => (
+                        <div
+                          key={field.id}
+                          className={cn("min-w-0", field.width === "full" && "sm:col-span-2")}
+                        >
+                          <form.AppField name={toItemFieldName(unitKey, field.id)}>
+                            {() => <CustomerFieldFormInput field={field} />}
+                          </form.AppField>
+                        </div>
+                      ))}
+                    </div>
+                  </RentalUnitCard>
+                );
+              }),
+            )}
+          </>
+        )}
+
+        {hasActivePromoCodes && (
+          <CheckoutPromoCode
+            promo={promo.promo}
+            discountAmount={promo.discountAmount}
+            isValidating={promo.isValidating}
+            validationError={promo.validationError}
+            onValidate={promo.validate}
+            onRemove={promo.remove}
+            onClearError={promo.clearError}
+          />
+        )}
+
+        <Alert>
+          <p>{t("managerCallback")}</p>
+        </Alert>
+
+        <Button
+          type="submit"
+          size="lg"
+          className="h-12 w-full sm:w-auto sm:min-w-64"
+          disabled={isSubmitting || isBlocked}
+        >
+          <Send data-slot="icon" />
+          {isSubmitting ? t("processing") : t("submitRequest")}
+        </Button>
+      </div>
+    );
+  },
+});
+
+/** The promo hook's shape, so the request form takes exactly what its parent has. */
+export type CheckoutRequestPromo = ReturnType<typeof useCheckoutPromo>;

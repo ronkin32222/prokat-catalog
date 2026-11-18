@@ -836,6 +836,8 @@ export interface NotificationChannelConfig {
   sms: boolean;
   discord: boolean;
   push: boolean;
+  telegram?: boolean;
+  max?: boolean;
 }
 
 export interface NotificationSettings {
@@ -865,6 +867,16 @@ export interface NotificationSettings {
     mode?: AdminReminderMode;
     // Store-local hour (0-23) to send the daily digest. Default: 8 (08:00).
     digestHour?: number;
+  };
+
+  /**
+   * Мессенджеры владельца: Telegram и MAX. Бот подключается по токену,
+   * chat_id — чат владельца с ботом. Ключи каналов в конфигах событий выше
+   * (`telegram` / `max`) решают, какие события туда уходят.
+   */
+  messengers?: {
+    telegram?: { botToken: string; chatId: string; enabled: boolean };
+    max?: { botToken: string; chatId: string; enabled: boolean };
   };
 }
 

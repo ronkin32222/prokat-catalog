@@ -43,6 +43,8 @@ export const StoreMap = ({
         center: [latitude, longitude],
         zoom,
         zoomControl: showZoomControl,
+        // The default prefix carries a flag; the OSM credit below is the licence requirement.
+        attributionControl: false,
         dragging: interactive,
         scrollWheelZoom: interactive,
         doubleClickZoom: interactive,
@@ -50,6 +52,7 @@ export const StoreMap = ({
         keyboard: interactive,
         touchZoom: interactive,
       });
+      leaflet.control.attribution({ prefix: false }).addTo(map);
       leaflet
         .tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',

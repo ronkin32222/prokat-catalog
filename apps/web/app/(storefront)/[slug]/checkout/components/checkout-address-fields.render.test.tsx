@@ -29,7 +29,7 @@ import {
   type CustomerAddressPick,
   getPickedCoordinates,
 } from "../util.customer-address";
-import { checkoutFormOptions } from "../validator.checkout";
+import { customerProfileFormOptions } from "../validator.customer-profile-form";
 import { CheckoutAddressFields } from "./checkout-address-fields";
 
 // The customer's own address at checkout, mounted as the contact step mounts
@@ -97,8 +97,8 @@ const AddressFields = ({
   controls: Controls;
 }) => {
   // As the checkout does, the form's defaults follow the customer it was reset for.
-  const [defaultValues, setDefaultValues] = useState(checkoutFormOptions.defaultValues);
-  const form = useAppForm({ ...checkoutFormOptions, defaultValues });
+  const [defaultValues, setDefaultValues] = useState(customerProfileFormOptions.defaultValues);
+  const form = useAppForm({ ...customerProfileFormOptions, defaultValues });
   const [pick, setPick] = useState<CustomerAddressPick | null>(null);
   const [shown, setShown] = useState(true);
   controls.setShown = setShown;

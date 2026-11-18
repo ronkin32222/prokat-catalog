@@ -8061,7 +8061,8 @@
         "items": "予約商品",
         "emailSent": "確認メールが {email} に送信されました",
         "promoDiscount": "プロモーション割引",
-        "backToStore": "ストアに戻る"
+        "backToStore": "ストアに戻る",
+        "requestTitle": "Request received"
       },
       "requestedAttributesLabel": "リクエスト済み",
       "resolvedAttributesLabel": "ファイナル",
@@ -8156,8 +8157,13 @@
       },
       "customFields": {
         "savedSummary": "入力済みの情報",
-        "detailsIntro": "この情報は、{store}が機材を準備する際に役立ちます。"
-      }
+        "detailsIntro": "この情報は、{store}が機材を準備する際に役立ちます。",
+        "detailsTitle": "Details for each unit"
+      },
+      "phoneHint": "Russian numbers only, +7",
+      "emailHint": "Optional. Without an e-mail we will reach you by phone.",
+      "managerCallback": "A manager will contact you within 15 minutes to confirm.",
+      "hourAbbreviation": "h"
     },
     "confirmation": {
       "title": "予約確定しました！",

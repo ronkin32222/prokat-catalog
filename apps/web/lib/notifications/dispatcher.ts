@@ -6,6 +6,8 @@ import { formatSupplementalMessage } from "@/lib/i18n/supplemental-messages";
  * - Email (to the store's address, see admin-email.ts)
  * - SMS (to owner phone with full i18n support - 13 languages)
  * - Discord (via webhooks)
+ * - Telegram (via bot API - v1.10, see messengers.ts)
+ * - MAX (via platform API - v1.10, see messengers.ts)
  *
  * Supports: fr, en, de, es, it, nl, pl, pt, zh, ja, ru, id, ko
  */
@@ -13,6 +15,7 @@ import { formatSupplementalMessage } from "@/lib/i18n/supplemental-messages";
 import { db } from "@louez/db";
 import { stores, pushSubscriptions, storeMembers } from "@louez/db";
 import { eq } from "drizzle-orm";
+import { format } from "date-fns";
 import { env } from "@/env";
 import { getSmsQuotaStatus, determineSmsSource } from "@/lib/plan-limits";
 import { isSmsConfigured } from "@/lib/sms/client";
@@ -51,6 +54,13 @@ import { isPushConfigured, sendPush } from "@/lib/push/client";
 import { log } from "@/lib/evlog";
 import { buildAdminPushPayload } from "@/lib/push/notifications";
 import type { NotificationEventType, NotificationSettings } from "@louez/types";
+import {
+  sendTelegramMessage,
+  sendMaxMessage,
+  formatMessengerMessage,
+  MESSENGER_EVENT_LABELS,
+  escapeHtml,
+} from "@/lib/notifications/messengers";
 
 // ============================================================================
 // Types
@@ -134,6 +144,8 @@ export interface NotificationResult {
   sms: { sent: boolean; error?: string; limitReached?: boolean };
   discord: { sent: boolean; error?: string };
   push: { sent: boolean; error?: string };
+  telegram?: { sent: boolean; error?: string };
+  max?: { sent: boolean; error?: string };
 }
 
 // ============================================================================
@@ -141,17 +153,17 @@ export interface NotificationResult {
 // ============================================================================
 
 const DEFAULT_SETTINGS: NotificationSettings = {
-  reservation_new: { email: true, sms: false, discord: false, push: true },
-  reservation_confirmed: { email: true, sms: false, discord: false, push: false },
-  reservation_rejected: { email: true, sms: false, discord: false, push: false },
-  reservation_cancelled: { email: true, sms: false, discord: false, push: false },
-  reservation_picked_up: { email: false, sms: false, discord: false, push: false },
-  reservation_completed: { email: false, sms: false, discord: false, push: false },
-  reservation_reminder_pickup: { email: false, sms: false, discord: false, push: false },
-  reservation_reminder_return: { email: false, sms: false, discord: false, push: false },
-  payment_received: { email: true, sms: false, discord: false, push: false },
-  payment_failed: { email: true, sms: false, discord: false, push: false },
-  payment_disputed: { email: true, sms: false, discord: false, push: false },
+  reservation_new: { email: true, sms: false, discord: false, push: true, telegram: false, max: false },
+  reservation_confirmed: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
+  reservation_rejected: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
+  reservation_cancelled: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
+  reservation_picked_up: { email: false, sms: false, discord: false, push: false, telegram: false, max: false },
+  reservation_completed: { email: false, sms: false, discord: false, push: false, telegram: false, max: false },
+  reservation_reminder_pickup: { email: false, sms: false, discord: false, push: false, telegram: false, max: false },
+  reservation_reminder_return: { email: false, sms: false, discord: false, push: false, telegram: false, max: false },
+  payment_received: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
+  payment_failed: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
+  payment_disputed: { email: true, sms: false, discord: false, push: false, telegram: false, max: false },
 };
 
 // ============================================================================
@@ -865,6 +877,56 @@ function sendStoreDiscord(
   });
 }
 
+// ============================================================================
+// Telegram / MAX (мессенджеры владельца, messengers.ts)
+// ============================================================================
+
+/** Дата периода в коротком виде для мессенджеров: 05.12.2026 10:00. */
+function formatMessengerDate(date: Date): string {
+  return format(date, "dd.MM.yyyy HH:mm");
+}
+
+/**
+ * Короткий русский текст события для Telegram/MAX: тип события, номер,
+ * клиент, период, сумма в валюте магазина (₽ для российских).
+ */
+function buildMessengerEventText(
+  eventType: NotificationEventType,
+  ctx: NotificationContext,
+): string {
+  const amount = ctx.payment
+    ? formatCurrencyForSms(ctx.payment.amount, paymentCurrencyOf(ctx))
+    : ctx.reservation
+      ? formatCurrencyForSms(ctx.reservation.totalAmount, reservationCurrencyOf(ctx))
+      : undefined;
+  return formatMessengerMessage({
+    eventLabel: MESSENGER_EVENT_LABELS[eventType] ?? eventType,
+    storeName: ctx.store.name,
+    reservationNumber: ctx.reservation?.number,
+    customerName: ctx.customer ? `${ctx.customer.firstName} ${ctx.customer.lastName}` : undefined,
+    periodLabel: ctx.reservation
+      ? `${formatMessengerDate(ctx.reservation.startDate)} — ${formatMessengerDate(ctx.reservation.endDate)}`
+      : undefined,
+    amountLabel: amount,
+  });
+}
+
+/** Отправка события в мессенджер владельца. Токен не попадает ни в текст, ни в ошибку. */
+async function sendStoreMessenger(
+  kind: "telegram" | "max",
+  eventType: NotificationEventType,
+  ctx: NotificationContext,
+): Promise<{ sent: boolean; error?: string }> {
+  const messenger = ctx.store.notificationSettings?.messengers?.[kind];
+  if (!messenger?.enabled) return { sent: false, error: "мессенджер не подключён" };
+  const raw = buildMessengerEventText(eventType, ctx);
+  const result =
+    kind === "telegram"
+      ? await sendTelegramMessage(messenger.botToken, messenger.chatId, escapeHtml(raw))
+      : await sendMaxMessage(messenger.botToken, messenger.chatId, raw);
+  return { sent: result.ok, error: result.error };
+}
+
 /**
  * One channel of a store notification, for an outbox row (packages/api
  * platform/effects.ts). The store's preferences and its routing (the owner's
@@ -877,7 +939,7 @@ function sendStoreDiscord(
 export async function sendStoreNotificationChannel(
   eventType: NotificationEventType,
   ctx: NotificationContext,
-  channel: "sms" | "push" | "discord",
+  channel: "sms" | "push" | "discord" | "telegram" | "max",
   beforeSend: () => Promise<void>,
   /** The outbox row's id, which keeps its SMS to one. */
   deliveryKey?: string,
@@ -911,6 +973,15 @@ export async function sendStoreNotificationChannel(
     return undefined;
   }
 
+  if (channel === "telegram" || channel === "max") {
+    const messenger = ctx.store.notificationSettings?.messengers?.[channel];
+    if (!messenger?.enabled) return { skipped: `the store has no ${channel} messenger` };
+    await beforeSend();
+    const messengerResult = await sendStoreMessenger(channel, eventType, ctx);
+    if (!messengerResult.sent) throw new Error(messengerResult.error || "The message was not sent.");
+    return undefined;
+  }
+
   if (!ctx.store.discordWebhookUrl) return { skipped: "the store has no Discord webhook" };
   await beforeSend();
   const discordResult = await sendStoreDiscord(eventType, ctx, ctx.store.discordWebhookUrl);
@@ -935,6 +1006,8 @@ export async function dispatchNotification(
     sms: { sent: false },
     discord: { sent: false },
     push: { sent: false },
+    telegram: { sent: false },
+    max: { sent: false },
   };
 
   // Get notification preferences (use defaults if not set). Merge per-channel
@@ -1007,6 +1080,26 @@ export async function dispatchNotification(
         sent: false,
         error: error instanceof Error ? error.message : "Unknown error",
       };
+    }
+  }
+
+  // Telegram: оповещение владельца через его бота (messengers.ts)
+  if (prefs.telegram) {
+    try {
+      result.telegram = await sendStoreMessenger("telegram", eventType, ctx);
+    } catch (error) {
+      failed("telegram", error);
+      result.telegram = { sent: false, error: describeChannelError(error) };
+    }
+  }
+
+  // MAX: оповещение владельца через его бота (messengers.ts)
+  if (prefs.max) {
+    try {
+      result.max = await sendStoreMessenger("max", eventType, ctx);
+    } catch (error) {
+      failed("max", error);
+      result.max = { sent: false, error: describeChannelError(error) };
     }
   }
 
@@ -1115,6 +1208,8 @@ export async function dispatchAdminReminder(
     sms: { sent: false },
     discord: { sent: false },
     push: { sent: false },
+    telegram: { sent: false },
+    max: { sent: false },
   };
 
   const settings = ctx.store.notificationSettings || DEFAULT_SETTINGS;
@@ -1319,6 +1414,8 @@ export async function dispatchAdminDigest(ctx: AdminDigestContext): Promise<Noti
     sms: { sent: false },
     discord: { sent: false },
     push: { sent: false },
+    telegram: { sent: false },
+    max: { sent: false },
   };
 
   const locale = getLocaleFromCountry(ctx.store.settings?.country);

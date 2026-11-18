@@ -8061,7 +8061,8 @@
         "items": "Produits réservés",
         "emailSent": "Un email de confirmation a été envoyé à {email}",
         "promoDiscount": "Réduction promo",
-        "backToStore": "Retour à la boutique"
+        "backToStore": "Retour à la boutique",
+        "requestTitle": "Request received"
       },
       "requestedAttributesLabel": "Demandé",
       "resolvedAttributesLabel": "Final",
@@ -8156,8 +8157,13 @@
       },
       "customFields": {
         "savedSummary": "Informations déjà renseignées",
-        "detailsIntro": "Ces informations aident {store} à préparer votre matériel."
-      }
+        "detailsIntro": "Ces informations aident {store} à préparer votre matériel.",
+        "detailsTitle": "Details for each unit"
+      },
+      "phoneHint": "Russian numbers only, +7",
+      "emailHint": "Optional. Without an e-mail we will reach you by phone.",
+      "managerCallback": "A manager will contact you within 15 minutes to confirm.",
+      "hourAbbreviation": "h"
     },
     "confirmation": {
       "title": "Réservation confirmée !",

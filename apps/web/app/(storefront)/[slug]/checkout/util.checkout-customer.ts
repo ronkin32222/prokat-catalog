@@ -1,4 +1,17 @@
-import type { CheckoutInitialCustomer } from "./checkout.types";
+/** A signed-in customer as the profile form shows it. */
+export interface CheckoutInitialCustomer {
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  isBusinessCustomer: boolean;
+  companyName: string;
+  companyNumber: string;
+  vatNumber: string;
+  address: string;
+  city: string;
+  postalCode: string;
+}
 
 interface CustomerRowLike {
   email: string;

@@ -13,10 +13,47 @@ import { getSmsQuotaStatus } from "@/lib/plan-limits";
 import { notifyNotificationSettingsUpdated } from "@/lib/discord/platform-notifications";
 import { validateAndNormalizePhone } from "@/lib/sms/phone";
 import { DEFAULT_NOTIFICATION_SETTINGS, withCustomerNotificationDefaults } from "@louez/types";
+import type { NotificationSettings } from "@louez/types";
 import { getLocaleFromCountry } from "@/lib/email/i18n";
+import {
+  checkTelegramBotToken,
+  findTelegramChat,
+  checkMaxBotToken,
+  sendTelegramMessage,
+  sendMaxMessage,
+  maskToken,
+} from "@/lib/notifications/messengers";
 
 // Language name mapping for display
 const LANGUAGE_NAMES = localeNames;
+
+export type MessengerKind = "telegram" | "max";
+
+/** Скрывает токены ботов перед отдачей настроек в UI. */
+function maskMessengerTokens<T extends { messengers?: NotificationSettings["messengers"] }>(
+  settings: T,
+): T {
+  if (!settings.messengers) return settings;
+  const masked: NotificationSettings["messengers"] = {};
+  for (const kind of ["telegram", "max"] as const) {
+    const m = settings.messengers[kind];
+    if (m) masked[kind] = { ...m, botToken: maskToken(m.botToken) };
+  }
+  return { ...settings, messengers: masked };
+}
+
+/**
+ * События, куда подключённый мессенджер включается сразу: та же базовая
+ * линейка, что у админ-уведомлений (заявка, статусы, оплата).
+ */
+const MESSENGER_EVENTS = [
+  "reservation_new",
+  "reservation_confirmed",
+  "reservation_cancelled",
+  "reservation_picked_up",
+  "reservation_completed",
+  "payment_received",
+] as const;
 
 export async function getNotificationSettings() {
   const store = await getCurrentStore();
@@ -31,7 +68,7 @@ export async function getNotificationSettings() {
   return {
     // Admin notification settings — merge over defaults so stores saved before
     // newer event types (e.g. admin reminders) still expose every key.
-    settings: { ...DEFAULT_NOTIFICATION_SETTINGS, ...store.notificationSettings },
+    settings: maskMessengerTokens({ ...DEFAULT_NOTIFICATION_SETTINGS, ...store.notificationSettings }),
     discordWebhookUrl: store.discordWebhookUrl,
     ownerPhone: store.ownerPhone,
     smsQuota: {
@@ -169,4 +206,127 @@ export async function updateOwnerPhone(phone: string | null) {
 
   revalidatePath("/dashboard/settings/notifications");
   return { success: true, phone: normalizedPhone };
+}
+
+// ============================================================================
+// Мессенджеры владельца: Telegram / MAX
+// ============================================================================
+
+/**
+ * Подключение бота: проверяет токен, сохраняет chat_id и включает канал
+ * для базовой линейки событий. Токен хранится только в БД, в UI не возвращается.
+ */
+export async function connectMessenger(kind: MessengerKind, botToken: string, chatId: string) {
+  const store = await getCurrentStore();
+  if (!store) return { error: "errors.unauthorized" };
+
+  if (!hasPermission(store.role, "manage_settings")) {
+    return { error: "errors.permissionDenied" };
+  }
+
+  const token = botToken.trim();
+  const chat = chatId.trim();
+  if (!token) return { error: "Введите токен бота" };
+  if (!chat) return { error: "Введите ID чата" };
+
+  const check = kind === "telegram" ? await checkTelegramBotToken(token) : await checkMaxBotToken(token);
+  if (!check.ok) return { error: check.error };
+
+  const current: NotificationSettings = {
+    ...DEFAULT_NOTIFICATION_SETTINGS,
+    ...store.notificationSettings,
+  };
+  const messengers = { ...current.messengers };
+  messengers[kind] = { botToken: token, chatId: chat, enabled: true };
+  const events = { ...current };
+  for (const event of MESSENGER_EVENTS) {
+    events[event] = { ...DEFAULT_NOTIFICATION_SETTINGS[event], ...events[event], [kind]: true };
+  }
+  events.messengers = messengers;
+
+  await db
+    .update(stores)
+    .set({ notificationSettings: events, updatedAt: new Date() })
+    .where(eq(stores.id, store.id));
+
+  notifyNotificationSettingsUpdated({ id: store.id, name: store.name, slug: store.slug }).catch(
+    () => {},
+  );
+
+  revalidatePath("/dashboard/settings/notifications");
+  return { success: true };
+}
+
+/**
+ * Telegram: chat_id последнего чата, писавшего боту (после /start владельца).
+ * Токен можно передать из поля ввода (до сохранения), иначе берётся сохранённый.
+ */
+export async function findTelegramChatId(botToken?: string) {
+  const store = await getCurrentStore();
+  if (!store) return { error: "errors.unauthorized" };
+
+  if (!hasPermission(store.role, "manage_settings")) {
+    return { error: "errors.permissionDenied" };
+  }
+
+  const token = botToken?.trim() || store.notificationSettings?.messengers?.telegram?.botToken;
+  if (!token) return { error: "Введите токен бота Telegram" };
+
+  const result = await findTelegramChat(token);
+  if (!result.ok) return { error: result.error };
+  return { success: true, chatId: result.chat.chatId };
+}
+
+/** Тестовое сообщение в подключённый мессенджер. */
+export async function sendTestMessengerMessage(kind: MessengerKind) {
+  const store = await getCurrentStore();
+  if (!store) return { error: "errors.unauthorized" };
+
+  if (!hasPermission(store.role, "manage_settings")) {
+    return { error: "errors.permissionDenied" };
+  }
+
+  const messenger = store.notificationSettings?.messengers?.[kind];
+  if (!messenger?.enabled) return { error: kind === "telegram" ? "Telegram не подключён" : "MAX не подключён" };
+
+  const text = `Тестовое уведомление — магазин «${store.name}» подключён успешно.`;
+  const result =
+    kind === "telegram"
+      ? await sendTelegramMessage(messenger.botToken, messenger.chatId, text)
+      : await sendMaxMessage(messenger.botToken, messenger.chatId, text);
+  if (!result.ok) return { error: result.error || "Сообщение не отправлено" };
+  return { success: true };
+}
+
+/** Отключение мессенджера: конфиг удаляется, события выключаются. */
+export async function disconnectMessenger(kind: MessengerKind) {
+  const store = await getCurrentStore();
+  if (!store) return { error: "errors.unauthorized" };
+
+  if (!hasPermission(store.role, "manage_settings")) {
+    return { error: "errors.permissionDenied" };
+  }
+
+  const current: NotificationSettings = {
+    ...DEFAULT_NOTIFICATION_SETTINGS,
+    ...store.notificationSettings,
+  };
+  const messengers = { ...current.messengers };
+  delete messengers[kind];
+  const events = { ...current, messengers };
+  for (const event of MESSENGER_EVENTS) {
+    events[event] = { ...events[event], [kind]: false };
+  }
+
+  await db
+    .update(stores)
+    .set({ notificationSettings: events, updatedAt: new Date() })
+    .where(eq(stores.id, store.id));
+
+  notifyNotificationSettingsUpdated({ id: store.id, name: store.name, slug: store.slug }).catch(
+    () => {},
+  );
+
+  revalidatePath("/dashboard/settings/notifications");
+  return { success: true };
 }

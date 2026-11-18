@@ -994,7 +994,7 @@ export const loadCatalogReleases = cache(
           eq(reservations.storeId, storeId),
           inArray(reservations.status, [...BLOCKING_RESERVATION_STATUSES]),
           lte(reservations.startDate, now),
-          gt(reservationAvailabilityEndSql(), now),
+          or(gt(reservationAvailabilityEndSql(), now), eq(reservations.status, "ongoing")),
           eq(reservationItems.isCustomItem, false),
         ),
       )

@@ -146,7 +146,7 @@ export function formatDetailedDuration(
   const { days, hours } = getDetailedDuration(startDate, endDate);
 
   if (days === 0) {
-    return `${hours}h`;
+    return `${hours} ч`;
   }
 
   const dayLabel = days === 1 ? translations.day : translations.days;
@@ -155,7 +155,7 @@ export function formatDetailedDuration(
     return `${days} ${dayLabel}`;
   }
 
-  return `${days} ${dayLabel} ${translations.and} ${hours}h`;
+  return `${days} ${dayLabel} ${translations.and} ${hours} ч`;
 }
 
 /**

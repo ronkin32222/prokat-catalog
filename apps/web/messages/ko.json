@@ -8061,7 +8061,8 @@
         "items": "예약된 항목",
         "emailSent": "확인 이메일이 {email}로 전송되었습니다.",
         "promoDiscount": "프로모션 할인",
-        "backToStore": "매장으로 돌아가기"
+        "backToStore": "매장으로 돌아가기",
+        "requestTitle": "Request received"
       },
       "requestedAttributesLabel": "요청됨",
       "resolvedAttributesLabel": "최종",
@@ -8156,8 +8157,13 @@
       },
       "customFields": {
         "savedSummary": "이미 등록된 정보",
-        "detailsIntro": "이 정보는 {store}에서 장비를 준비하는 데 도움이 됩니다."
-      }
+        "detailsIntro": "이 정보는 {store}에서 장비를 준비하는 데 도움이 됩니다.",
+        "detailsTitle": "Details for each unit"
+      },
+      "phoneHint": "Russian numbers only, +7",
+      "emailHint": "Optional. Without an e-mail we will reach you by phone.",
+      "managerCallback": "A manager will contact you within 15 minutes to confirm.",
+      "hourAbbreviation": "h"
     },
     "confirmation": {
       "title": "예약이 확인되었습니다!",

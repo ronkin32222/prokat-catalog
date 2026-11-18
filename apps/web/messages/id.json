@@ -8061,7 +8061,8 @@
         "items": "Barang yang Dipesan",
         "emailSent": "Email konfirmasi telah dikirim ke {email}",
         "promoDiscount": "Diskon promo",
-        "backToStore": "Kembali ke Toko"
+        "backToStore": "Kembali ke Toko",
+        "requestTitle": "Request received"
       },
       "requestedAttributesLabel": "Diminta",
       "resolvedAttributesLabel": "Terakhir",
@@ -8156,8 +8157,13 @@
       },
       "customFields": {
         "savedSummary": "Informasi sudah tersimpan",
-        "detailsIntro": "Informasi ini membantu {store} menyiapkan peralatan Anda."
-      }
+        "detailsIntro": "Informasi ini membantu {store} menyiapkan peralatan Anda.",
+        "detailsTitle": "Details for each unit"
+      },
+      "phoneHint": "Russian numbers only, +7",
+      "emailHint": "Optional. Without an e-mail we will reach you by phone.",
+      "managerCallback": "A manager will contact you within 15 minutes to confirm.",
+      "hourAbbreviation": "h"
     },
     "confirmation": {
       "title": "Reservasi dikonfirmasi!",

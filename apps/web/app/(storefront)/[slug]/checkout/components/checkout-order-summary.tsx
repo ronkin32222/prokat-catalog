@@ -7,11 +7,9 @@ import type { TaxSettings } from "@louez/types";
 import { Button, Separator } from "@louez/ui";
 import { cn, isFixedPriceProduct } from "@louez/utils";
 
-import { ProductImage } from "@/components/product/product-image";
-import { InsuredProductShield } from "@/components/storefront/ui/insured-product-shield";
-import { SeasonalPriceBreakdown } from "@/components/storefront/product/seasonal-price-breakdown";
 import { BillingDetail } from "@/components/storefront/product/billing-detail";
-import { getStorefrontBillingDetail } from "@/lib/utils/util.storefront-product-pricing";
+import { SeasonalPriceBreakdown } from "@/components/storefront/product/seasonal-price-breakdown";
+import { ProductImage } from "@/components/product/product-image";
 import { Price } from "@/components/storefront/ui/price";
 import type { CartItem } from "@/contexts/cart-context";
 import { useDiscountVisibility } from "@/contexts/store-context";
@@ -20,41 +18,26 @@ import { useFormatMoney } from "@/hooks/use-format-money";
 import { calculateCartItemPrice } from "@/lib/utils/cart-pricing";
 import { groupCartLinesByParent } from "@/lib/utils/cart-required-accessories";
 import { getDetailedDuration } from "@/lib/utils/duration";
+import { getStorefrontBillingDetail } from "@/lib/utils/util.storefront-product-pricing";
 import { getEffectiveDiscountPercent } from "@/lib/utils/util.discount-visibility";
 
-import type {
-  CheckoutTulipInsurance,
-  LineResolutionState,
-  ReservationMode,
-  TulipQuotePreview,
-  ValidatedPromo,
-} from "../checkout.types";
-import { CheckoutDeposit } from "./checkout-deposit";
+import type { LineResolutionState, ValidatedPromo } from "../checkout.types";
 import type { CheckoutTotals } from "../util.checkout-totals";
-import { getCheckoutInsuranceState } from "../util.checkout-insurance";
 
 interface CheckoutOrderSummaryProps {
   items: CartItem[];
-  reservationMode: ReservationMode;
   taxSettings?: TaxSettings;
   globalStartDate: string | null;
   globalEndDate: string | null;
   subtotal: number;
   originalSubtotal: number;
   totalSavings: number;
+  /** Informational: paid at handover, not on this page. */
   totalDeposit: number;
   totals: CheckoutTotals;
   hasDeliveryLegs: boolean;
   deliveryFee: number;
   deliveryFeeReady: boolean;
-  tulipInsurance?: CheckoutTulipInsurance;
-  tulipQuote: {
-    preview: TulipQuotePreview;
-    isLoading: boolean;
-    isFetched: boolean;
-    appliedAmount: number;
-  };
-  tulipInsuranceOptIn: boolean;
   lineResolutions: Record<string, LineResolutionState>;
   promo: ValidatedPromo | null;
   discountAmount: number;
@@ -87,9 +70,12 @@ const SummaryRow = ({
   </div>
 );
 
+/**
+ * What the manager reads back on the phone: the units, the dates and an
+ * estimated rental price. Nothing here is charged.
+ */
 export const CheckoutOrderSummary = ({
   items,
-  reservationMode,
   taxSettings,
   globalStartDate,
   globalEndDate,
@@ -101,9 +87,6 @@ export const CheckoutOrderSummary = ({
   hasDeliveryLegs,
   deliveryFee,
   deliveryFeeReady,
-  tulipInsurance,
-  tulipQuote,
-  tulipInsuranceOptIn,
   lineResolutions,
   promo,
   discountAmount,
@@ -116,23 +99,6 @@ export const CheckoutOrderSummary = ({
   const { intl: formatLocale } = useFormatLocale();
   const isDiscountVisible = useDiscountVisibility();
 
-  const insuranceState = getCheckoutInsuranceState({
-    mode: tulipInsurance?.enabled ? tulipInsurance.mode : "no_public",
-    preview: tulipQuote.preview,
-    isLoading: tulipQuote.isLoading,
-    isFetched: tulipQuote.isFetched,
-    checked: tulipInsuranceOptIn,
-  });
-  const showInsurance = insuranceState !== "hidden";
-  const showInsuranceLine = showInsurance && insuranceState !== "loading";
-  const isCoverApplied = insuranceState === "included" || insuranceState === "selected";
-  const insuranceValue = (() => {
-    if (insuranceState === "unavailable") return t("insuranceOptionalUnavailableShort");
-    if (insuranceState === "included") return t("insuranceIncluded");
-    if (tulipQuote.appliedAmount > 0) return formatMoney(tulipQuote.appliedAmount);
-    return isCoverApplied ? t("insuranceOptionalEnabled") : t("insuranceOptionalDisabled");
-  })();
-
   const orderedLines = groupCartLinesByParent(items).flatMap((group) => [
     { item: group.line, parentName: undefined },
     ...group.children.map((child) => ({ item: child, parentName: group.line.productName })),
@@ -144,10 +110,10 @@ export const CheckoutOrderSummary = ({
     const { days, hours } = getDetailedDuration(globalStartDate, globalEndDate);
     const duration =
       days === 0
-        ? `${hours}h`
+        ? `${hours} ${t("hourAbbreviation")}`
         : hours === 0
-          ? `${days}${t("dayAbbreviation")}`
-          : `${days}${t("dayAbbreviation")} ${hours}h`;
+          ? `${days} ${t("dayAbbreviation")}`
+          : `${days} ${t("dayAbbreviation")} ${hours} ${t("hourAbbreviation")}`;
     return `${dateFormat.format(new Date(globalStartDate))} → ${dateFormat.format(new Date(globalEndDate))} · ${duration}`;
   })();
 
@@ -202,13 +168,7 @@ export const CheckoutOrderSummary = ({
                 containerClassName="h-12 shrink-0"
               />
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1">
-                  <p className="truncate text-sm font-medium">{item.productName}</p>
-                  {isCoverApplied &&
-                    tulipQuote.preview.insuredProductIds.includes(item.productId) && (
-                      <InsuredProductShield label={t("insuranceCoveredProductTooltip")} />
-                    )}
-                </div>
+                <p className="truncate text-sm font-medium">{item.productName}</p>
                 {attributes && Object.keys(attributes).length > 0 && (
                   <p className="truncate text-xs text-muted-foreground">
                     {Object.values(attributes).join(" · ")}
@@ -290,38 +250,17 @@ export const CheckoutOrderSummary = ({
           />
         )}
 
-        {insuranceState === "loading" && (
-          <SummaryRow
-            label={t("insuranceLineLabel")}
-            value={t("insuranceEstimating")}
-            tone="muted"
-          />
-        )}
-        {showInsuranceLine && <SummaryRow label={t("insuranceLineLabel")} value={insuranceValue} />}
-
         <Separator />
 
         <div className="flex items-baseline justify-between gap-3">
-          <span className="text-base font-medium">{t("pricing.total")}</span>
+          <span className="text-base font-medium">{t("pricing.estimate")}</span>
           <Price amount={totals.total} size="lg" tone="primary" />
         </div>
 
-        {totals.isPartialPayment && (
-          <>
-            <SummaryRow
-              label={t("toPayNow")}
-              value={<span className="font-semibold">{formatMoney(totals.amountDueNow)}</span>}
-            />
-            <p className="text-xs text-muted-foreground">
-              {t("remainingAtPickup", { amount: formatMoney(totals.remainingAmount) })}
-            </p>
-          </>
-        )}
+        <p className="text-xs text-muted-foreground">{t("pricing.estimateNote")}</p>
 
         {totalDeposit > 0 && (
-          <div className="mt-1 flex flex-col gap-1 border-t pt-2">
-            <CheckoutDeposit amount={totalDeposit} reservationMode={reservationMode} />
-          </div>
+          <SummaryRow label={t("depositAtPickup")} value={formatMoney(totalDeposit)} tone="muted" />
         )}
 
         {taxSettings?.enabled && (

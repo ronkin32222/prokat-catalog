@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl";
 import { withForm } from "@/hooks/form/form";
 import type { CompanySearchResult } from "@louez/api/adapters/company-registry";
 
-import { checkoutFormOptions, checkoutStepProps } from "../validator.checkout";
+import { checkoutStepProps } from "../validator.checkout";
+import { customerProfileFormOptions } from "../validator.customer-profile-form";
 import { CheckoutCompanySearchField } from "./checkout-company-search-field";
 
 interface CheckoutBusinessFieldsProps {
@@ -20,7 +21,7 @@ interface CheckoutBusinessFieldsProps {
  * invoice simply degrades to B2C.
  */
 export const CheckoutBusinessFields = withForm({
-  ...checkoutFormOptions,
+  ...customerProfileFormOptions,
   props: checkoutStepProps<CheckoutBusinessFieldsProps>(),
   render: ({ form, storeId, country }) => {
     const t = useTranslations("storefront.checkout");

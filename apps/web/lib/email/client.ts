@@ -22,6 +22,12 @@ export const sendEmail = async (options: SendEmailOptions) => {
   // An outbox sender may have timed out while the email was prepared (logo,
   // rendering); SMTP cannot be aborted once started, so check last.
   throwIfEffectAborted();
+  // Request-form customers without an e-mail get a placeholder `<phone>@phone.invalid`:
+  // nothing is sent there, the store still gets its own notification.
+  if (options.to.trim().toLowerCase().endsWith('@phone.invalid')) {
+    console.log('[email] placeholder recipient: an e-mail was skipped');
+    return { messageId: `placeholder-skipped-${Date.now()}`, success: true };
+  }
   return transportSendEmail(options);
 };
 

@@ -7903,7 +7903,7 @@
       "checkoutBlocked": "Прежде чем продолжить, обновите недоступные элементы."
     },
     "checkout": {
-      "title": "Завершить мое бронирование",
+      "title": "Оформление заявки",
       "paymentMode": "Заполните свои данные, чтобы продолжить оплату",
       "requestMode": "Заполните свою информацию, чтобы отправить запрос на бронирование",
       "customerInfo": "Ваша информация",
@@ -8006,11 +8006,11 @@
       "back": "Назад",
       "modify": "Редактировать",
       "firstName": "Имя",
-      "firstNamePlaceholder": "Джон",
+      "firstNamePlaceholder": "Иван",
       "lastName": "Фамилия",
       "lastNamePlaceholder": "Доу",
       "email": "электронная почта",
-      "emailPlaceholder": "john.doe@email.com",
+      "emailPlaceholder": "ivan@example.com",
       "phone": "Телефон",
       "phonePlaceholder": "+1 234 567 8900",
       "isBusinessCustomer": "Я заказываю для компании",
@@ -8045,7 +8045,7 @@
       "acceptCgv": "Я принимаю условия аренды",
       "readCgv": "Читать условия",
       "pay": "Перейти к оплате",
-      "submitRequest": "Отправить запрос",
+      "submitRequest": "Отправить заявку",
       "processing": "Обработка...",
       "emptyCart": "Ваша корзина пуста",
       "emptyCartDescription": "Добавляйте товары перед оформлением заказа",
@@ -8067,10 +8067,11 @@
         "subtotal": "Итого по аренде",
         "discount": "Скидка",
         "discountBadge": "-{percent}%",
-        "deposit": "Залог",
+        "deposit": "Залог при получении",
         "depositRefundable": "(возвратный)",
-        "total": "Итого к оплате",
-        "savingsBanner": "Вы экономите {amount} со скидкой"
+        "total": "Ориентировочная стоимость аренды",
+        "savingsBanner": "Вы экономите {amount} со скидкой",
+        "estimate": "Ориентировочная стоимость аренды"
       },
       "depositInfo": "Требуется внести залог в размере {amount}.",
       "toPayNow": "Чтобы заплатить сейчас",
@@ -8083,7 +8084,7 @@
         "confirmedDescription": "Ваш платеж принят. Вы получите электронное письмо с подтверждением.",
         "pendingTitle": "Ожидание оплаты",
         "pendingDescription": "Ваше бронирование создано и ожидает подтверждения оплаты.",
-        "reservationNumber": "Бронирование",
+        "reservationNumber": "Номер заявки",
         "dates": "Даты",
         "total": "Итого",
         "depositSaved": "Карта сохранена для депозита",
@@ -8092,7 +8093,8 @@
         "items": "Зарезервированные элементы",
         "emailSent": "Письмо с подтверждением было отправлено на адрес {email}.",
         "promoDiscount": "Промо-скидка",
-        "backToStore": "Вернуться в магазин"
+        "backToStore": "Вернуться в магазин",
+        "requestTitle": "Заявка принята"
       },
       "requestedAttributesLabel": "Запрошено",
       "resolvedAttributesLabel": "Финал",
@@ -8187,8 +8189,13 @@
       },
       "customFields": {
         "savedSummary": "Данные уже сохранены",
-        "detailsIntro": "Это поможет магазину {store} подготовить ваше оборудование."
-      }
+        "detailsIntro": "Это поможет магазину {store} подготовить ваше оборудование.",
+        "detailsTitle": "Детали по каждой единице"
+      },
+      "phoneHint": "Только российский номер, +7",
+      "emailHint": "Необязательно. Без e-mail мы свяжемся с вами по телефону.",
+      "managerCallback": "Менеджер свяжется с вами в течение 15 минут для подтверждения.",
+      "hourAbbreviation": "ч"
     },
     "confirmation": {
       "title": "Бронирование подтверждено!",

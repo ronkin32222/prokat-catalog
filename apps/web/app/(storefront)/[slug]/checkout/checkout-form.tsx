@@ -1,22 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useSearchParams } from "next/navigation";
 
-import { useStore, type DeepKeys } from "@tanstack/react-form";
-import { getCheckoutReturnHref } from "@/lib/utils/util.checkout-return";
 import { AlertCircle } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePostHog } from "posthog-js/react";
 
-import { Alert, AlertDescription, AlertTitle, Button } from "@louez/ui";
+import { Alert, AlertDescription, AlertTitle } from "@louez/ui";
 import { STORE_NOT_ACCEPTING_RESERVATIONS_ERROR } from "@louez/types";
 import type { CheckoutFieldIssue } from "@louez/validations";
 
 import { DatePickerModal } from "@/components/storefront/date-picker-modal";
 import { useCustomerFieldIssueMessage } from "@/components/storefront/customer-fields/use-customer-field-issue-message";
-import { EMPTY_CUSTOMER_PROFILE_FORM_VALUES } from "@/components/storefront/customer-fields/util.customer-profile-fields";
 import { useAnalytics } from "@/contexts/analytics-context";
 import { useCart } from "@/contexts/cart-context";
 import { useAppForm } from "@/hooks/form/form";
@@ -26,80 +23,46 @@ import {
   checkoutAnalyticsBaseProperties,
   productAnalyticsEvents,
 } from "@/lib/product-analytics/analytics-events";
+import { getCheckoutReturnHref } from "@/lib/utils/util.checkout-return";
 
+import { CheckoutEmptyCartState } from "./components/checkout-empty-cart-state";
+import { CheckoutRequestForm } from "./components/checkout-request-form";
+import { CheckoutSkeleton } from "./components/checkout-skeleton";
 import { CheckoutStorePausedDialog } from "./components/checkout-store-paused-dialog";
 import { CheckoutFormView } from "./checkout-form-view";
 
-import type {
-  CheckoutBlockedReason,
-  CheckoutFormProps,
-  CheckoutFormValues,
-  CheckoutInitialCustomer,
-  StepId,
-} from "./checkout.types";
-import { CheckoutConfirmStep } from "./components/checkout-confirm-step";
-import { CheckoutContactStep } from "./components/checkout-contact-step";
-import { CheckoutDeliveryStep } from "./components/checkout-delivery-step";
-import { CheckoutDetailsStep } from "./components/checkout-details-step";
-import { CheckoutEmptyCartState } from "./components/checkout-empty-cart-state";
-import { CheckoutSkeleton } from "./components/checkout-skeleton";
+import type { CheckoutBlockedReason, CheckoutFormProps, CheckoutFormValues } from "./checkout.types";
 import { useCheckoutAdvanceNotice } from "./hooks/use-checkout-advance-notice";
-import { useCheckoutAdvisorGate } from "./hooks/use-checkout-advisor-gate";
 import { useCheckoutCustomFields } from "./hooks/use-checkout-custom-fields";
 import { useCheckoutDelivery } from "./hooks/use-checkout-delivery";
 import { useCheckoutLineResolutions } from "./hooks/use-checkout-line-resolutions";
 import { useCheckoutPromo } from "./hooks/use-checkout-promo";
-import { useCheckoutStepFlow } from "./hooks/use-checkout-step-flow";
 import { useCheckoutSubmit } from "./hooks/use-checkout-submit";
-import { useCheckoutTulipQuote } from "./hooks/use-checkout-tulip-quote";
+import { getCheckoutFieldIssueName } from "./util.checkout-custom-fields";
+import { calculateCheckoutTotals } from "./util.checkout-totals";
 import {
-  getCheckoutFieldIssueName,
-  getCheckoutFieldNamesForStep,
-  hasCheckoutDetailsStep,
-} from "./util.checkout-custom-fields";
-import { calculateCheckoutTotals, getCheckoutSubmitLabel } from "./util.checkout-totals";
-import { type CustomerAddressPick, getPickedCoordinates } from "./util.customer-address";
-import {
+  CHECKOUT_DEFAULT_VALUES,
   checkoutFormOptions,
   createCheckoutValidator,
-  getCheckoutDefaultValues,
 } from "./validator.checkout";
-
-const NO_SAVED_VALUES: Record<string, string> = {};
-
-type CheckoutFieldName = DeepKeys<CheckoutFormValues>;
-
-const CONTACT_FIELDS: CheckoutFieldName[] = ["email", "firstName", "lastName", "phone"];
-const ADDRESS_FIELDS: CheckoutFieldName[] = ["address", "city", "postalCode"];
-const COMPANY_FIELDS: CheckoutFieldName[] = ["companyName", "companyNumber", "vatNumber"];
 
 export const CheckoutForm = ({
   storeSlug,
   storeId,
   pricingMode,
-  reservationMode,
-  requireCustomerAddress,
   taxSettings,
-  depositPercentage = 100,
   deliverySettings,
-  storeAddress,
   storeLatitude,
   storeLongitude,
   storeName,
   storeEmail,
   storePhone,
-  storeCountry,
   locations,
-  tulipInsurance,
   hasActivePromoCodes = false,
-  advisorMode,
   businessHours,
   advanceNoticeMinutes,
   minRentalMinutes,
   timezone,
-  initialCustomer,
-  initialCustomerFieldValues,
-  initialCustomerProfileValues,
 }: CheckoutFormProps) => {
   const t = useTranslations("storefront.checkout");
   const tErrors = useTranslations("errors");
@@ -125,20 +88,10 @@ export const CheckoutForm = ({
   const totalDeposit = getTotalDeposit();
   const { savings: totalSavings, originalSubtotal } = getDisplayableSavings();
 
-  const [sessionCustomer, setSessionCustomer] = useState<CheckoutInitialCustomer | null>(
-    initialCustomer,
-  );
-  // Values on file only prefill while the verified customer is the one checking out.
-  const savedCustomerFieldValues = sessionCustomer ? initialCustomerFieldValues : NO_SAVED_VALUES;
-  const savedCustomerProfileValues = sessionCustomer
-    ? initialCustomerProfileValues
-    : EMPTY_CUSTOMER_PROFILE_FORM_VALUES;
-  const [customerAddressPick, setCustomerAddressPick] = useState<CustomerAddressPick | null>(null);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const stepRef = useRef<HTMLDivElement>(null);
   const submitRef = useRef<(values: CheckoutFormValues) => Promise<void>>(async () => undefined);
 
-  const advisorGate = useCheckoutAdvisorGate(advisorMode ?? null);
   const promo = useCheckoutPromo({ items, subtotal });
   const delivery = useCheckoutDelivery({
     deliverySettings,
@@ -149,95 +102,26 @@ export const CheckoutForm = ({
     locations,
   });
   const { lineResolutions, itemsWithResolved, hasInvalidLines, hasUnresolvedLines } =
-    useCheckoutLineResolutions({
-      items,
-    });
+    useCheckoutLineResolutions({ items });
   const customFields = useCheckoutCustomFields({ items: itemsWithResolved });
   const customFieldIssueMessage = useCustomerFieldIssueMessage();
 
   const validator = useMemo(
     () =>
       createCheckoutValidator((key, params) => t(key, params), {
-        requireAddress: requireCustomerAddress,
-        country: storeCountry,
-        checkoutFields: customFields.plans,
+        fieldsPlan: customFields.plan,
         customFieldIssueMessage,
       }),
-    [customFieldIssueMessage, customFields.plans, requireCustomerAddress, storeCountry, t],
+    [customFieldIssueMessage, customFields.plan, t],
   );
 
   const form = useAppForm({
     ...checkoutFormOptions,
-    defaultValues: getCheckoutDefaultValues(
-      sessionCustomer,
-      savedCustomerFieldValues,
-      savedCustomerProfileValues,
-    ),
+    defaultValues: CHECKOUT_DEFAULT_VALUES,
     validators: { onSubmit: validator },
     onSubmit: async ({ value }) => submitRef.current(value),
   });
 
-  const values = useStore(form.store, (state) => state.values);
-  const showAddressInContact = requireCustomerAddress;
-  const checkoutFields = values.isBusinessCustomer
-    ? customFields.plans.business
-    : customFields.plans.individual;
-  const hasDetailsStep = hasCheckoutDetailsStep(checkoutFields);
-
-  const validateCurrentStep = useCallback(
-    async (step: StepId): Promise<boolean> => {
-      if (step === "confirm") return true;
-
-      const fields: CheckoutFieldName[] = [
-        ...(step === "contact" ? CONTACT_FIELDS : []),
-        ...(step === "contact" && showAddressInContact ? ADDRESS_FIELDS : []),
-        ...(step === "contact" && form.getFieldValue("isBusinessCustomer") ? COMPANY_FIELDS : []),
-        ...(step === "contact" ? getCheckoutFieldNamesForStep(checkoutFields, "contact") : []),
-        ...(step === "details" ? getCheckoutFieldNamesForStep(checkoutFields, "details") : []),
-      ];
-
-      await Promise.all(fields.map((field) => form.validateField(field, "submit")));
-      const failedFields = fields.filter(
-        (field) => (form.getFieldMeta(field)?.errors?.length ?? 0) > 0,
-      );
-
-      if (failedFields.length > 0) {
-        posthog.capture(productAnalyticsEvents.checkoutStepValidationFailed, {
-          ...checkoutAnalyticsBaseProperties,
-          store_id: storeId,
-          step,
-          failed_fields: failedFields,
-        });
-        // The first refused input can sit below the fold (the second bike's
-        // card on a phone): bring it into view. Inputs carry their field name as id.
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        document
-          .getElementById(failedFields[0] ?? "")
-          ?.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
-        return false;
-      }
-      return true;
-    },
-    [checkoutFields, form, posthog, showAddressInContact, storeId],
-  );
-
-  const stepFlow = useCheckoutStepFlow({
-    isDeliveryEnabled: delivery.isDeliveryEnabled,
-    hasDetailsStep,
-    validateCurrentStep,
-    scrollTargetRef: stepRef,
-  });
-
-  const tulipQuote = useCheckoutTulipQuote({
-    storeId,
-    tulipInsurance,
-    isActive: !isResolving && !hasUnresolvedLines && !hasInvalidLines,
-    items: itemsWithResolved,
-    startDate: globalStartDate,
-    endDate: globalEndDate,
-    values,
-    requireCustomerAddress,
-  });
 
   const advanceNotice = useCheckoutAdvanceNotice({
     startDate: globalStartDate,
@@ -251,58 +135,36 @@ export const CheckoutForm = ({
         subtotal,
         discountAmount: promo.discountAmount,
         deliveryFee: delivery.totalFee,
-        insuranceAmount: tulipQuote.appliedAmount,
-        depositPercentage,
-        reservationMode,
       }),
-    [
-      delivery.totalFee,
-      depositPercentage,
-      promo.discountAmount,
-      reservationMode,
-      subtotal,
-      tulipQuote.appliedAmount,
-    ],
+    [delivery.totalFee, promo.discountAmount, subtotal],
   );
-  const submitLabel = getCheckoutSubmitLabel(totals, reservationMode);
 
   const blockedReason: CheckoutBlockedReason | null = hasInvalidLines
     ? "lineNeedsUpdate"
     : hasUnresolvedLines || isResolving
       ? "resolving"
-      : tulipQuote.isLoading
-        ? "quoteLoading"
-        : tulipQuote.isRequiredAndFailed
-          ? "insuranceRequiredFailed"
-          : advisorGate.isRequired && !advisorGate.isValidated
-            ? "advisorRequired"
-            : advanceNotice.issue
-              ? "advanceNotice"
-              : null;
+      : advanceNotice.issue
+        ? "advanceNotice"
+        : null;
 
   const { submit, isSubmitting, serverError, clearServerError } = useCheckoutSubmit({
     storeId,
     storeSlug,
-    reservationMode,
     locale,
     items: itemsWithResolved,
     subtotal,
     totals,
     totalDeposit,
     delivery,
-    isDeliveryEnabled: delivery.isDeliveryEnabled,
-    tulipInsuranceMode: tulipQuote.mode,
-    promoCode: promo.promo?.code,
-    advisorConversationId: advisorGate.conversationId ?? undefined,
     blockedReason,
-    checkoutFields,
-    hasDetailsStep,
+    promoCode: promo.promo?.code,
+    checkoutFields: customFields.plan,
     onAdvanceNoticeRejected: advanceNotice.reportServerIssue,
     onCheckoutFieldIssues: (issues: CheckoutFieldIssue[]) => {
       // The store may have changed what it asks since the page loaded.
       customFields.refresh();
       for (const issue of issues) {
-        const name = getCheckoutFieldIssueName(issue, checkoutFields);
+        const name = getCheckoutFieldIssueName(issue, customFields.plan);
         if (!name) continue;
         const message = customFieldIssueMessage(issue.code);
         form.setFieldMeta(name, (prev) => {
@@ -330,54 +192,12 @@ export const CheckoutForm = ({
     posthog.capture(productAnalyticsEvents.checkoutStepViewed, {
       ...checkoutAnalyticsBaseProperties,
       store_id: storeId,
-      step: stepFlow.currentStep,
-      step_index: stepFlow.currentStepIndex,
-      steps_total: stepFlow.steps.length,
-      direction: stepFlow.stepDirection,
+      step: "request",
+      step_index: 0,
+      steps_total: 1,
+      direction: "forward",
     });
-    // Only re-fire when the visible step actually changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stepFlow.currentStep, posthog, storeId]);
-
-  const handleSessionCustomer = (customer: CheckoutInitialCustomer | null) => {
-    setSessionCustomer(customer);
-    setCustomerAddressPick(null);
-    form.reset(
-      customer
-        ? getCheckoutDefaultValues(
-            customer,
-            initialCustomerFieldValues,
-            initialCustomerProfileValues,
-          )
-        : getCheckoutDefaultValues(null),
-    );
-  };
-
-  const handleUseCustomerAddress = (leg: "outbound" | "return") => {
-    const legAddress = leg === "outbound" ? delivery.outboundAddress : delivery.returnAddress;
-    const coordinates = getPickedCoordinates(customerAddressPick, values);
-    if (
-      legAddress.address ||
-      !values.address ||
-      coordinates.latitude === null ||
-      coordinates.longitude === null
-    ) {
-      return;
-    }
-    const change =
-      leg === "outbound"
-        ? delivery.handleOutboundAddressChange
-        : delivery.handleReturnAddressChange;
-    change(values.address, coordinates.latitude, coordinates.longitude);
-  };
-
-  const handleFormKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
-    if (event.key !== "Enter" || stepFlow.isLastStep) return;
-    const target = event.target;
-    if (!(target instanceof HTMLInputElement) || target.getAttribute("role") === "combobox") return;
-    event.preventDefault();
-    void stepFlow.goToNextStep();
-  };
+  }, [posthog, storeId]);
 
   if (!isHydrated || resolutionStatus === "loading") {
     return <CheckoutSkeleton />;
@@ -386,24 +206,6 @@ export const CheckoutForm = ({
   if (items.length === 0) {
     return <CheckoutEmptyCartState />;
   }
-
-  const selectedPickupLocation =
-    delivery.locations.find((location) => location.id === delivery.pickupLocationId) ??
-    delivery.locations[0] ??
-    null;
-  const selectedReturnLocation =
-    delivery.locations.find((location) => location.id === delivery.returnLocationId) ??
-    selectedPickupLocation;
-  const pickupLabel =
-    delivery.outboundMethod === "address"
-      ? t("deliveryCompact")
-      : (selectedPickupLocation?.name ?? t("storeLocationFallback"));
-  const returnLabel =
-    delivery.returnMethod === "address"
-      ? t("collectionCompact")
-      : (selectedReturnLocation?.name ?? pickupLabel);
-  const logisticsLabel =
-    pickupLabel === returnLabel ? pickupLabel : `${pickupLabel} → ${returnLabel}`;
 
   const serverErrorMessage = serverError
     ? serverError.message.startsWith("errors.")
@@ -417,7 +219,6 @@ export const CheckoutForm = ({
 
   const summaryProps = {
     items: itemsWithResolved,
-    reservationMode,
     taxSettings,
     globalStartDate,
     globalEndDate,
@@ -429,9 +230,6 @@ export const CheckoutForm = ({
     hasDeliveryLegs: delivery.outboundMethod === "address" || delivery.returnMethod === "address",
     deliveryFee: delivery.totalFee,
     deliveryFeeReady: delivery.canContinue,
-    tulipInsurance,
-    tulipQuote,
-    tulipInsuranceOptIn: values.tulipInsuranceOptIn,
     lineResolutions,
     promo: promo.promo,
     discountAmount: promo.discountAmount,
@@ -441,8 +239,6 @@ export const CheckoutForm = ({
   return (
     <CheckoutFormView
       returnHref={returnHref}
-      steps={stepFlow.steps}
-      currentStep={stepFlow.currentStep}
       summaryProps={summaryProps}
       stepRef={stepRef}
       error={
@@ -452,21 +248,8 @@ export const CheckoutForm = ({
           <Alert variant="error" className="mb-4">
             <AlertCircle />
             <AlertTitle>{t("submitError.title")}</AlertTitle>
-            <AlertDescription className="flex flex-wrap items-center justify-between gap-2">
+            <AlertDescription>
               <span>{serverErrorMessage}</span>
-              {serverError.step !== stepFlow.currentStep && (
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    stepFlow.goToStep(serverError.step);
-                    clearServerError();
-                  }}
-                >
-                  {t("submitError.goToStep")}
-                </Button>
-              )}
             </AlertDescription>
           </Alert>
         )
@@ -498,79 +281,15 @@ export const CheckoutForm = ({
       }
     >
       <form.AppForm>
-        <form.Form formName="checkout" onKeyDown={handleFormKeyDown}>
-          {stepFlow.currentStep === "contact" && (
-            <CheckoutContactStep
-              form={form}
-              storeId={storeId}
-              storeCountry={storeCountry}
-              showAddressFields={showAddressInContact}
-              sessionCustomer={sessionCustomer}
-              onSessionCustomer={handleSessionCustomer}
-              addressPick={customerAddressPick}
-              onAddressPickChange={setCustomerAddressPick}
-              profileFields={checkoutFields.profileFields}
-              customerFields={checkoutFields.customerFields}
-              customerLayout={checkoutFields.customerLayout}
-              savedCustomerFieldValues={savedCustomerFieldValues}
-              savedCustomerProfileValues={savedCustomerProfileValues}
-              isCustomFieldsLoading={customFields.isLoading}
-              onContinue={stepFlow.goToNextStep}
-              stepDirection={stepFlow.stepDirection}
-            />
-          )}
-
-          {stepFlow.currentStep === "details" && (
-            <CheckoutDetailsStep
-              form={form}
-              lines={checkoutFields.lines}
-              storeName={storeName ?? ""}
-              onBack={stepFlow.goToPreviousStep}
-              onContinue={stepFlow.goToNextStep}
-              stepDirection={stepFlow.stepDirection}
-            />
-          )}
-
-          {stepFlow.currentStep === "delivery" && deliverySettings && (
-            <CheckoutDeliveryStep
-              form={form}
-              deliverySettings={deliverySettings}
-              delivery={delivery}
-              subtotal={subtotal}
-              storeAddress={storeAddress}
-              storeName={storeName}
-              storeLatitude={storeLatitude}
-              storeLongitude={storeLongitude}
-              onUseCustomerAddress={handleUseCustomerAddress}
-              onBack={stepFlow.goToPreviousStep}
-              onContinue={stepFlow.goToNextStep}
-              stepDirection={stepFlow.stepDirection}
-            />
-          )}
-
-          {stepFlow.currentStep === "confirm" && (
-            <CheckoutConfirmStep
-              form={form}
-              reservationMode={reservationMode}
-              logisticsLabel={logisticsLabel}
-              tulipInsurance={tulipInsurance}
-              tulipQuote={tulipQuote}
-              advisorGate={advisorGate}
-              promo={promo}
-              hasActivePromoCodes={hasActivePromoCodes}
-              totalDeposit={totalDeposit}
-              submitLabel={submitLabel}
-              blockedReason={blockedReason}
-              advanceNoticeIssue={advanceNotice.issue}
-              isSubmitting={isSubmitting}
-              onBack={stepFlow.goToPreviousStep}
-              onEditContact={() => stepFlow.goToStep("contact")}
-              onEditDates={() => setIsDatePickerOpen(true)}
-              detailsLines={hasDetailsStep ? checkoutFields.lines : undefined}
-              onEditDetails={() => stepFlow.goToStep("details")}
-              stepDirection={stepFlow.stepDirection}
-            />
-          )}
+        <form.Form formName="checkout">
+          <CheckoutRequestForm
+            form={form}
+            lines={customFields.plan.lines}
+            promo={promo}
+            hasActivePromoCodes={hasActivePromoCodes}
+            isSubmitting={isSubmitting}
+            isBlocked={blockedReason !== null}
+          />
         </form.Form>
       </form.AppForm>
     </CheckoutFormView>

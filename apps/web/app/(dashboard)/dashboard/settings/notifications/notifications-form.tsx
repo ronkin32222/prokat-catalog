@@ -6,7 +6,7 @@ import { type ReactNode, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { Globe, Pencil } from "lucide-react";
+import { Globe, Pencil, Send, MessageSquare } from "lucide-react";
 import { toastManager } from "@louez/ui";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@louez/ui";
 import {

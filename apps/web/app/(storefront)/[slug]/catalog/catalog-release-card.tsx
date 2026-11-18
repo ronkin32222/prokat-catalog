@@ -32,8 +32,8 @@ export const CatalogReleaseCard = ({ release, timeZone }: CatalogReleaseCardProp
   const formatMoney = useFormatMoney();
   const releaseMs = new Date(release.releaseAt).getTime();
   const href = buildProductHref(release, {
-    startDate: release.releaseAt,
-    endDate: new Date(releaseMs + DAY_MS).toISOString(),
+    startDate: new Date(Math.max(releaseMs, Date.now())).toISOString(),
+    endDate: new Date(Math.max(releaseMs, Date.now()) + DAY_MS).toISOString(),
   });
 
   return (
@@ -49,7 +49,7 @@ export const CatalogReleaseCard = ({ release, timeZone }: CatalogReleaseCardProp
         />
         <span className="absolute top-2 left-2 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-2.5 py-1 text-xs font-medium text-foreground shadow-card">
           <span aria-hidden className="size-1.5 rounded-full bg-primary" />
-          Освободится {formatReleaseDay(release.releaseAt, timeZone)}
+          {releaseMs < Date.now() ? "Ожидается возврат" : `Освободится ${formatReleaseDay(release.releaseAt, timeZone)}`}
         </span>
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">

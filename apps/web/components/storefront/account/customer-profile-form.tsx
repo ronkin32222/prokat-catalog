@@ -5,19 +5,17 @@ import { z } from "zod";
 import { CheckoutAddressFields } from "@/app/(storefront)/[slug]/checkout/components/checkout-address-fields";
 import { CheckoutBusinessFields } from "@/app/(storefront)/[slug]/checkout/components/checkout-business-fields";
 import {
-  checkoutFormOptions,
-  getCheckoutDefaultValues,
-} from "@/app/(storefront)/[slug]/checkout/validator.checkout";
+  customerProfileFormOptions,
+  getCustomerProfileDefaultValues,
+  type CustomerProfileFormState,
+} from "@/app/(storefront)/[slug]/checkout/validator.customer-profile-form";
 import { useStore } from "@/contexts/store-context";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { toastManager } from "@louez/ui";
 import { customerProfileMutations } from "@/lib/queries/customer-profile.queries";
-import type {
-  CheckoutInitialCustomer,
-  CheckoutFormValues,
-} from "@/app/(storefront)/[slug]/checkout/checkout.types";
+import type { CheckoutInitialCustomer } from "@/app/(storefront)/[slug]/checkout/util.checkout-customer";
 import type { CustomerAddressPick } from "@/app/(storefront)/[slug]/checkout/util.customer-address";
 import { useAppForm } from "@/hooks/form/form";
 import { createCustomerProfileSchema } from "@/lib/customer-auth/validator.customer-profile";
@@ -35,8 +33,8 @@ export const CustomerProfileForm = ({
   const router = useRouter();
   const { storeId } = useStore();
   const [addressPick, setAddressPick] = useState<CustomerAddressPick | null>(null);
-  const validator: z.ZodType<CheckoutFormValues, CheckoutFormValues> = z
-    .custom<CheckoutFormValues>()
+  const validator: z.ZodType<CustomerProfileFormState, CustomerProfileFormState> = z
+    .custom<CustomerProfileFormState>()
     .superRefine((value, ctx) => {
       const result = createCustomerProfileSchema(country).safeParse(value);
       if (!result.success)
@@ -62,8 +60,8 @@ export const CustomerProfileForm = ({
     },
   });
   const form = useAppForm({
-    ...checkoutFormOptions,
-    defaultValues: getCheckoutDefaultValues(initialCustomer),
+    ...customerProfileFormOptions,
+    defaultValues: getCustomerProfileDefaultValues(initialCustomer),
     validators: { onSubmit: validator },
     onSubmit: async ({ value }) => {
       await save.mutateAsync({ storeSlug, profile: value }).catch(() => undefined);

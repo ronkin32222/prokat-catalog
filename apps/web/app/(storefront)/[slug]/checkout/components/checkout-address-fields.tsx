@@ -16,7 +16,8 @@ import {
   getLocalityAfterStreetEdit,
   getPickedCoordinates,
 } from "../util.customer-address";
-import { checkoutFormOptions, checkoutStepProps } from "../validator.checkout";
+import { checkoutStepProps } from "../validator.checkout";
+import { customerProfileFormOptions } from "../validator.customer-profile-form";
 
 interface CheckoutAddressFieldsProps {
   /** The suggestion last picked, with its coordinates; kept outside the form (not submitted). */
@@ -26,7 +27,7 @@ interface CheckoutAddressFieldsProps {
 
 /** Customer address: autocomplete line, then postal code and city, filled from a picked suggestion. */
 export const CheckoutAddressFields = withForm({
-  ...checkoutFormOptions,
+  ...customerProfileFormOptions,
   props: checkoutStepProps<CheckoutAddressFieldsProps>(),
   render: ({ form, pick, onPickChange }) => {
     const t = useTranslations("storefront.checkout");

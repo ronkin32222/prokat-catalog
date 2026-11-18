@@ -8061,7 +8061,8 @@
         "items": "预约项目",
         "emailSent": "确认电子邮件已发送至 {email}",
         "promoDiscount": "促销折扣",
-        "backToStore": "返回商店"
+        "backToStore": "返回商店",
+        "requestTitle": "Request received"
       },
       "requestedAttributesLabel": "已请求",
       "resolvedAttributesLabel": "决赛",
@@ -8156,8 +8157,13 @@
       },
       "customFields": {
         "savedSummary": "已填写的信息",
-        "detailsIntro": "这些信息有助于 {store} 为您准备设备。"
-      }
+        "detailsIntro": "这些信息有助于 {store} 为您准备设备。",
+        "detailsTitle": "Details for each unit"
+      },
+      "phoneHint": "Russian numbers only, +7",
+      "emailHint": "Optional. Without an e-mail we will reach you by phone.",
+      "managerCallback": "A manager will contact you within 15 minutes to confirm.",
+      "hourAbbreviation": "h"
     },
     "confirmation": {
       "title": "预订已确认！",

@@ -23,18 +23,12 @@ import type {
   CheckoutFormValues,
   CheckoutSubmitError,
   DeliveryAddress,
-  ReservationMode,
-  TulipInsuranceMode,
 } from "../checkout.types";
 import type { CheckoutTotals } from "../util.checkout-totals";
-import { getStepForErrorKey, sanitizeTranslationParams } from "../util.checkout-steps";
+import { sanitizeTranslationParams } from "../util.checkout-steps";
 import { buildReservationPayload } from "../util.reservation-payload";
 import type { CartItem } from "@/contexts/cart-context";
-import {
-  clearPendingCheckout,
-  readPendingCheckout,
-  writePendingCheckout,
-} from "@/lib/storefront/util.pending-checkout-storage";
+import { clearPendingCheckout } from "@/lib/storefront/util.pending-checkout-storage";
 
 const ADVANCE_NOTICE_ERROR = "errors.advanceNoticeViolation";
 
@@ -50,22 +44,16 @@ interface CheckoutDeliverySelection {
 interface UseCheckoutSubmitParams {
   storeId: string;
   storeSlug: string;
-  reservationMode: ReservationMode;
   locale: Locale;
   items: CartItem[];
   subtotal: number;
   totals: CheckoutTotals;
   totalDeposit: number;
   delivery: CheckoutDeliverySelection;
-  isDeliveryEnabled: boolean;
-  tulipInsuranceMode: TulipInsuranceMode;
   promoCode?: string;
-  advisorConversationId?: string;
   blockedReason: CheckoutBlockedReason | null;
-  /** Custom fields asked for the buyer's type; lines in the order of `items`. */
+  /** Unit details this cart asks; lines in the order of `items`. */
   checkoutFields: CheckoutFieldsPlan;
-  /** The checkout has its "Détails de la location" step, where item-detail errors point. */
-  hasDetailsStep: boolean;
   onAdvanceNoticeRejected: (params: {
     advanceNoticeMinutes?: number;
     minimumStartTime?: string;
@@ -91,28 +79,21 @@ class SubmitError extends Error {
 }
 
 /**
- * Keeps the checkout pending until navigation. The destination page clears
- * the cart after a request or verified payment. A checkout sent to Stripe
- * leaves its reservation id in the browser: a second submission after the
- * customer backed out resumes that reservation instead of creating another.
+ * Sends the rental request and moves to the "Заявка принята" page, which
+ * clears the cart. Nothing is charged here: the store confirms by phone.
  */
 export const useCheckoutSubmit = ({
   storeId,
   storeSlug,
-  reservationMode,
   locale,
   items,
   subtotal,
   totals,
   totalDeposit,
   delivery,
-  isDeliveryEnabled,
-  tulipInsuranceMode,
   promoCode,
-  advisorConversationId,
   blockedReason,
   checkoutFields,
-  hasDetailsStep,
   onAdvanceNoticeRejected,
   onCheckoutFieldIssues,
 }: UseCheckoutSubmitParams) => {
@@ -128,11 +109,7 @@ export const useCheckoutSubmit = ({
         throw new SubmitError("emptyCart");
       }
       if (blockedReason) {
-        throw new SubmitError(
-          blockedReason === "advisorRequired"
-            ? "errors.advisorValidationRequired"
-            : "lineNeedsUpdate",
-        );
+        throw new SubmitError("lineNeedsUpdate");
       }
 
       const payload = buildReservationPayload({
@@ -149,10 +126,7 @@ export const useCheckoutSubmit = ({
         returnMethod: delivery.returnMethod,
         returnAddress: delivery.returnAddress,
         returnLocationId: delivery.returnLocationId,
-        tulipInsuranceMode,
         promoCode,
-        advisorConversationId,
-        resumeReservationId: readPendingCheckout(storeId),
         checkoutFields,
       });
 
@@ -177,7 +151,7 @@ export const useCheckoutSubmit = ({
           itemCount: items.length,
           subtotal,
           total: totals.total,
-          reservationMode,
+          reservationMode: "request",
         },
       });
       // Captured client-side so the PostHog funnel keeps the browser's
@@ -186,27 +160,18 @@ export const useCheckoutSubmit = ({
         ...checkoutAnalyticsBaseProperties,
         store_id: storeId,
         reservation_id: result.reservationId,
-        reservation_mode: reservationMode,
+        reservation_mode: "request",
         item_count: items.length,
         subtotal_amount_cents: Math.round(subtotal * 100),
         total_amount_cents: Math.round(totals.total * 100),
       });
 
-      if (reservationMode === "payment" && result.paymentUrl) {
-        writePendingCheckout({ storeId, reservationId: result.reservationId });
-        trackEvent({
-          eventType: "payment_initiated",
-          metadata: { reservationId: result.reservationId, amount: totals.amountDueNow },
-        });
-        window.location.assign(result.paymentUrl);
-        return;
-      }
-
       clearPendingCheckout();
-      window.location.assign(
-        result.instantAccessUrl ??
-          getUrl(`/account/reservations/${result.reservationId}?event=requested`),
-      );
+      const params = new URLSearchParams({
+        id: result.reservationId,
+        number: result.reservationNumber,
+      });
+      window.location.assign(getUrl(`/checkout/success?${params.toString()}`));
     },
     onError: (error) => {
       setIsRedirecting(false);
@@ -234,14 +199,7 @@ export const useCheckoutSubmit = ({
         failure_source: message.startsWith("errors.") ? "server" : "client_validation",
       });
 
-      setServerError({
-        message,
-        params,
-        step:
-          message === ADVANCE_NOTICE_ERROR
-            ? "confirm"
-            : getStepForErrorKey(message, isDeliveryEnabled, hasDetailsStep),
-      });
+      setServerError({ message, params });
     },
   });
 

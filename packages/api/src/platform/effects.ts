@@ -181,7 +181,7 @@ export interface ApiEffectPayloads {
    * wants it are read when it goes out.
    */
   "reservation.storeNotification": {
-    channel: "sms" | "push" | "discord";
+    channel: "sms" | "push" | "discord" | "telegram" | "max";
     /**
      * Who made the change: a status change through the API is always the
      * store's (its dashboard, assistant, API key or agent), which the owner is

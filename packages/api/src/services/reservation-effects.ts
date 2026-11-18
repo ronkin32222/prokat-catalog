@@ -114,7 +114,7 @@ const PLATFORM_KIND: Partial<
  * only for a confirmation or cancellation the customer made (admin-email.ts),
  * and a status change through the API is the store's own.
  */
-const STORE_CHANNELS = ["sms", "push", "discord"] as const;
+const STORE_CHANNELS = ["sms", "push", "discord", "telegram", "max"] as const;
 const PLATFORM_CHANNELS = ["discord", "fromhello"] as const;
 
 export function buildStatusChangeEffects(

@@ -1,15 +1,7 @@
-import type { AiAdvisorMode, BusinessHours, DeliverySettings, TaxSettings } from "@louez/types";
-import type {
-  CheckoutProfileField,
-  CustomerExtraLayoutItem,
-  CustomerFieldPublic,
-  StorefrontPromoValidateOutput,
-} from "@louez/validations";
+import type { BusinessHours, DeliverySettings, TaxSettings } from "@louez/types";
+import type { CustomerFieldPublic, StorefrontPromoValidateOutput } from "@louez/validations";
 
-import type {
-  CustomerProfileFormValues,
-  RentalUnitFormValues,
-} from "@/components/storefront/customer-fields/customer-fields.types";
+import type { RentalUnitFormValues } from "@/components/storefront/customer-fields/customer-fields.types";
 
 import type { getTulipQuotePreview } from "./actions";
 
@@ -17,23 +9,8 @@ export type { LegMethod } from "@louez/types";
 
 export type ReservationMode = "payment" | "request";
 export type TulipInsuranceMode = "required" | "optional" | "no_public";
-/** `details` ("Détails de la location") only exists when a cart line asks item-scope fields. */
-export type StepId = "contact" | "details" | "delivery" | "confirm";
-
-/** Customer fields the page prefills from a verified session. */
-export interface CheckoutInitialCustomer {
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  isBusinessCustomer: boolean;
-  companyName: string;
-  companyNumber: string;
-  vatNumber: string;
-  address: string;
-  city: string;
-  postalCode: string;
-}
+/** One page, one form: the details step is a section of it, never a separate screen. */
+export type StepId = "request";
 
 export interface CheckoutLocationOption {
   id: string | null;
@@ -56,9 +33,7 @@ export interface CheckoutFormProps {
   storeId: string;
   pricingMode: "day" | "hour" | "week";
   reservationMode: ReservationMode;
-  requireCustomerAddress: boolean;
   taxSettings?: TaxSettings;
-  depositPercentage?: number;
   deliverySettings?: DeliverySettings;
   storeAddress?: string | null;
   storeLatitude?: number | null;
@@ -67,53 +42,24 @@ export interface CheckoutFormProps {
   /** The store's public contacts, offered when the store is not taking bookings. */
   storeEmail?: string | null;
   storePhone?: string | null;
-  /** ISO-2 country of the store — drives the company-identity fields (SIREN/BCE). */
+  /** ISO-2 country of the store. */
   storeCountry: string;
   locations?: CheckoutLocationOption[];
   tulipInsurance?: CheckoutTulipInsurance;
   hasActivePromoCodes?: boolean;
-  /** AI advisor checkout participation; null when the advisor is inactive. */
-  advisorMode?: AiAdvisorMode | null;
   businessHours?: BusinessHours;
   advanceNoticeMinutes: number;
   minRentalMinutes: number;
   timezone?: string;
-  /** Verified customer session read by the page; null for a guest. */
-  initialCustomer: CheckoutInitialCustomer | null;
-  /**
-   * Custom field values the signed-in customer already has on file, for the
-   * fields a checkout may ask. Empty for a guest: an e-mail alone never
-   * reveals anyone's values.
-   */
-  initialCustomerFieldValues: Record<string, string>;
-  /**
-   * The signed-in customer's native values (birth date, source, links) for
-   * the ones a checkout may ask. Blank for a guest, same rule as above.
-   */
-  initialCustomerProfileValues: CustomerProfileFormValues;
 }
 
 export interface CheckoutFormValues {
-  email: string;
   firstName: string;
-  lastName: string;
   phone: string;
-  isBusinessCustomer: boolean;
-  companyName: string;
-  /** SIREN (FR) / BCE (BE) — optional: absent means the invoice stays B2C. */
-  companyNumber: string;
-  vatNumber: string;
-  address: string;
-  city: string;
-  postalCode: string;
   notes: string;
-  tulipInsuranceOptIn: boolean;
-  acceptCgv: boolean;
-  /** Native profile fields the store asks (birth date, source, links). */
-  profileFields: CustomerProfileFormValues;
-  /** Customer-scope custom fields the store asks, by definition id. */
-  customerFields: Record<string, string>;
-  /** "Détails de la location": one entry per rented unit, keyed by `toUnitKey(lineId, unitIndex)`. */
+  /** Optional: the request works without one, an empty value becomes a phone placeholder. */
+  email: string;
+  /** Item-scope fields: one entry per rented unit, keyed by `toUnitKey(lineId, unitIndex)`. */
   itemDetails: Record<string, RentalUnitFormValues>;
 }
 
@@ -127,20 +73,9 @@ export interface CheckoutFieldsLine {
   itemFields: CustomerFieldPublic[];
 }
 
-/** What this cart asks the customer, lines in cart order (index = the payload's `lineIndex`). */
+/** What this cart asks about its units, lines in cart order (index = the payload's `lineIndex`). */
 export interface CheckoutFieldsPlan {
-  /** Native profile fields asked (birth date, source, links). */
-  profileFields: CheckoutProfileField[];
-  customerFields: CustomerFieldPublic[];
-  /** The contact step's extra block: those native and custom fields, as the owner laid them out. */
-  customerLayout: CustomerExtraLayoutItem[];
   lines: CheckoutFieldsLine[];
-}
-
-/** The custom fields differ by buyer type (`appliesTo`); both are known up front so a switch is instant. */
-export interface CheckoutFieldsPlans {
-  individual: CheckoutFieldsPlan;
-  business: CheckoutFieldsPlan;
 }
 
 export interface DeliveryAddress {
@@ -199,6 +134,4 @@ export interface CheckoutSubmitError {
   /** Message key (`errors.*`) or a plain message. */
   message: string;
   params?: Record<string, string | number>;
-  /** Step that holds the field to fix, when known. */
-  step: StepId;
 }

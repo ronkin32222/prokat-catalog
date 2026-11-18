@@ -155,7 +155,9 @@ export const CatalogBrowser = ({
   };
 
   const hidesUnavailable = filters.availableOnly;
-  const visibleProducts = pages.products;
+  // Without chosen dates "in stock" means free right now: fully rented items live in "Скоро освобождаются".
+  const busyNowIds = new Set(releases.map((release) => release.id));
+  const visibleProducts = period ? pages.products : pages.products.filter((product) => !busyNowIds.has(product.id));
 
   const title = getCatalogTitle(filters.category, categories, {
     catalog: period ? "Доступно на выбранные даты" : "В наличии",
@@ -319,7 +321,7 @@ export const CatalogBrowser = ({
         {releases.length > 0 ? (
           <section
             aria-labelledby="catalog-releases-title"
-            className="dark flex flex-col gap-5 text-foreground"
+            className="dark flex flex-col gap-5 rounded-2xl bg-background p-6 text-foreground sm:p-8"
           >
             <div>
               <h2
