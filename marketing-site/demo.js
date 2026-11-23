@@ -1,10 +1,10 @@
 // Local-only demo: nothing leaves the browser.
 (function () {
   var products = [
-    { id: 'drill', icon: 'i-drill', name: 'Перфоратор SDS‑plus', price: 800, deposit: 3000, qty: 2 },
-    { id: 'grinder', icon: 'i-grinder', name: 'УШМ 230 мм', price: 600, deposit: 2000, qty: 3 },
-    { id: 'ladder', icon: 'i-ladder', name: 'Лестница 3×9', price: 400, deposit: 0, qty: 1 },
-    { id: 'gen', icon: 'i-gen', name: 'Генератор 3 кВт', price: 1500, deposit: 10000, qty: 1 }
+    { id: 'drill', icon: 'i-drill', name: 'Перфоратор', price: 800, deposit: 3000, qty: 2 },
+    { id: 'gen', icon: 'i-gen', name: 'Генератор', price: 1500, deposit: 10000, qty: 1 },
+    { id: 'home', icon: 'i-home', name: 'Квартира', price: 4500, deposit: 5000, qty: 1 },
+    { id: 'car', icon: 'i-car', name: 'Автомобиль', price: 3200, deposit: 10000, qty: 1 }
   ];
   var flow = {
     new: { label: 'Новая', pill: 'pill--new', next: 'Подтвердить заявку', to: 'ok', reserved: false },
