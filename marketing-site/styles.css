@@ -528,3 +528,132 @@ body{background:#fff;color:#16191e}
  .product-reveal__stage .hero__scene{height:315px}
 }
 @media(prefers-reduced-motion:reduce){.hero__art-stamp{animation:none!important}}
+
+/* V6 reference-led editorial art direction — bold equipment hero, light canvas, dramatic imagery */
+.hero.hero--impact{background:#f2f1ed;color:#111215;min-height:0;overflow:hidden;isolation:isolate}
+.hero.hero--impact:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(125deg,#fbfaf6 0%,#f1f0ed 50%,#e0e3e4 100%)}
+.impact__container{position:relative;z-index:1}
+.impact__topline{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:35px;font-size:.63rem;font-weight:800;letter-spacing:.13em;color:#5b666f}
+.impact__topline span:first-child:before{content:"";display:inline-block;background:#ec6d37;width:7px;height:7px;margin-right:12px}
+.impact__headline{margin-top:24px;position:relative;z-index:1}
+.impact__headline h1{display:flex;flex-direction:column;font:700 clamp(5rem,11.9vw,11.65rem)/.82 "Oswald",Impact,sans-serif;letter-spacing:-.055em;text-transform:uppercase;white-space:nowrap;margin:0}
+.impact__headline h1 span:nth-child(2){font-size:.775em;letter-spacing:-.045em;padding-left:.4%;margin-top:14px}
+.impact__headline h1 i{font-style:normal;color:#e76a34}
+.impact__scene{position:relative;height:485px;z-index:2;margin-top:-58px;isolation:isolate;pointer-events:none}
+.impact__machine{position:absolute;z-index:2;left:27%;width:56%;top:-10%;height:114%;transform:rotate(-4deg);filter:drop-shadow(22px 34px 30px #131e2465)}
+.impact__machine-back{position:absolute;inset:0;background:radial-gradient(ellipse at 55% 65%,#db94693f,transparent 62%);filter:blur(12px);z-index:0}
+.impact__machine>img{width:100%;height:100%;object-fit:cover;object-position:53% 55%;clip-path:polygon(10% 1%,91% 0,100% 12%,100% 85%,90% 100%,8% 99%,0 83%,0 15%);filter:grayscale(.38) saturate(.9) contrast(1.16);-webkit-mask-image:radial-gradient(ellipse 69% 75% at 50% 53%,#000 55%,transparent 98%);mask-image:radial-gradient(ellipse 69% 75% at 50% 53%,#000 55%,transparent 98%)}
+.impact__machine-shine{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(110deg,transparent 43%,#f07e3735 58%,transparent 72%);mix-blend-mode:screen;animation:impact-shine 9s ease-in-out infinite}
+@keyframes impact-shine{50%{opacity:.3;translate:4% 0}}
+.impact__scene:after{content:"";position:absolute;inset:auto -6% -20px;z-index:-1;height:75px;background:radial-gradient(ellipse at center,#0c1a2530,transparent 67%);filter:blur(16px)}
+.impact__glass{position:absolute;z-index:4;min-width:225px;background:rgba(255,255,255,.93);border:1px solid #fff;box-shadow:0 16px 45px #15232e32,0 1px 3px #19252d20;backdrop-filter:blur(12px);padding:20px}
+.impact__glass--catalog{left:1%;top:36%;transform:rotate(-7deg)}
+.impact__glass-top{font-size:.58rem;font-weight:800;letter-spacing:.12em;color:#576875;display:flex;align-items:center;gap:8px}
+.impact__glass-top b{margin-left:auto;font-size:1.1rem;color:#df743f}
+.impact__signal{width:7px;height:7px;background:#df743f;display:block;border-radius:50%}
+.impact__glass-title{font:600 1.6rem/1.1 "Oswald",sans-serif;letter-spacing:-.025em;margin-top:12px;text-transform:uppercase}
+.impact__glass-tags{display:flex;gap:5px;margin-top:16px}
+.impact__glass-tags span{font-size:.55rem;color:#53616e;border:1px solid #cfd6d8;padding:5px 6px}
+.impact__glass--dates{right:2%;top:7%;transform:rotate(7deg);min-width:174px;padding:18px}
+.impact__glass--dates small{display:block;font-size:.57rem;letter-spacing:.14em;color:#6c7880;font-weight:700}
+.impact__glass-date{display:flex;align-items:baseline;gap:8px;margin-top:8px}
+.impact__glass-date b{font:600 2.55rem "Oswald",sans-serif;letter-spacing:-.04em}
+.impact__glass-date span{font-size:.57rem;letter-spacing:.07em;font-weight:800}
+.impact__badge{display:inline-block;background:#d9e6db;color:#355e45;font-size:.56rem;padding:7px 9px;margin-top:9px;font-weight:800;letter-spacing:.04em}
+.impact__orange{position:absolute;right:6%;bottom:4%;z-index:5;width:165px;height:165px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#ffb27f,#e97235 66%,#b64b1f);box-shadow:inset 12px 12px 16px #ffffff57,inset -13px -15px 23px #9c371f55,0 25px 50px #7f4d3036;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff;transform:rotate(-11deg);animation:float 8s ease-in-out infinite}
+.impact__orange span{font-size:.57rem;letter-spacing:.13em}
+.impact__orange strong{font:600 1.55rem/1 "Oswald",sans-serif}
+.impact__orange i{font:700 1.3rem "Manrope",sans-serif;font-style:normal}
+.impact__technical{position:absolute;z-index:4;font-size:.62rem;letter-spacing:.18em;color:#5e6870;font-weight:700}
+.impact__technical--left{left:1%;bottom:13%}.impact__technical--right{right:0;top:0}
+.impact__bottom{border-top:1px solid #c8cacc;display:grid;grid-template-columns:1fr 1fr;gap:50px;padding:35px 0 40px}
+.impact__pitch h2{font:600 clamp(1.8rem,3vw,3rem)/1.06 "Oswald",sans-serif;letter-spacing:-.01em}
+.impact__pitch h2 span{color:#dc6733}
+.impact__pitch p{color:#4f5b64;font-size:.89rem;line-height:1.75;margin-top:15px;max-width:530px}
+.impact__action{padding-top:2px}
+.impact__form{border:1px solid #d3d6d8;box-shadow:5px 6px 0 #17293712;border-radius:0;max-width:none;margin:0!important;padding:6px;background:#fff}
+.impact__form input{font-size:.8rem;padding:14px 10px}
+.impact__form button{background:#e97538;color:white;border-radius:0;font-size:.67rem;letter-spacing:.03em;padding:13px 12px}
+.impact__form button:hover{background:#cb5924}
+.impact__action .fineprint{color:#6a7580;font-size:.73rem;margin-top:11px}
+.impact__action .form-feedback{color:#934725}
+.impact__demo-link{font-size:.7rem;letter-spacing:.1em;font-weight:800;display:inline-flex;gap:10px;margin-top:19px;text-decoration:none;border-bottom:1px solid #6b7780;padding-bottom:5px}
+.impact__demo-link span{color:#dd6f38}
+.impact__footerline{display:flex;gap:15px;justify-content:space-between;border-top:1px solid #d0d2d3;padding:14px 0 20px;font-size:.55rem;color:#6c757b;font-weight:800;letter-spacing:.13em}
+.impact__headline h1 span:first-child{animation:impact-type .8s cubic-bezier(.18,.82,.2,1) both}
+.impact__headline h1 span:last-child{animation:impact-type .9s .12s cubic-bezier(.18,.82,.2,1) both}
+@keyframes impact-type{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:none}}
+.impact__glass--catalog{animation:impact-card-in 1s .2s cubic-bezier(.2,.8,.2,1) both}
+.impact__glass--dates{animation:impact-card-in 1s .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes impact-card-in{from{opacity:0;translate:0 20px}to{opacity:1;translate:0 0}}
+.product-reveal{background:linear-gradient(125deg,#101a26,#162e43);padding-block:110px}
+.product-reveal__intro h2{font-size:clamp(2.8rem,5.7vw,6.4rem)}
+.industries .industry__text h3{font:600 clamp(1.5rem,2vw,2.1rem) "Oswald",sans-serif;letter-spacing:-.012em}
+.industries .industry{transition:transform .35s,box-shadow .35s}
+.industries .industry:hover{box-shadow:14px 16px 0 #ef7a4033}
+.industries .industry__photo{position:relative}
+.industries .industry__photo:after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 60%,#101a2626)}
+.story__copy h2{font-size:clamp(3rem,5.7vw,6rem)}
+.demo-section .section-intro h2{font-size:clamp(3rem,5.8vw,6.2rem)}
+.launch__copy h2{font-size:clamp(3rem,5.3vw,5.9rem)}
+.faq-section h2{font-size:clamp(3rem,5.5vw,5.7rem)}
+.price-card__amount strong{font-size:clamp(4.5rem,6vw,7rem)}
+@media(max-width:1100px){
+.impact__headline h1{font-size:clamp(4.5rem,11vw,9rem)}
+.impact__scene{height:430px;margin-top:-30px}
+.impact__machine{left:23%;width:63%}
+.impact__glass--catalog{left:0}
+.impact__bottom{gap:30px}
+.impact__form{flex-wrap:wrap}
+.impact__form input{width:100%;flex:1 1 100%}
+.impact__form button{width:100%}
+}
+@media(max-width:760px){
+.hero.hero--impact{overflow:hidden}
+.impact__topline{padding-top:23px;font-size:.48rem;gap:15px}
+.impact__topline span:last-child{font-size:.43rem;text-align:right}
+.impact__headline{margin-top:25px}
+.impact__headline h1{font-size:clamp(3.35rem,12.3vw,6.7rem);line-height:.96;letter-spacing:-.055em}
+.impact__headline h1 span:nth-child(2){margin-top:8px;font-size:.71em}
+.impact__scene{height:385px;margin-top:10px}
+.impact__machine{width:83%;left:9%;top:0;height:99%;transform:rotate(-3deg)}
+.impact__glass{min-width:0;padding:12px}
+.impact__glass--catalog{top:31%;left:-1%;width:148px}
+.impact__glass-title{font-size:1.12rem;margin-top:8px}
+.impact__glass-top{font-size:.43rem;letter-spacing:.06em}
+.impact__glass-tags{margin-top:9px;gap:3px;flex-wrap:wrap}
+.impact__glass-tags span{font-size:.42rem;padding:3px 4px}
+.impact__glass--dates{right:-1%;top:4%;width:118px}
+.impact__glass--dates small{font-size:.4rem}
+.impact__glass-date b{font-size:1.7rem}
+.impact__glass-date span{font-size:.39rem}
+.impact__badge{font-size:.4rem;padding:5px 6px}
+.impact__orange{width:94px;height:94px;right:4%;bottom:0}
+.impact__orange strong{font-size:.96rem}
+.impact__orange span{font-size:.42rem}
+.impact__orange i{font-size:.8rem}
+.impact__technical{font-size:.43rem}
+.impact__technical--left{bottom:7%}
+.impact__bottom{grid-template-columns:1fr;padding:24px 0 28px;gap:24px}
+.impact__pitch h2{font-size:clamp(1.9rem,7.8vw,3rem)}
+.impact__pitch p{font-size:.85rem;margin-top:10px}
+.impact__action{width:100%}
+.impact__form{width:100%;margin:0!important;flex-direction:column}
+.impact__form input{min-height:46px;text-align:left}
+.impact__form button{width:100%;min-height:46px;font-size:.75rem}
+.impact__footerline{font-size:.42rem;gap:9px;line-height:1.4}
+.impact__footerline span:nth-child(2){display:none}
+.product-reveal{padding:75px 0}
+}
+@media(max-width:400px){
+.impact__headline h1{font-size:clamp(3.05rem,12vw,3.7rem)}
+.impact__scene{height:300px}
+.impact__machine{left:9%;width:82%}
+.impact__glass--catalog{width:132px;top:34%;padding:9px}
+.impact__glass--dates{width:103px;padding:9px}
+.impact__glass-title{font-size:1rem}
+.impact__orange{width:78px;height:78px}
+.impact__orange strong{font-size:.76rem}
+.impact__bottom{gap:18px}
+}
+@media(prefers-reduced-motion:reduce){.impact__headline h1 span,.impact__glass--catalog,.impact__glass--dates,.impact__machine-shine,.impact__orange{animation:none!important}}
