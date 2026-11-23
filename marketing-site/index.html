@@ -48,13 +48,23 @@
       <p class="eyebrow">Онлайн-каталог для вашего проката</p>
       <h1 class="hero__title">Весь прокат.<br><span class="accent">Одна ссылка.</span></h1>
       <p class="hero__lead">Соберу каталог по вашим объявлениям на Авито или карточке 2ГИС. Клиенты увидят инструмент, цены и свободные даты, а заявки придут вам в Telegram. Сначала покажу готовый вариант — платить нужно, только если понравится.</p>
-      <div class="hero__cta">
-        <a class="btn" href="#contact">Получить свой каталог бесплатно</a>
-        <a class="link-arrow" href="#demo">Попробовать интерактивное демо</a>
-      </div>
+      <form class="lead-form lead-form--hero" id="lead-hero" data-lead-form aria-label="Запросить бесплатный каталог">
+        <label class="sr-only" for="lead-url-hero">Ссылка на объявления Авито или карточку 2ГИС</label>
+        <input id="lead-url-hero" name="storeUrl" type="url" inputmode="url" autocomplete="url" placeholder="Ссылка на ваш Авито или 2ГИС" required>
+        <button class="btn" type="submit">Получить каталог <span aria-hidden="true">↗</span></button>
+      </form>
+      <p class="hero__form-note">Бесплатно подготовлю пример · Оплата только после просмотра</p>
+      <p class="form-feedback" id="lead-hero-feedback" role="status" aria-live="polite"></p>
+      <a class="link-arrow hero__demo-link" href="#demo">Или попробуйте интерактивное демо <span aria-hidden="true">↓</span></a>
     </div>
 
-    <div class="wrap hero__stage" aria-label="Пример витрины проката (иллюстрация)" role="img">
+    <div class="wrap hero__stage">
+      <div class="depth-object depth-object--calendar" aria-hidden="true">
+        <div class="depth-object__top"><span>Свободные даты</span><span class="depth-object__dot"></span></div>
+        <div class="depth-object__grid"><i></i><i></i><i></i><i class="active"></i><i class="active"></i><i></i><i></i><i></i><i class="active"></i><i></i><i></i><i></i></div>
+        <span class="depth-object__foot">Даты под контролем</span>
+      </div>
+      <div class="depth-object depth-object--notify" aria-hidden="true"><span class="depth-object__signal">↗</span><div><small>Telegram</small><strong>Новая заявка</strong><span>Перфоратор · 3 суток</span></div></div>
       <div class="device">
         <div class="device__bar"><i></i><i></i><i></i><span>ваш-прокат.ru</span></div>
         <div class="shop">
@@ -78,6 +88,12 @@
       </div>
     </div>
   </section>
+
+  <section class="proofbar" aria-label="Как устроен запуск"><div class="wrap proofbar__inner">
+    <div><b>01</b><span>Собираю по вашим объявлениям</span></div>
+    <div><b>02</b><span>Сначала показываю бесплатно</span></div>
+    <div><b>03</b><span>15 000 ₽ только если подходит</span></div>
+  </div></section>
 
   <!-- FEATURES (light, editorial) -->
   <section class="section" id="features">
@@ -111,7 +127,8 @@
 
   <!-- OWNER (dark, pro) -->
   <section class="dark" id="owner">
-    <div class="wrap">
+    <div class="wrap owner-scene">
+      <div class="owner-orbit" aria-hidden="true"><span class="owner-orbit__ring owner-orbit__ring--one"></span><span class="owner-orbit__ring owner-orbit__ring--two"></span><span class="owner-orbit__core">✓</span></div>
       <p class="eyebrow eyebrow--light">Для владельца</p>
       <h2 class="h2 h2--light">Заявки под контролем.</h2>
       <p class="lead lead--light">Заявка не бронирует инструмент сама. Позиция резервируется только после того, как вы подтвердите заявку.</p>
@@ -143,6 +160,8 @@
     <div class="wrap">
       <p class="eyebrow">Демо</p>
       <h2 class="h2" id="demo-title">Попробуйте сами.</h2>
+      <p class="demo-intro">Слева — то, что увидит клиент. Справа — как заявка появится у владельца. Нажмите кнопку и проследите весь путь.</p>
+      <div class="demo-guide" id="demo-guide" role="note"><span class="demo-guide__pulse" aria-hidden="true"></span><span>Шаг 1 из 3: выберите инструмент и даты</span><button type="button" id="demo-guide-dismiss" aria-label="Скрыть подсказку">×</button></div>
       <p class="demo-note" role="note"><b>Это демонстрация.</b> Работает только в вашем браузере: товары и цены условные, никакие данные никуда не отправляются.</p>
 
       <div class="demo">
@@ -239,9 +258,16 @@
   <!-- CTA -->
   <section class="dark dark--cta" id="contact">
     <div class="wrap center">
+      <div class="cta-orb" aria-hidden="true"><span></span><span></span><i></i></div>
       <h2 class="h2 h2--light">Ваш каталог —<br>сначала бесплатно.</h2>
       <p class="lead lead--light">Пришлите ссылку на ваши объявления Авито, карточку 2ГИС или список инструмента. Я подготовлю пример вашего каталога. Если понравится — подключение 15 000 ₽.</p>
-      <a class="btn" href="https://t.me/pokeroho" rel="noopener">Отправить ссылку на свой прокат</a>
+      <form class="lead-form lead-form--footer" id="lead-footer" data-lead-form aria-label="Отправить ссылку на прокат">
+        <label class="sr-only" for="lead-url-footer">Ссылка на объявления</label>
+        <input id="lead-url-footer" name="storeUrl" type="url" inputmode="url" autocomplete="url" placeholder="https://www.avito.ru/..." required>
+        <button class="btn" type="submit">Продолжить в Telegram ↗</button>
+      </form>
+      <p class="form-feedback form-feedback--dark" id="lead-footer-feedback" role="status" aria-live="polite"></p>
+      <p class="form-legal">Ссылка будет скопирована, после чего откроется чат со мной в Telegram.</p>
     </div>
   </section>
 </main>
@@ -255,5 +281,6 @@
 </footer>
 
 <script src="demo.js" defer></script>
+<script src="site.js" defer></script>
 </body>
 </html>
