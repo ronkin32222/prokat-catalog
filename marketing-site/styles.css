@@ -252,3 +252,69 @@ h1,h2,h3,.brand,.price-card__amount strong,.device__heading {font-family:"Unboun
  .demo__h{font-size:.96rem}
 }
 @media (prefers-reduced-motion:reduce){.rent-object,.scene__ring,.story__pin,.price-card__coin{animation:none!important}.js-motion [data-reveal]{opacity:1;filter:none;transform:none}}
+
+/* V4 / warm orange, deep Atlantic blue, crisp white */
+:root{--lime:#ff9664;--night:#112b48;--ink:#152942;--soft:#f6f9fb;--font:"Manrope",Arial,sans-serif}
+body{background:#fff;color:#152942}
+h1,h2,h3,.brand,.device__heading,.price-card__amount strong{font-family:"Rubik","Manrope",sans-serif;letter-spacing:-.048em}
+.brand{font-weight:700;letter-spacing:-.055em}.brand__symbol{background:#133554;color:#ffb07f}.brand__dot{color:#e98d60}
+.nav{background:rgba(255,255,255,.94);border-bottom:1px solid #0d2c4612}
+.btn{background:#173856;color:#fff}.btn:hover{background:#244a6e}
+.hero{background:radial-gradient(ellipse at 78% 43%,#285c7a 0%,#163750 43%,#102c47 78%);color:white}
+.hero h1{font-family:"Rubik","Manrope",sans-serif;font-weight:650;letter-spacing:-.057em}
+.hero h1 em{color:#ffac78}
+.hero__description{color:#d2e0e7}.hero__benefits{color:#ecf4f7}.hero__benefits i{color:#ffab7b}
+.kicker{color:#ffb182}.kicker--dark{color:#c5714d}.signal{background:#ffab76;box-shadow:0 0 0 5px #ffa66b23}
+.hero__secondary span{color:#ffb481}.hero__noise{opacity:.075}
+.lead-form{box-shadow:0 18px 50px #0b29452c}.lead-form button{background:#ff9664;color:#1c2b39}.lead-form button:hover{background:#ffad81}
+.scene__aura{background:radial-gradient(ellipse,#8bafcf99,#517d994d 40%,transparent 74%)}
+.scene__ring{border-color:#f0d3b654;box-shadow:0 0 45px #a2bdd52b}
+.scene__float{background:linear-gradient(145deg,#fff,#edf5fa);border-color:#fff;box-shadow:0 30px 55px #041a3080,0 2px 9px #09263d2e}
+.scene__device{box-shadow:0 55px 92px #061626a3,0 7px 13px #041d2b73,0 0 0 9px #ffffff18}
+.datestrip i{background:#ffccad;color:#183752}.tg-mark{background:#194364;color:#ffbd93}
+.reserve__tick{background:#ffddc7;color:#964724}.device__identity b span,.device__spark{color:#e48f60}
+.device__tabs button.is-active{background:#193b59}.device__bottom>span:last-child{background:#194365}.dot-green{background:#fa9a65}
+.rent-object{background:linear-gradient(145deg,#ffe3cc 0%,#ffa874 51%,#ca7553 100%);color:#fffaf5;box-shadow:inset -12px -15px 22px #8c3d2160,inset 7px 8px 18px #ffffffaa,0 28px 65px #061b36a6}
+.rent-object--tool{background:linear-gradient(145deg,#d9eeff,#7eb7d7 58%,#37688e)}
+.industry{box-shadow:0 14px 29px #12335011,0 2px 5px #12335008}.industry:before{background:radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%),#ffbd9042,transparent 65%)}
+.industry__text>b{color:#e98d60}
+.industries,.demo-section,.faq-section{background:#f4f8fb}
+.section-intro h2,.story h2,.launch h2,.faq-section h2{font-family:"Rubik","Manrope",sans-serif;letter-spacing:-.052em;font-weight:650}
+.soft{color:#889eaf}.kicker--dark{color:#be744d}
+.story--client{background:#f4f9fd}.story__halo{background:radial-gradient(ellipse,#d0e7f7,#e7f3fb 43%,transparent 72%)}
+.story__pin--key{background:linear-gradient(140deg,#ffeadc,#ef9870);box-shadow:inset 5px 6px 10px #ffffffaa,inset -8px -10px 17px #8c573d42,0 15px 35px #5b83a033}
+.story__pin--date{background:linear-gradient(135deg,#ffe3cf,#e79b72);color:#733e2a}
+.story-phone{border-color:#1b3954;box-shadow:0 35px 65px #153c6040,0 0 0 2px #4e7895}
+.story-phone__heading span{color:#eb9769}.story-phone__cal b.selected{background:#ffcbab}
+.story__floating-label span{background:#ffddc6;color:#8a4a29}
+.story--owner{background:radial-gradient(ellipse at 70% 47%,#275071,#102a45 72%)}
+.story--owner .soft{color:#9fb4c2}.story--owner .story__points b{background:#315574;color:#ffbe96}
+.owner-stage__glow{background:radial-gradient(ellipse,#84bddb40,transparent 70%)}
+.owner-card__icon,.owner-card__action{background:#ffb783;color:#1b3954}.owner-card__slots i.busy{background:#ffb783}
+.owner-card--front{background:#fff9f3}
+.demo-guide{background:#fff0e5;border-color:#f1d4bf;color:#83512f}.demo-guide__pulse{background:#ec8b52;box-shadow:0 0 0 5px #e9a67a30}
+.step-dot{background:#ffe5d2;color:#8b522e}.step-dot--dark{background:#ffbd8b;color:#4f332a}
+.opt input:checked+label{background:#fff1e6;border-color:#eda97b}.opt svg{stroke:#567b9c;background:#ebf4f9}
+.btn--block,.btn--dark{background:#ffb584;color:#273d4a}.btn--block:hover{background:#ffca9f}
+.stock b{color:#ffb583}
+.launch-step>span{color:#d88959}
+.launch__sheet{border-color:#dce8ef}.launch__sheet--rear span{color:#e79b72}
+.launch__sheet--front{background:linear-gradient(150deg,#245375,#102f4b)}.launch__sheet--front b{color:#ffc79d}.launch__sheet--front span{color:#e6eff6}
+.price-card{background:radial-gradient(ellipse at 78% 32%,#305f7c,#183c58 44%,#0f2945 83%)}
+.price-card__mesh{background:repeating-radial-gradient(circle at 70% 60%,transparent 0,transparent 26px,#ffd2ad18 27px,#ffd2ad18 28px)}
+.price-card__ring{border-color:#ffc99b6e}
+.price-card__coin{background:linear-gradient(140deg,#ffe6d0,#ffb47e 60%,#cf784e);color:#793c22;box-shadow:inset 6px 8px 14px #ffffff8c,inset -9px -11px 23px #934d287d,0 25px 60px #061e35a6}
+.price-card h2{font-family:"Rubik","Manrope",sans-serif}.price-card h2 span{color:#b3d5e8}.price-card__body p{color:#bfd4de}
+.btn--white{background:#ffbb8e;color:#213d53}
+.closing{background:radial-gradient(ellipse at 30% 40%,#244e71,#0e2944 73%)}
+.closing__square{border-color:#ffc49d9e;box-shadow:0 0 55px #ffb98e29,inset 0 0 35px #fff2}
+.closing__square--two{border-color:#a6d5f4a0}.closing__square--three{border-color:#ffd6b852}
+.closing__core{background:linear-gradient(140deg,#ffe2c8,#ee9a66);color:#17405d;box-shadow:0 20px 70px #ffb07d60}
+.footer{background:#0b233a}.footer .brand__symbol{color:#ffbf95}
+:focus-visible{outline-color:#e98d60}
+@media(max-width:650px){
+ .hero h1{font-family:"Rubik","Manrope",sans-serif;letter-spacing:-.052em}
+ .hero__layout{width:calc(100% - 40px)}
+ .scene__device{left:25px}
+ .section-intro h2,.story h2,.launch h2,.faq-section h2{letter-spacing:-.048em}
+}
