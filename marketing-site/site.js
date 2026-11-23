@@ -1,5 +1,17 @@
 /* UI interactions: category preview, subtle 3D pointer response, transparent lead handoff. */
 (() => {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion && 'IntersectionObserver' in window) document.documentElement.classList.add('js-motion');
+  // Spotlight hover: subtle moving light follows pointer across rental category cards.
+  if (!prefersReducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.industry').forEach(card => {
+      card.addEventListener('pointermove', event => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', ((event.clientX-rect.left)/rect.width*100).toFixed(1)+'%');
+        card.style.setProperty('--mouse-y', ((event.clientY-rect.top)/rect.height*100).toFixed(1)+'%');
+      });
+    });
+  }
   const catalogData = {
     tools: [
       { cat: 'ИНСТРУМЕНТЫ', name: 'Строительное оборудование', price: '1 500 ₽', image: 'photo-1504307651254-35680f356dfd' },
