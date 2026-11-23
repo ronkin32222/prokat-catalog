@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#112b48">
+<meta name="theme-color" content="#f3f2ef">
 <meta name="description" content="Онлайн-каталог для любого арендного бизнеса: инструмент, спецтехника, квартиры, авто и оборудование. Клиент выбирает объект и свободные даты, заявка приходит владельцу в Telegram. Первый каталог подготовим бесплатно.">
 <meta property="og:title" content="Ваша аренда — в одной ссылке">
 <meta property="og:description" content="Готовый каталог с ценами, свободными датами и заявками в Telegram. Первую версию соберём бесплатно.">
@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Rubik:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,23 +22,36 @@
 <a class="btn btn--nav" href="#contact">Собрать мой каталог <span>↗</span></a>
 </div></header>
 <main id="main">
-<section class="hero" aria-labelledby="hero-title">
-<div class="hero__noise" aria-hidden="true"></div>
+<section class="hero hero--editorial" aria-labelledby="hero-title">
+<div class="hero__gridlines" aria-hidden="true"></div>
 <div class="wrap hero__layout">
 <div class="hero__copy">
-<p class="kicker"><span class="signal"></span> ОНЛАЙН-КАТАЛОГ ДЛЯ АРЕНДНОГО БИЗНЕСА</p>
-<h1 id="hero-title">Сдаёте в аренду?<br><em>Покажите всё</em><br>одной ссылкой.</h1>
-<p class="hero__description">Каталог с вашими объектами, ценами и свободными датами. Клиент выбирает и оставляет заявку — вы получаете её в Telegram. Подходит для техники, жилья, авто и любого проката.</p>
-<div class="hero__benefits"><span><i>✓</i> Ваши объекты и цены</span><span><i>✓</i> Свободные даты</span><span><i>✓</i> Заявки в Telegram</span></div>
+<p class="kicker"><span class="signal"></span> ЦИФРОВАЯ ВИТРИНА ДЛЯ АРЕНДНОГО БИЗНЕСА <span class="kicker__number">/ 01</span></p>
+<h1 id="hero-title"><span>ВАША</span><br><em>АРЕНДА.</em><br><span class="hero__outline">ОДНА ССЫЛКА.</span></h1>
+<p class="hero__description">От инструмента до квартиры. Покажите весь ассортимент, цены и свободные даты в одной красивой витрине. Заявки приходят вам в Telegram.</p>
+<div class="hero__benefits"><span>01 / Каталог и цены</span><span>02 / Свободные даты</span><span>03 / Заявки в Telegram</span></div>
 <form id="lead-hero" class="lead-form" data-lead-form>
 <label class="sr-only" for="lead-url-hero">Ссылка на объявления или сайт вашего бизнеса</label>
-<input id="lead-url-hero" type="url" name="storeUrl" placeholder="Вставьте ссылку на свои объявления" autocomplete="url" inputmode="url" required>
-<button type="submit">Получить каталог бесплатно <span aria-hidden="true">↗</span></button>
-</form>
-<p class="fineprint">Сначала бесплатно покажу ваш каталог. Если понравится — подключение 15 000 ₽.</p>
+<input id="lead-url-hero" type="url" name="storeUrl" placeholder="Ссылка на Авито, 2ГИС или сайт" autocomplete="url" inputmode="url" required>
+<button type="submit">СОБРАТЬ МОЙ КАТАЛОГ <span aria-hidden="true">↗</span></button></form>
+<p class="fineprint">Сначала бесплатно покажу ваш каталог. Подключение — 15 000 ₽, только если понравится.</p>
 <p class="form-feedback" id="lead-hero-feedback" role="status" aria-live="polite"></p>
-<a class="hero__secondary" href="#demo">Посмотреть, как это работает <span>↓</span></a>
+<a class="hero__secondary" href="#demo">ПОСМОТРЕТЬ ДЕМО <span>↘</span></a>
 </div>
+<div class="hero__art" aria-hidden="true">
+<div class="hero__bigtype">RENT<br>EVERY<br>THING.</div>
+<div class="hero__image hero__image--back"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0?w=900&auto=format&fit=crop&q=85" alt=""></div>
+<div class="hero__image hero__image--front"><img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&auto=format&fit=crop&q=85" alt=""></div>
+<div class="hero__image hero__image--small"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=450&auto=format&fit=crop&q=85" alt=""></div>
+<div class="hero__art-stamp"><span>ВСЁ, ЧТО</span><strong>СДАЁТЕ ↗</strong><span>НА ОДНОМ ЭКРАНЕ</span></div>
+<div class="hero__art-cross hero__art-cross--a">+</div><div class="hero__art-cross hero__art-cross--b">+</div>
+<div class="hero__art-number">[ 001 — 004 ]</div>
+</div></div>
+<div class="hero__footer wrap"><span>ЛЮБАЯ КАТЕГОРИЯ АРЕНДЫ</span><span class="line"></span><span>ОДИН УДОБНЫЙ КАТАЛОГ</span><span class="line"></span><span>→</span></div>
+</section>
+<section class="product-reveal section" id="product"><div class="wrap product-reveal__intro" data-reveal>
+<p class="kicker kicker--dark">02 / ПРОДУКТ, А НЕ ОБЕЩАНИЕ</p><h2>СЛОВАМ НЕ ВЕРИТЕ?<br><span>ПОСМОТРИТЕ НА ВИТРИНУ.</span></h2><p>Переключайте категории в примере. Так может выглядеть каталог, который клиент открывает по вашей ссылке.</p></div>
+<div class="wrap product-reveal__stage">
 <div class="hero__scene" aria-label="Объёмная демонстрация аренды квартир, техники, автомобилей и инструментов">
 <div class="rent-object rent-object--key" aria-hidden="true"><span class="rent-object__shine"></span><svg viewBox="0 0 120 120"><circle cx="39" cy="37" r="20" fill="none" stroke="currentColor" stroke-width="12"/><path d="M54 52 98 96M83 81l12-12M95 93l11-11" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"/></svg></div>
 <div class="rent-object rent-object--tool" aria-hidden="true"><svg viewBox="0 0 120 120"><path d="M18 25h55l12 9v22H64l-10 45H34l9-45H18z" fill="currentColor"/><path d="M84 37h25v15H84" fill="#fff" opacity=".8"/><path d="M33 38h20" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg></div>
@@ -72,10 +85,8 @@
 </div></div>
 <div class="scene__float scene__float--reserve" aria-hidden="true"><span class="reserve__tick">✓</span><span><strong>Дата забронирована</strong><small>Без повторной брони</small></span></div>
 </div>
-</div>
-<div class="wrap hero__footer"><span>ОДНА ССЫЛКА</span><span class="line"></span><span>ЛЮБОЙ ВИД АРЕНДЫ</span><span class="line"></span><span>СМАРТФОН ВМЕСТО ТАБЛИЦ</span></div>
-</section>
 
+</div></section>
 <section class="industries section" id="who">
 <div class="wrap">
 <div class="section-intro" data-reveal><p class="kicker kicker--dark">01 / ДЛЯ КОГО</p><h2>Любая аренда.<br><span class="soft">Один понятный формат.</span></h2><p>Не нужно объяснять клиенту ассортимент в переписке. У него будет своя витрина — с вашими объектами, фотографиями и условиями.</p></div>
