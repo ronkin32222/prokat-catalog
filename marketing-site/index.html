@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101217">
+<meta name="theme-color" content="#141b31">
 <meta name="description" content="Онлайн-каталог для любого арендного бизнеса: инструмент, спецтехника, квартиры, авто и оборудование. Клиент выбирает объект и свободные даты, заявка приходит владельцу в Telegram. Первый каталог подготовим бесплатно.">
 <meta property="og:title" content="Ваша аренда — в одной ссылке">
 <meta property="og:description" content="Готовый каталог с ценами, свободными датами и заявками в Telegram. Первую версию соберём бесплатно.">
@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -28,7 +28,7 @@
 <div class="hero__copy">
 <p class="kicker"><span class="signal"></span> ОНЛАЙН-КАТАЛОГ ДЛЯ АРЕНДНОГО БИЗНЕСА</p>
 <h1 id="hero-title">Сдаёте в аренду?<br><em>Покажите всё</em><br>одной ссылкой.</h1>
-<p class="hero__description">Инструменты, техника, автомобили, квартиры — неважно что. Клиент видит ваши предложения, цены и свободные даты, выбирает нужное и отправляет заявку прямо вам.</p>
+<p class="hero__description">Каталог с вашими объектами, ценами и свободными датами. Клиент выбирает и оставляет заявку — вы получаете её в Telegram. Подходит для техники, жилья, авто и любого проката.</p>
 <div class="hero__benefits"><span><i>✓</i> Ваши объекты и цены</span><span><i>✓</i> Свободные даты</span><span><i>✓</i> Заявки в Telegram</span></div>
 <form id="lead-hero" class="lead-form" data-lead-form>
 <label class="sr-only" for="lead-url-hero">Ссылка на объявления или сайт вашего бизнеса</label>
@@ -39,8 +39,11 @@
 <p class="form-feedback" id="lead-hero-feedback" role="status" aria-live="polite"></p>
 <a class="hero__secondary" href="#demo">Посмотреть, как это работает <span>↓</span></a>
 </div>
-<div class="hero__scene" aria-label="Объёмная демонстрация каталога с разными объектами аренды">
-<div class="scene__aura" aria-hidden="true"></div>
+<div class="hero__scene" aria-label="Объёмная демонстрация аренды квартир, техники, автомобилей и инструментов">
+<div class="rent-object rent-object--key" aria-hidden="true"><span class="rent-object__shine"></span><svg viewBox="0 0 120 120"><circle cx="39" cy="37" r="20" fill="none" stroke="currentColor" stroke-width="12"/><path d="M54 52 98 96M83 81l12-12M95 93l11-11" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"/></svg></div>
+<div class="rent-object rent-object--tool" aria-hidden="true"><svg viewBox="0 0 120 120"><path d="M18 25h55l12 9v22H64l-10 45H34l9-45H18z" fill="currentColor"/><path d="M84 37h25v15H84" fill="#fff" opacity=".8"/><path d="M33 38h20" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg></div>
+<div class="rent-object rent-object--home" aria-hidden="true"><svg viewBox="0 0 120 120"><path d="M12 57 60 16l48 41v49H12z" fill="currentColor"/><rect x="49" y="68" width="23" height="38" rx="3" fill="#fff" opacity=".9"/><rect x="20" y="66" width="20" height="18" rx="3" fill="#fff" opacity=".8"/></svg></div>
+<div class="scene__aura" aria-hidden="true"></div><div class="scene__floor" aria-hidden="true"></div>
 <div class="scene__ring scene__ring--one" aria-hidden="true"></div><div class="scene__ring scene__ring--two" aria-hidden="true"></div>
 <div class="scene__float scene__float--date" aria-hidden="true"><span class="micro">КАЛЕНДАРЬ</span><strong>24 — 28 <small>ноября</small></strong><div class="datestrip"><i>24</i><i>25</i><i>26</i><i>27</i><i>28</i></div><small>Свободно ✓</small></div>
 <div class="scene__float scene__float--tg" aria-hidden="true"><b class="tg-mark">↗</b><span><small>TELEGRAM</small><strong>Новая заявка</strong><small>Даты и контакты клиента</small></span></div>
@@ -76,7 +79,7 @@
 <section class="industries section" id="who">
 <div class="wrap">
 <div class="section-intro" data-reveal><p class="kicker kicker--dark">01 / ДЛЯ КОГО</p><h2>Любая аренда.<br><span class="soft">Один понятный формат.</span></h2><p>Не нужно объяснять клиенту ассортимент в переписке. У него будет своя витрина — с вашими объектами, фотографиями и условиями.</p></div>
-<div class="industry-grid">
+<div class="industry-grid industry-grid--3d">
 <article class="industry industry--tools" data-reveal><div class="industry__photo"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&auto=format&fit=crop&q=85" alt="Аренда инструментов и оборудования" loading="lazy"></div><div class="industry__text"><span>01</span><div><h3>Инструменты</h3><p>Перфораторы, генераторы, леса и всё остальное.</p></div><b>↗</b></div></article>
 <article class="industry industry--apartments" data-reveal><div class="industry__photo"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0?w=900&auto=format&fit=crop&q=85" alt="Аренда квартир и домов" loading="lazy"></div><div class="industry__text"><span>02</span><div><h3>Квартиры и дома</h3><p>Фото, условия проживания и доступные даты.</p></div><b>↗</b></div></article>
 <article class="industry industry--cars" data-reveal><div class="industry__photo"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900&auto=format&fit=crop&q=85" alt="Аренда автомобилей" loading="lazy"></div><div class="industry__text"><span>03</span><div><h3>Автомобили</h3><p>Автопарк, тарифы и заявки на нужный период.</p></div><b>↗</b></div></article>
@@ -85,6 +88,7 @@
 </div></section>
 
 <section class="story story--client" id="how">
+<div class="story__pin story__pin--key" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="39" cy="37" r="20" fill="none" stroke="currentColor" stroke-width="12"/><path d="M54 52 98 96M83 81l12-12M95 93l11-11" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"/></svg></div>
 <div class="wrap story__layout">
 <div class="story__copy" data-reveal><p class="kicker kicker--dark">02 / ДЛЯ КЛИЕНТА</p><h2>Ссылка вместо<br><span class="soft">десятка вопросов.</span></h2><p>Клиент открывает ваш каталог, выбирает объект, сразу видит стоимость и условия аренды. Потом выбирает даты и оставляет заявку.</p><div class="story__points"><span><b>01</b> Открыл ссылку</span><span><b>02</b> Выбрал объект и даты</span><span><b>03</b> Оставил заявку</span></div></div>
 <div class="story__visual" data-reveal>
@@ -93,7 +97,7 @@
 <div class="story__floating-label"><span>✓</span> Свободные даты сразу видны</div></div>
 </div></section>
 
-<section class="story story--owner">
+<section class="story story--owner"><div class="story__pin story__pin--date" aria-hidden="true"><span>24</span><small>НОЯ</small></div>
 <div class="wrap story__layout">
 <div class="story__copy" data-reveal><p class="kicker">03 / ДЛЯ ВЛАДЕЛЬЦА</p><h2>Заявка пришла.<br><span class="soft">Вы всё видите.</span></h2><p>Новая заявка приходит в Telegram. В панели можно подтвердить бронь, отметить выдачу и возврат, чтобы доступность не устаревала.</p><div class="story__points"><span><b>01</b> Уведомление в Telegram</span><span><b>02</b> Подтверждение заявки</span><span><b>03</b> Контроль занятости</span></div></div>
 <div class="owner-stage" data-reveal><div class="owner-stage__glow"></div><div class="owner-card owner-card--back"><span>КАЛЕНДАРЬ ДОСТУПНОСТИ</span><div class="owner-card__slots"><i></i><i></i><i class="busy"></i><i class="busy"></i><i></i><i></i><i class="busy"></i></div></div><div class="owner-card owner-card--main"><div class="owner-card__head"><span class="owner-card__icon">↗</span><div><small>TELEGRAM · УВЕДОМЛЕНИЕ</small><strong>Новая заявка</strong></div><span class="live-dot"></span></div><div class="owner-card__divider"></div><h3>Аренда квартиры</h3><p>24–26 ноября · 2 ночи</p><div class="owner-card__person"><span class="avatar">А</span><span>Алексей <small>Контакт клиента в заявке</small></span></div><div class="owner-card__action">Открыть заявку ↗</div></div><div class="owner-card owner-card--front"><span class="reserve__tick">✓</span><div><strong>Бронь подтверждена</strong><small>Даты стали занятыми</small></div></div></div>
@@ -103,7 +107,7 @@
 <div class="wrap"><div class="section-intro" data-reveal><p class="kicker kicker--dark">04 / ЖИВАЯ ДЕМОНСТРАЦИЯ</p><h2>Не верьте словам.<br><span class="soft">Попробуйте сами.</span></h2><p>Слева вы — клиент, справа — владелец. Выберите объект и даты, нажмите «Отправить заявку» и посмотрите, что произойдёт.</p></div>
 <div class="demo-guide" id="demo-guide" role="note"><span class="demo-guide__pulse"></span><span>Шаг 1 из 3: выберите объект аренды и даты</span><button type="button" id="demo-guide-dismiss" aria-label="Скрыть подсказку">×</button></div>
 <p class="demo-disclaimer">Это интерактивный макет: данные не отправляются на сервер и в мессенджеры.</p>
-<div class="demo">
+<div class="demo demo--showcase">
 <div class="demo__col demo__client">
 <h3 class="demo__h"><span class="step-dot">1</span>Так видит клиент</h3>
 <fieldset class="picker"><legend>Что арендуем?</legend><div class="picker__list" id="products"></div></fieldset>
@@ -121,12 +125,12 @@
 
 <section class="launch section" id="steps"><div class="wrap launch__layout">
 <div class="launch__copy" data-reveal><p class="kicker kicker--dark">05 / ЗАПУСК ПОД КЛЮЧ</p><h2>Вам не нужно<br><span class="soft">ничего собирать.</span></h2><p>Вы отправляете ссылку на объявления или прайс. Я переношу позиции, цены и фотографии в каталог и показываю готовый вариант.</p><a class="text-link" href="#contact">Хочу увидеть свой каталог ↗</a></div>
-<div class="launch__steps" data-reveal><div class="launch-step"><span>01</span><div><h3>Присылаете объявления</h3><p>Авито, 2ГИС, сайт или список объектов — что уже есть.</p></div></div><div class="launch-step"><span>02</span><div><h3>Собираю ваш каталог</h3><p>Загружаю фото, описания, цены и условия аренды.</p></div></div><div class="launch-step"><span>03</span><div><h3>Смотрите бесплатно</h3><p>Получаете ссылку на свой вариант. Решаете, подходит ли он.</p></div></div><div class="launch-step"><span>04</span><div><h3>Подключаем за 15 000 ₽</h3><p>Если понравилось — подключаем приём заявок и передаём ссылку.</p></div></div></div>
+<div class="launch__steps" data-reveal><div class="launch__visual" aria-hidden="true"><div class="launch__sheet launch__sheet--rear">ВАШИ ОБЪЯВЛЕНИЯ<span>01 / СПИСОК</span></div><div class="launch__sheet launch__sheet--front"><b>ГОТОВЫЙ КАТАЛОГ</b><span>✓ Ссылка для клиентов</span><span>✓ Свободные даты</span><span>✓ Заявки в Telegram</span></div></div><div class="launch-step"><span>01</span><div><h3>Присылаете объявления</h3><p>Авито, 2ГИС, сайт или список объектов — что уже есть.</p></div></div><div class="launch-step"><span>02</span><div><h3>Собираю ваш каталог</h3><p>Загружаю фото, описания, цены и условия аренды.</p></div></div><div class="launch-step"><span>03</span><div><h3>Смотрите бесплатно</h3><p>Получаете ссылку на свой вариант. Решаете, подходит ли он.</p></div></div><div class="launch-step"><span>04</span><div><h3>Подключаем за 15 000 ₽</h3><p>Если понравилось — подключаем приём заявок и передаём ссылку.</p></div></div></div>
 </div></section>
 
 <section class="price-section" id="price"><div class="wrap price-card" data-reveal>
-<div class="price-card__mesh" aria-hidden="true"></div><div class="price-card__ring" aria-hidden="true"></div>
-<p class="kicker">ПРОСТОЕ ПРЕДЛОЖЕНИЕ</p><div class="price-card__body"><div><h2>Сначала посмотрите.<br><span>Потом решайте.</span></h2><p>Готовлю предварительный вариант вашего каталога бесплатно. Если понравится и захотите пользоваться — подключение за фиксированную стоимость.</p><a href="#contact" class="btn btn--white">Получить свой каталог ↗</a></div><div class="price-card__amount"><small>ПОДКЛЮЧЕНИЕ</small><strong>15 000<span> ₽</span></strong><small>Оплата после решения подключиться</small></div></div>
+<div class="price-card__mesh" aria-hidden="true"></div><div class="price-card__ring" aria-hidden="true"></div><div class="price-card__coin" aria-hidden="true"><span>₽</span></div>
+<p class="kicker">ПРОСТОЕ ПРЕДЛОЖЕНИЕ</p><div class="price-card__body"><div><h2>Сначала свой каталог.<br><span>Потом решение.</span></h2><p>Готовлю предварительный вариант вашего каталога бесплатно. Если понравится и захотите пользоваться — подключение за фиксированную стоимость.</p><a href="#contact" class="btn btn--white">Получить свой каталог ↗</a></div><div class="price-card__amount"><small>ПОДКЛЮЧЕНИЕ</small><strong>15 000<span> ₽</span></strong><small>Оплата после решения подключиться</small></div></div>
 </div></section>
 
 <section class="faq-section section" id="faq"><div class="wrap faq__layout"><div><p class="kicker kicker--dark">КОРОТКО О ГЛАВНОМ</p><h2>Вопросы,<br>которые важны.</h2></div><div class="faq">
@@ -138,7 +142,7 @@
 <details><summary>Есть ли абонентская плата?</summary><p>15 000 ₽ — цена подключения. Условия размещения, поддержки и возможные дальнейшие расходы согласуем до оплаты.</p></details>
 </div></div></section>
 
-<section class="closing" id="contact"><div class="wrap closing__layout"><div class="closing__object" aria-hidden="true"><div class="closing__square closing__square--one"></div><div class="closing__square closing__square--two"></div><div class="closing__square closing__square--three"></div><div class="closing__core">↗</div></div><div class="closing__copy"><p class="kicker">ВАШ СЛЕДУЮЩИЙ ШАГ</p><h2>Покажите, что сдаёте.<br><span>Я покажу, как это продавать удобнее.</span></h2><p>Оставьте ссылку на ваши объявления — соберу пример каталога. Никакой оплаты до просмотра.</p><form class="lead-form lead-form--footer" id="lead-footer" data-lead-form><label class="sr-only" for="lead-url-footer">Ссылка на объявления</label><input id="lead-url-footer" name="storeUrl" type="url" autocomplete="url" inputmode="url" placeholder="Ссылка на объявления или ваш сайт" required><button type="submit">Отправить ссылку ↗</button></form><p class="form-feedback" id="lead-footer-feedback" role="status" aria-live="polite"></p><p class="closing__hint">Откроется Telegram. Текст сообщения скопируется — останется вставить и отправить.</p></div></div></section>
+<section class="closing" id="contact"><div class="wrap closing__layout"><div class="closing__object" aria-hidden="true"><div class="closing__square closing__square--one"></div><div class="closing__square closing__square--two"></div><div class="closing__square closing__square--three"></div><div class="closing__core">↗</div></div><div class="closing__copy"><p class="kicker">ВАШ СЛЕДУЮЩИЙ ШАГ</p><h2>Покажите, что сдаёте.<br><span>Я соберу удобный каталог.</span></h2><p>Оставьте ссылку на ваши объявления — соберу пример каталога. Никакой оплаты до просмотра.</p><form class="lead-form lead-form--footer" id="lead-footer" data-lead-form><label class="sr-only" for="lead-url-footer">Ссылка на объявления</label><input id="lead-url-footer" name="storeUrl" type="url" autocomplete="url" inputmode="url" placeholder="Ссылка на объявления или ваш сайт" required><button type="submit">Отправить ссылку ↗</button></form><p class="form-feedback" id="lead-footer-feedback" role="status" aria-live="polite"></p><p class="closing__hint">Откроется Telegram. Текст сообщения скопируется — останется вставить и отправить.</p></div></div></section>
 </main>
 <footer class="footer"><div class="wrap footer__layout"><a class="brand" href="#top"><span class="brand__symbol">↗</span><span>аренда<span class="brand__dot">.</span>ссылка</span></a><p>Интерактивные примеры и изображения на странице иллюстративные, не отзывы клиентов.</p><p>Основано на открытом проекте <a href="https://github.com/ronkin32222/prokat-catalog" target="_blank" rel="noopener">Louez (AGPL-3.0)</a>.</p></div></footer>
 <svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
