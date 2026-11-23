@@ -21,6 +21,7 @@
 - **Booqable** — более широкая система с конструктором сайта, онлайн-оплатой, документами, аналитикой и учётом. Хороший референс демонстрации: сначала показать арендатора, затем объяснить работу владельца. [Booqable](https://booqable.com/) · [Путь арендатора в видео](https://www.youtube.com/watch?v=OgMlGgG08Pg)
 - **Flathead Equipment** — небольшой прокат прицепов, который в кейсе Booqable показывает, как открытый календарь помогает клиентам заранее видеть доступные даты и условия. Для своего продукта используй похожий порядок показа и собственное правило подтверждения заявки. [Кейс Flathead Equipment](https://booqable.com/customer-stories/flathead-equipment/)
 - **Два визуальных референса**. У MacBook Air — короткий заголовок, свободное пространство и большой кадр продукта. У MacBook Pro — тёмные секции и последовательный показ возможностей. Для каталога выбрана своя графика про инструмент и отдельные экраны арендатора и владельца. [MacBook Air](https://www.apple.com/macbook-air/) · [MacBook Pro](https://www.apple.com/macbook-pro/)
+- **21st.dev**. Product Spotlight Hero подсказывает вынести продукт рядом с основным обещанием. Feature Bento показывает, как разложить возможности по компактным карточкам. Для каталога в центре внимания остаются три знакомых действия: выбрать инструмент, оставить заявку и подтвердить её. [Product Spotlight Hero](https://21st.dev/community/components/chow-stack/product-spotlight-hero-section/default) · [Feature Bento](https://dev.21st.dev/%40uilayout.contact/components/feature-bento)
 
 ## Размещение и отправка клиентам
 
