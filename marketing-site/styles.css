@@ -256,3 +256,4 @@ button, input { font: inherit; }
   .device { max-width: 860px; transform: translateX(-70px); }
   .phone { right: 0; }
 }
+.center .lead { margin-inline: auto; }
