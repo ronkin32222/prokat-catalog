@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Прокат-каталог — витрина для проката инструмента</title>
+  <meta name="description" content="Соберём витрину вашего проката по прайсу и дадим ссылку для клиентов. Заявки на даты без регистрации и онлайн-оплаты, подтверждение владельцем, выдача и возврат.">
+  <meta name="theme-color" content="#16181b">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff6a13'/%3E%3Cpath d='M9 22V10h8a5 5 0 0 1 0 10h-8' fill='none' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-drill" viewBox="0 0 64 64"><path d="M8 20h30l7 6v8l-7 6H27l-4 14H12l4-14H8z"/><path d="M45 30h13M16 26h14"/></symbol>
+  <symbol id="i-grinder" viewBox="0 0 64 64"><circle cx="20" cy="38" r="13"/><path d="M9 30a13 13 0 0 1 22 0"/><rect x="27" y="22" width="31" height="12" rx="6"/><path d="M20 38h.01M40 34v8"/></symbol>
+  <symbol id="i-ladder" viewBox="0 0 64 64"><path d="M20 6 12 58M44 6l8 52M18 16h28M16 28h32M14.5 40h35M13 52h38"/></symbol>
+  <symbol id="i-gen" viewBox="0 0 64 64"><rect x="8" y="14" width="48" height="32" rx="4"/><rect x="16" y="21" width="20" height="14" rx="2"/><path d="M44 22v12M8 14l6-6h36l6 6"/><circle cx="16" cy="52" r="4"/><circle cx="48" cy="52" r="4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+</svg>
+
+<a class="skip" href="#main">К содержанию</a>
+
+<header class="nav" id="top">
+  <div class="wrap nav__inner">
+    <a class="brand" href="#top" aria-label="Прокат-каталог, в начало">
+      <span class="brand__mark" aria-hidden="true">П</span>
+      <span>Прокат-каталог</span>
+    </a>
+    <nav aria-label="Разделы">
+      <ul class="nav__links">
+        <li><a href="#features">Возможности</a></li>
+        <li><a href="#owner">Для владельца</a></li>
+        <li><a href="#steps">Запуск</a></li>
+        <li><a href="#faq">Вопросы</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn--small" href="#demo">Открыть демо</a>
+  </div>
+</header>
+
+<main id="main">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Для небольших прокатов инструмента</p>
+      <h1 class="hero__title">Ваш прокат.<br><span class="accent">По одной ссылке.</span></h1>
+      <p class="hero__lead">Соберём витрину вашего проката по прайсу и дадим ссылку для клиентов. Они выбирают инструмент и даты, вы подтверждаете заявку.</p>
+      <div class="hero__cta">
+        <a class="btn" href="#demo">Попробовать демо</a>
+        <a class="link-arrow" href="#steps">Как проходит запуск</a>
+      </div>
+    </div>
+
+    <div class="wrap hero__stage" aria-label="Пример витрины проката (иллюстрация)" role="img">
+      <div class="device">
+        <div class="device__bar"><i></i><i></i><i></i><span>ваш-прокат.ru</span></div>
+        <div class="shop">
+          <div class="shop__head">
+            <span class="shop__logo">ИНСТРУМЕНТ<b>·</b>ПРОКАТ</span>
+            <span class="shop__tag">пример витрины</span>
+          </div>
+          <div class="shop__chips"><span class="on">Все</span><span>Электроинструмент</span><span>Леса и лестницы</span><span>Генераторы</span></div>
+          <div class="shop__grid">
+            <article class="pcard"><svg class="pcard__ic"><use href="#i-drill"/></svg><h3>Перфоратор SDS‑plus</h3><p class="pcard__price">800 ₽ <small>/ сутки</small></p><p class="pcard__dep">Залог 3 000 ₽</p><span class="pcard__btn">Выбрать даты</span></article>
+            <article class="pcard"><svg class="pcard__ic"><use href="#i-grinder"/></svg><h3>УШМ 230 мм</h3><p class="pcard__price">600 ₽ <small>/ сутки</small></p><p class="pcard__dep">Залог 2 000 ₽</p><span class="pcard__btn">Выбрать даты</span></article>
+            <article class="pcard"><svg class="pcard__ic"><use href="#i-ladder"/></svg><h3>Лестница 3×9</h3><p class="pcard__price">400 ₽ <small>/ сутки</small></p><p class="pcard__dep">Без залога</p><span class="pcard__btn">Выбрать даты</span></article>
+            <article class="pcard"><svg class="pcard__ic"><use href="#i-gen"/></svg><h3>Генератор 3 кВт</h3><p class="pcard__price">1 500 ₽ <small>/ сутки</small></p><p class="pcard__dep">Залог 10 000 ₽</p><span class="pcard__btn">Выбрать даты</span></article>
+          </div>
+        </div>
+      </div>
+      <div class="phone" aria-hidden="true">
+        <div class="phone__notch"></div>
+        <p class="phone__app">Telegram · бот проката</p>
+        <div class="bubble"><b>Новая заявка</b><br>Перфоратор SDS‑plus<br>24–26 ноября · 1 600 ₽<br><span class="bubble__link">Открыть заявку →</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES (light, editorial) -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <p class="eyebrow">Возможности</p>
+      <h2 class="h2">Всё, что нужно прокату.<br><span class="muted">Ничего лишнего.</span></h2>
+      <div class="features">
+        <article class="feat feat--wide">
+          <h3>Витрина на русском</h3>
+          <p>Каталог с категориями, фото и описаниями. Клиент открывает ссылку с телефона и сразу видит, что можно взять.</p>
+        </article>
+        <article class="feat">
+          <h3>Импорт из таблицы</h3>
+          <p>Прайс загружается в каталог файлом CSV или XLSX. Из Google Таблиц его можно скачать в любом из этих форматов, по готовому шаблону.</p>
+        </article>
+        <article class="feat">
+          <h3>Ваш бренд</h3>
+          <p>Название, логотип и цвета проката. Есть готовые шаблоны оформления для разных видов аренды.</p>
+        </article>
+        <article class="feat">
+          <h3>Цена и залог в карточке</h3>
+          <p>Стоимость за сутки и залог, если вы его указали. Клиент видит условия до заявки.</p>
+        </article>
+        <article class="feat feat--wide feat--accent">
+          <h3>Заявка на даты без регистрации и предоплаты</h3>
+          <p>Клиент выбирает даты и оставляет заявку. Аккаунт не нужен, онлайн-оплаты на сайте нет: расчёт при выдаче, как вы привыкли.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- OWNER (dark, pro) -->
+  <section class="dark" id="owner">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light">Для владельца</p>
+      <h2 class="h2 h2--light">Решение всегда за вами.</h2>
+      <p class="lead lead--light">Заявка не бронирует инструмент сама. Позиция резервируется только после того, как вы подтвердите заявку.</p>
+
+      <div class="panel" role="img" aria-label="Пример панели владельца: список заявок со статусами">
+        <div class="panel__side">
+          <span class="panel__logo">ИНСТРУМЕНТ·ПРОКАТ</span>
+          <span class="on">Заявки</span><span>Каталог</span><span>Календарь</span><span>Аналитика</span><span>Настройки</span>
+        </div>
+        <div class="panel__main">
+          <div class="panel__head"><b>Заявки</b><span>пример данных</span></div>
+          <div class="row"><span class="row__t">Перфоратор SDS‑plus</span><span class="row__d">24–26 нояб.</span><span class="pill pill--new">Новая</span></div>
+          <div class="row"><span class="row__t">Генератор 3 кВт</span><span class="row__d">25–27 нояб.</span><span class="pill pill--ok">Подтверждена</span></div>
+          <div class="row"><span class="row__t">УШМ 230 мм</span><span class="row__d">22–24 нояб.</span><span class="pill pill--out">Выдана</span></div>
+          <div class="row"><span class="row__t">Лестница 3×9</span><span class="row__d">20–21 нояб.</span><span class="pill pill--back">Возвращена</span></div>
+        </div>
+      </div>
+
+      <div class="trio">
+        <div><h3>Панель заявок</h3><p>Новые, подтверждённые, выданные и возвращённые заявки в одном списке.</p></div>
+        <div><h3>Выдача и возврат</h3><p>Отмечайте, когда инструмент ушёл к клиенту и когда вернулся.</p></div>
+        <div><h3>Telegram и MAX</h3><p>Уведомление о новой заявке приходит в мессенджер, если вы его подключили.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO -->
+  <section class="section section--tint" id="demo" aria-labelledby="demo-title">
+    <div class="wrap">
+      <p class="eyebrow">Демо</p>
+      <h2 class="h2" id="demo-title">Пройдите путь заявки.</h2>
+      <p class="demo-note" role="note"><b>Это демонстрация.</b> Работает только в вашем браузере: товары и цены условные, никакие данные никуда не отправляются.</p>
+
+      <div class="demo">
+        <div class="demo__col demo__client">
+          <h3 class="demo__h"><span class="step-dot">1</span>Клиент на витрине</h3>
+          <fieldset class="picker">
+            <legend>Инструмент</legend>
+            <div class="picker__list" id="products"></div>
+          </fieldset>
+          <div class="dates">
+            <label>С<input type="date" id="d-from"></label>
+            <label>По<input type="date" id="d-to"></label>
+          </div>
+          <div class="sum" aria-live="polite" id="sum"></div>
+          <button class="btn btn--block" id="send" type="button">Отправить заявку</button>
+          <p class="demo__hint">Без аккаунта и без оплаты онлайн.</p>
+        </div>
+
+        <div class="demo__col demo__owner">
+          <h3 class="demo__h"><span class="step-dot step-dot--dark">2</span>Владелец проката</h3>
+          <div class="notify" id="notify" hidden>
+            <span class="notify__app">Уведомление в Telegram / MAX</span>
+            <p id="notify-text"></p>
+          </div>
+          <div class="order" id="order">
+            <p class="order__empty" id="order-empty">Заявок пока нет. Отправьте заявку слева.</p>
+            <div id="order-body" hidden>
+              <div class="order__top"><b id="o-title"></b><span class="pill" id="o-status"></span></div>
+              <p class="order__meta" id="o-meta"></p>
+              <ol class="track" id="track">
+                <li data-s="new">Новая</li><li data-s="ok">Подтверждена</li><li data-s="out">Выдана</li><li data-s="back">Возвращена</li>
+              </ol>
+              <div class="order__actions">
+                <button class="btn btn--dark" id="o-next" type="button"></button>
+                <button class="btn btn--ghost" id="o-reset" type="button">Начать заново</button>
+              </div>
+            </div>
+          </div>
+          <div class="stock">
+            <span>Свободно на эти даты:</span>
+            <b id="stock" aria-live="polite"></b>
+          </div>
+          <p class="demo__hint" id="stock-hint">Инструмент резервируется только после подтверждения.</p>
+        </div>
+      </div>
+      <p class="sr-only" aria-live="polite" id="demo-live"></p>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="section" id="steps">
+    <div class="wrap">
+      <p class="eyebrow">Запуск</p>
+      <h2 class="h2">От прайса до первой заявки.</h2>
+      <ol class="steps">
+        <li><span>1</span><h3>Присылаете прайс</h3><p>Таблицу или список позиций с ценами и залогами, фото, если есть.</p></li>
+        <li><span>2</span><h3>Собираем витрину</h3><p>Загружаем каталог из CSV или XLSX, подбираем шаблон, ставим ваш логотип и цвета.</p></li>
+        <li><span>3</span><h3>Подключаем уведомления</h3><p>Telegram или MAX, чтобы новые заявки не терялись.</p></li>
+        <li><span>4</span><h3>Отдаём ссылку</h3><p>Размещаете её в мессенджерах, на объявлениях и в профилях.</p></li>
+        <li><span>5</span><h3>Работаете с заявками</h3><p>Подтверждаете, выдаёте и принимаете инструмент в панели.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PRICE -->
+  <section class="section section--tint">
+    <div class="wrap price">
+      <div>
+        <p class="eyebrow">Стоимость</p>
+        <h2 class="h2">Цена — по договорённости.</h2>
+      </div>
+      <p class="lead">Зависит от размера каталога и того, сколько нужно настроить. Мы не публикуем выдуманных тарифов: обсуждаем задачу и называем стоимость до начала работы.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="wrap wrap--narrow">
+      <p class="eyebrow">Вопросы</p>
+      <h2 class="h2">Честно о главном.</h2>
+      <div class="faq">
+        <details><summary>Клиенту нужно регистрироваться?</summary><p>Нет. Клиент выбирает инструмент и даты и оставляет заявку без создания аккаунта.</p></details>
+        <details><summary>Можно принимать оплату на сайте?</summary><p>Нет, онлайн-оплаты на витрине нет. Расчёт и залог вы принимаете при выдаче так, как привыкли.</p></details>
+        <details><summary>Инструмент бронируется сразу после заявки?</summary><p>Нет. Заявка ждёт вашего решения, и позиция резервируется только после подтверждения.</p></details>
+        <details><summary>Можно перенести каталог с Авито автоматически?</summary><p>Автоматического переноса с Авито нет. Каталог загружается из таблицы: файлы CSV и XLSX по шаблону. Прайс из Excel или Google Таблиц достаточно сохранить в одном из этих форматов.</p></details>
+        <details><summary>Куда приходят уведомления о заявках?</summary><p>В Telegram или MAX, если вы подключили их в настройках. Все заявки также видны в панели.</p></details>
+        <details><summary>Залог обязателен?</summary><p>Нет. Залог показывается в карточке только у тех позиций, где вы его указали.</p></details>
+        <details><summary>Сколько стоит?</summary><p>Стоимость обсуждается индивидуально и зависит от объёма каталога и настройки.</p></details>
+        <details><summary>Код открыт?</summary><p>Да. Исходный код опубликован на GitHub, ссылка внизу страницы.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="dark dark--cta">
+    <div class="wrap center">
+      <h2 class="h2 h2--light">Посмотрите, как это будет<br>у вашего проката.</h2>
+      <a class="btn" href="#demo">Открыть демо</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__inner">
+    <span class="brand brand--foot"><span class="brand__mark" aria-hidden="true">П</span>Прокат-каталог</span>
+    <p>Исходный код: <a href="https://github.com/ronkin32222/prokat-catalog" rel="noopener">github.com/ronkin32222/prokat-catalog</a>. Основан на открытом проекте Louez (лицензия AGPL-3.0).</p>
+    <p class="foot__small">Иллюстрации и данные в демо условные.</p>
+  </div>
+</footer>
+
+<script src="demo.js" defer></script>
+</body>
+</html>
