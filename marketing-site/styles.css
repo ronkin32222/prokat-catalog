@@ -257,3 +257,122 @@ button, input { font: inherit; }
   .phone { right: 0; }
 }
 .center .lead { margin-inline: auto; }
+
+/* Editorial redesign — restrained cinematic product presentation */
+:root {
+ --orange:#0066cc; --orange-ink:#0066cc; --graphite:#0a0a0b;
+ --graphite-2:#171719; --graphite-3:#29292d; --ink:#101013;
+ --muted:#77777e; --line:#e8e8ed; --tint:#f5f5f7;
+ --radius:28px; --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Onest","Helvetica Neue",Arial,sans-serif;
+}
+body { letter-spacing:-.012em; background:#fff; }
+.wrap { width:min(1160px,calc(100% - 48px)); }
+.nav { background:rgba(252,252,253,.84); border-color:rgba(0,0,0,.035); }
+.nav__inner { height:58px; }
+.brand { font-size:.91rem; letter-spacing:-.04em; font-weight:700; }
+.brand__mark { background:#111; color:white; width:27px;height:27px;border-radius:9px;font-size:.8rem; }
+.nav__links { gap:30px;font-size:.83rem;letter-spacing:0; }
+.nav__links a { color:#65656c; }
+.btn { background:#111114; color:white; font-size:.96rem; font-weight:600; padding:0 27px; min-height:49px; box-shadow:none; }
+.btn:hover { background:#303035; }
+.btn--small { min-height:34px;padding:0 17px;font-size:.79rem; }
+.btn--dark, .demo__owner .btn--dark { background:#fff;color:#111; }
+.btn--dark:hover, .demo__owner .btn--dark:hover { background:#e7e7ea;color:#111; }
+.link-arrow { color:#3a3a40;font-size:.92rem;font-weight:500; }
+.eyebrow { color:#74747c; font-size:.78rem; font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:22px; }
+.eyebrow--light { color:#a2a2ab; }
+.accent { color:#777780; }
+.h2 { font-size:clamp(2.5rem,5.4vw,4.5rem); font-weight:700; letter-spacing:-.062em; line-height:1.07; }
+.h2--light { color:#f8f8fb; }
+.lead { line-height:1.55;letter-spacing:-.025em; }
+.hero { padding:clamp(74px,8vw,124px) 0 0; background:radial-gradient(ellipse at 50% 88%,#e9eaed 0%,#f5f5f7 42%,#fff 78%); }
+.hero .eyebrow { color:#787880;margin-bottom:24px; }
+.hero__title {font-size:clamp(3.25rem,8.7vw,7.8rem); font-weight:700; letter-spacing:-.079em;line-height:.97; }
+.hero__lead { max-width:620px;margin:30px auto 0; font-size:clamp(1rem,1.75vw,1.28rem);line-height:1.56;letter-spacing:-.025em;color:#696971; }
+.hero__cta {margin-top:30px;gap:18px 28px; }
+.hero__stage {margin-top:clamp(64px,7.5vw,104px);padding-bottom:100px;perspective:1400px; }
+.device { max-width:1010px;border:1px solid rgba(0,0,0,.07);border-radius:17px;box-shadow:0 2px 4px rgba(0,0,0,.025),0 24px 38px -14px rgba(0,0,0,.16),0 75px 110px -55px rgba(0,0,0,.3); }
+.device__bar {background:#fafafa;height:38px;border-color:#ebebef; }
+.device__bar i {width:9px;height:9px;background:#dedee2; }
+.device__bar span {margin-inline:auto;background:#f0f0f2;font-size:.67rem;padding:3px 35px;color:#888891; }
+.shop {padding:clamp(22px,3.7vw,42px); }
+.shop__logo {font-size:1.03rem;letter-spacing:-.05em;color:#222; }
+.shop__logo b {color:#999; }
+.shop__tag {border:0;background:#f6f6f8;color:#95959c;font-size:.68rem; }
+.shop__chips {margin:25px 0; }
+.shop__chips span {font-size:.73rem;background:#f4f4f5;padding:8px 15px; }
+.shop__chips .on {background:#171719;color:white; }
+.shop__grid {gap:14px; }
+.pcard {background:#f7f7f8;border:1px solid #f1f1f2;border-radius:14px;padding:16px; }
+.pcard__ic {background:linear-gradient(140deg,#e7e7e9,#fbfbfc);color:#44464b;stroke-width:1.7;border-radius:11px;height:108px; }
+.pcard h3 {font-size:.83rem;letter-spacing:-.02em; }
+.pcard__price {font-size:1rem;letter-spacing:-.04em; }
+.pcard__dep {color:#888; }
+.pcard__btn {background:white;color:#36363a;border:1px solid #e3e3e7;font-weight:500;padding:9px;font-size:.75rem; }
+.phone {bottom:55px;right:max(-18px,calc(50% - 590px));width:214px;background:#101114;box-shadow:0 0 0 5px #333339,0 28px 75px -16px rgba(0,0,0,.5);transform:rotate(5deg); }
+.bubble {background:#26272b;font-size:.76rem; }
+.bubble__link {color:#d5d5d9; }
+.section {padding:clamp(90px,11vw,160px) 0; }
+.features {gap:16px;margin-top:60px; }
+.feat {background:#f5f5f7;padding:42px 40px;border-radius:25px;min-height:245px; }
+.feat h3 {font-size:clamp(1.35rem,2.5vw,2rem);font-weight:650;letter-spacing:-.052em; }
+.feat p {font-size:1.02rem;line-height:1.6; }
+.feat--accent {background:#141416;color:#fff; }
+.feat--accent p {color:#a1a1aa; }
+.dark {background:#0d0d10; }
+.dark--cta {background:radial-gradient(ellipse at 50% 110%,#25252b,#0d0d10 68%); }
+.panel {background:#161619;box-shadow:0 42px 100px -40px rgba(0,0,0,.85);border-radius:19px; }
+.panel__side {background:#131315; }
+.pill--new {background:#353339;color:#e1d9cf; }
+.pill--ok {background:#243b34;color:#b8dbc5; }
+.pill--out {background:#26354b;color:#bdd2f2; }
+.step-dot {background:#19191b;color:white; }
+.step-dot--dark {background:#fff;color:#111; }
+.demo-note {background:#fff;border:1px solid #e6e6eb;color:#71717b;font-size:.88rem; }
+.demo__col {border:1px solid #eeeeef; }
+.demo__owner {border:1px solid #242428; }
+.opt input:checked+label {background:#f4f4f7;border-color:#777780; }
+.opt svg {background:#f1f1f3;color:#393941;stroke-width:2; }
+.stock b {color:#fff; }
+.notify__app {color:#c8c8d0; }
+.track li.done {border-color:#d8d8de; }
+.steps li {border-top-color:#dedee2; }
+.steps span {color:#a4a4ac;font-size:2.2rem; }
+.price .lead {max-width:550px; }
+.faq summary::after {color:#73737d; }
+.foot {background:#f5f5f7; }
+.foot a {color:#55555f; }
+@media(max-width:960px){
+ .phone {display:none;}
+ .hero__stage {padding-bottom:62px;}
+}
+@media(max-width:720px){
+ .wrap {width:min(100% - 36px,1160px);}
+ .hero {padding-top:66px;}
+ .hero__title {font-size:clamp(3rem,12vw,5.6rem);}
+ .hero__lead {font-size:1.02rem;margin-top:24px;}
+ .hero__stage {margin-top:54px;padding-bottom:55px;}
+ .device {border-radius:13px;}
+ .shop__head {align-items:flex-start;}
+ .shop__tag {display:none;}
+ .pcard {padding:12px;}
+ .pcard__ic {height:73px;}
+ .pcard h3 {font-size:.78rem;}
+ .pcard__price {font-size:.84rem;}
+ .pcard__dep {font-size:.7rem;}
+ .pcard__btn {font-size:.69rem;padding:7px 4px;}
+ .feat {padding:30px;min-height:unset;}
+ .h2 {font-size:clamp(2.4rem,10vw,3.7rem);}
+ .section {padding:85px 0;}
+ .hero__cta {flex-direction:column;gap:20px;}
+ .nav .btn--small {font-size:.74rem;}
+}
+@media(max-width:420px){
+ .shop {padding:15px;}
+ .shop__logo {font-size:.85rem;}
+ .shop__grid {gap:8px;}
+ .pcard {padding:9px;}
+ .pcard__ic {height:56px;padding:9px;margin-bottom:8px;}
+ .pcard h3 {font-size:.7rem;}
+ .pcard__dep {font-size:.66rem;}
+}
